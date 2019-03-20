@@ -3,6 +3,8 @@
 [![jCenter](https://img.shields.io/badge/Apache-2.0-green.svg
 )](https://github.com/Foso/ExtensionGenerator/blob/master/LICENSE)
   
+>    An experimental Kotlin Multi Platform compiler annotation processor
+
 More info soon...
 
 Usage
