@@ -22,6 +22,6 @@ fun ClassDescriptor.findAnnotation(name: String): AnnotationDescriptor? {
     return this.annotations.findAnnotation(FqName(name))
 }
 
-fun AnnotationDescriptor.readArgument(key:String): ConstantValue<*>? {
+fun AnnotationDescriptor.readArgument(key: String): ConstantValue<*>? {
     return this.allValueArguments.get(Name.identifier(key))
 }

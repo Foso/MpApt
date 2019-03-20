@@ -4,22 +4,25 @@ package sample
 import de.jensklingenberg.annotation.Extension
 
 
-@Extension(to=[Hello::class])
-class Person(
-   @FunExt val name: String,
-    val ssn: String
+@Extension(to = [CommonHello::class])
+class CommonPerson(
+        @FunExt val name: String,
+        val ssn: String
 
 
+) {
+    @FunExt
+    fun commonHallo() {
+
+    }
 
 
-){
-    @FunExt fun test(){
+    fun commonCiao() {
 
     }
 
 
 }
 
-annotation class FunExt
 
 

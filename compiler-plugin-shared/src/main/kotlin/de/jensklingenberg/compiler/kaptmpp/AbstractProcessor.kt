@@ -5,7 +5,6 @@ import org.jetbrains.kotlin.cli.common.messages.CompilerMessageLocation
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.config.CompilerConfiguration
-import org.jetbrains.kotlin.psi.KtClass
 
 abstract class AbstractProcessor(val configuration: CompilerConfiguration) : Processor {
 
@@ -22,7 +21,7 @@ abstract class AbstractProcessor(val configuration: CompilerConfiguration) : Pro
     fun log(message: String) {
         messageCollector.report(
                 CompilerMessageSeverity.WARNING,
-                "*** Processor: $message",
+                "*** AbstractProcessor: $message",
                 CompilerMessageLocation.create(null))
     }
 

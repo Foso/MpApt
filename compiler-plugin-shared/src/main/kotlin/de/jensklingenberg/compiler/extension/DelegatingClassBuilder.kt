@@ -14,7 +14,7 @@ abstract class DelegatingClassBuilder(val delegatingClassBuilder: ClassBuilder) 
 
 class DebugLogClassGenerationInterceptor(
         val debugLogAnnotations: List<String>,
-       val generator: AbstractProcessor
+        val generator: AbstractProcessor
 ) : ClassBuilderInterceptorExtension {
     /**
      * Our [ClassBuilderFactory] has identical behavior to the [interceptedFactory] parameter given, but returns a
@@ -25,8 +25,11 @@ class DebugLogClassGenerationInterceptor(
             bindingContext: BindingContext,
             diagnostics: DiagnosticSink
     ): ClassBuilderFactory = object : ClassBuilderFactory by interceptedFactory {
+
+
         override fun newClassBuilder(origin: JvmDeclarationOrigin) =
-                DebugLogClassBuilder(debugLogAnnotations, interceptedFactory.newClassBuilder(origin),generator)
+                DebugLogClassBuilder(debugLogAnnotations, interceptedFactory.newClassBuilder(origin), generator)
+
 
     }
 

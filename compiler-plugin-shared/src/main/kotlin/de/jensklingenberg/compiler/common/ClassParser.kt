@@ -2,7 +2,6 @@ package de.jensklingenberg.compiler.common
 
 import de.jensklingenberg.compiler.kaptmpp.AbstractProcessor
 import de.jensklingenberg.compiler.kaptmpp.Element
-import de.jensklingenberg.compiler.kaptmpp.Platform
 import de.jensklingenberg.compiler.kaptmpp.RoundEnvironment
 import org.jetbrains.kotlin.descriptors.ClassDescriptor
 import org.jetbrains.kotlin.descriptors.FunctionDescriptor
@@ -17,54 +16,30 @@ class ClassParser() {
         val TAG = "dd"
 
 
-        fun parse(descriptor: ClassDescriptor, generator: AbstractProcessor,roundEnvironment:RoundEnvironment) {
-            val file = descriptor.source.containingFile
-            val moduleName = descriptor.module.name.asString()
-
+        fun parse(descriptor: ClassDescriptor, generator: AbstractProcessor, roundEnvironment: RoundEnvironment) {
             val targetClass = descriptor
 
-            val buildFolder = guessingProjectFolder(targetClass)+ "build/"
-            generator.processingEnv.projectFolder=guessingProjectFolder(targetClass)
+            val buildFolder = guessingProjectFolder(targetClass) + "build/"
+            generator.processingEnv.projectFolder = guessingProjectFolder(targetClass)
             generator.processingEnv.buildFolder = buildFolder
-            generator.log("Reading class " + targetClass.name)
-
-
-            val haAn = targetClass.hasAnnotation("de.jensklingenberg.annotation.Extension")
-            val constructor = targetClass.constructors.first { it.isPrimary }
-            val extAnno = targetClass.findAnnotation("de.jensklingenberg.annotation.Extension")
-//
-
 
             generator.getSupportedAnnotationTypes().forEach { annotation ->
                 if (targetClass.hasAnnotation(annotation)) {
-                    roundEnvironment.elements.add(Element.ClassElement(targetClass.name.asString(), annotation = annotation,descriptor=targetClass))
+                    roundEnvironment.module = descriptor.module
+                    roundEnvironment.elements.add(Element.ClassElement(
+                            targetClass.name.asString(),
+                            annotation = targetClass.findAnnotation(annotation),
+                            descriptor = targetClass
+                    ))
                     generator.process(roundEnvironment)
                 }
 
             }
 
 
-            //Find Annotations of class
-            descriptor.annotations.forEach {
-
-                if (generator.getSupportedAnnotationTypes().contains(it.fqName?.shortName().toString())) {
-
-                    generator.log(TAG + "*** IT' YYYYY  ***"+roundEnvironment.platform.name + targetClass.name)
-
-                    val element = Element.ClassElement(
-                            simpleName = targetClass.name.asString() ?: "",
-                            annotation = it.fqName?.shortName().toString(),
-                            pack = "ddd",
-                            descriptor = targetClass//generator.configuration.kotlinSourceRoots
-                    )
-
-                    roundEnvironment.elements.add(element)
-                    generator.process(roundEnvironment)
-
-                }
 
 
-            }
+
 
 
 
@@ -77,35 +52,39 @@ class ClassParser() {
             val projectPath = (descriptor.source.containingFile as PsiSourceFile).psiFile.virtualFile.canonicalPath?.replaceAfter(cleanedModuleName + "/", "")
 
 
+            return projectPath ?: "Project folder not found"
 
-            return projectPath?:"Project folder not found"
 
         }
 
-        fun parseMethod(function: FunctionDescriptor,generator: AbstractProcessor,roundEnvironment:RoundEnvironment) {
+        fun parseMethod(descriptor: ClassDescriptor, function: FunctionDescriptor, generator: AbstractProcessor, roundEnvironment: RoundEnvironment) {
 
-            generator.getSupportedAnnotationTypes().forEach { annotation ->
+            generator.getSupportedAnnotationTypes().forEach { annotationNames ->
 
-                generator.log(TAG + "*** IT' YYYYY  ***"+annotation.toString())
+                if (function.annotations.hasAnnotation(FqName(annotationNames))) {
+                    val annotation = function.annotations.findAnnotation(FqName(annotationNames))
+
+                    roundEnvironment.also {
+                        it.module = descriptor.module
 
 
-                if(function.annotations.hasAnnotation(FqName(annotation))){
-                    val func= function.annotations.findAnnotation(FqName(annotation))
-                    val annotation = func?.fqName?.shortName().toString()
+                        it.elements.add(Element.FunctionElement(
+                                simpleName = function.name.asString(),
+                                annotation = annotation,
+                                descriptor = descriptor
+                        ))
+                    }
 
-                    generator.process(RoundEnvironment(Platform.JVM).also { it.elements.add(Element.FunctionElement(simpleName = func?.fqName?.shortName()?.asString()?:"",annotation = "sample.FunExt")) })
+                    generator.process(roundEnvironment)
 
                 }
 
             }
 
 
-
         }
 
     }
-
-
 
 
 }

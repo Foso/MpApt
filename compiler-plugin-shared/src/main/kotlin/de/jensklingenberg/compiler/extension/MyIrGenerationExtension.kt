@@ -10,7 +10,7 @@ class MyIrGenerationExtension(generator: AbstractProcessor) : IrGenerationExtens
 
 
     override fun generate(file: IrFile, backendContext: BackendContext, bindingContext: BindingContext) {
-val f = file
+        val f = file
 
     }
 }

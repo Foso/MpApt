@@ -33,7 +33,6 @@ compileKotlin {
 }
 
 
-
 dependencies {
 
     compileOnly "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"

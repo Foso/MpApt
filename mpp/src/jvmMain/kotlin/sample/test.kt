@@ -1,10 +1,13 @@
 package sample
 
 
+class JvmSample() {
 
-fun main() {
 
+    @FunExt
+    fun jvmTest() {
+
+
+    }
 
 }
-
-class Test()

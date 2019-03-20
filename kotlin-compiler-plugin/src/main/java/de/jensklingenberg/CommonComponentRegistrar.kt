@@ -18,14 +18,14 @@ import org.jetbrains.kotlin.resolve.extensions.SyntheticResolveExtension
 @AutoService(ComponentRegistrar::class)
 class CommonComponentRegistrar : ComponentRegistrar {
     override fun registerProjectComponents(
-        project: MockProject,
-        configuration: CompilerConfiguration
+            project: MockProject,
+            configuration: CompilerConfiguration
     ) {
 
         val messageCollector = configuration.get(CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY, MessageCollector.NONE)
-        val generator = Generator( configuration)
+        val generator = ExtensionProcessor(configuration)
 
-        ClassBuilderInterceptorExtension.registerExtension(project,DebugLogClassGenerationInterceptor(emptyList(),generator))
+        ClassBuilderInterceptorExtension.registerExtension(project, DebugLogClassGenerationInterceptor(emptyList(), generator))
         IrGenerationExtension.registerExtension(project, MyIrGenerationExtension(generator))
         JsSyntheticTranslateExtension.registerExtension(project, Synth(generator))
         SyntheticResolveExtension.registerExtension(project, SynthResol(generator))
@@ -33,8 +33,6 @@ class CommonComponentRegistrar : ComponentRegistrar {
         DeclarationAttributeAltererExtension.registerExtension(project, MyDeclarationAttributeAltererExtension(generator))
 
     }
-
-
 
 
 }

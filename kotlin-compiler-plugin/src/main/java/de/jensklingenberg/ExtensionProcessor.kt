@@ -3,81 +3,58 @@ package de.jensklingenberg
 import com.squareup.kotlinpoet.*
 import de.jensklingenberg.annotation.Extension
 import de.jensklingenberg.compiler.common.findAnnotation
-import de.jensklingenberg.compiler.common.hasAnnotation
 import de.jensklingenberg.compiler.common.readArgument
 import de.jensklingenberg.compiler.kaptmpp.*
 import org.jetbrains.kotlin.cli.common.config.kotlinSourceRoots
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.config.CompilerConfiguration
-import java.io.File
+import org.jetbrains.kotlin.descriptors.ClassDescriptor
+import org.jetbrains.kotlin.descriptors.annotations.AnnotationDescriptor
+import org.jetbrains.kotlin.resolve.constants.KClassValue
+import org.jetbrains.kotlin.resolve.descriptorUtil.module
 
-class Generator(configuration: CompilerConfiguration) :
+class ExtensionProcessor(configuration: CompilerConfiguration) :
         AbstractProcessor(configuration) {
     override fun getSupportedPlatform() = listOf(Platform.ALL)
 
-    val TAG = "Generator:"
+    val TAG = "ExtensionProcessor:"
 
 
     override fun process(roundEnvironment: RoundEnvironment): Boolean {
 
-        roundEnvironment
-                .getElementsAnnotatedWith("sample.FunExt").forEach {
-                    val es = it
-                    when (es) {
-
-
-                        is Element.FunctionElement -> {
-                            processingEnv.messager.report(
-                                    CompilerMessageSeverity.WARNING,
-                                    TAG + "***Function-------> " + es.simpleName
-                            )
-                        }
-                    }
-                }
-
 
         roundEnvironment
                 .getElementsAnnotatedWith(Extension::class.qualifiedName.toString())
-                .forEach {
-                    val es = it
+                .forEach { element ->
+
 
                     configuration.kotlinSourceRoots.forEach {
                         processingEnv.messager.report(
-                                CompilerMessageSeverity.WARNING,
-                                TAG + "***SourceRott " + it.path + " " + roundEnvironment.platform.name
+                                CompilerMessageSeverity.WARNING, ""
+                                //      TAG + "***SourceRott " + it.path + " " + roundEnvironment.platform.name
                         )
                     }
 
 
-                    when (es) {
+                    when (element) {
 
-                        is Element.FunctionElement -> {
-                            processingEnv.messager.report(
-                                    CompilerMessageSeverity.WARNING,
-                                    TAG + "***TTFunction-------> " + es.simpleName
-                            )
-                        }
-
-
+//      (element.annotation.readArgument("to").value as ArrayList<KClassValue>).first().getArgumentType(element.descriptor.module)?.constructor?.declarationDescriptor as? ClassDescriptor
                         is Element.ClassElement -> {
+
+                            val targetClass = (element.annotation?.readArgument("to")?.value as ArrayList<KClassValue>).first().getArgumentType(element.descriptor.module)?.constructor?.declarationDescriptor as? ClassDescriptor
+
+
                             processingEnv.messager.report(
                                     CompilerMessageSeverity.WARNING,
-                                    TAG + "***Class " + es.descriptor.findAnnotation("de.jensklingenberg.annotation.Extension")?.readArgument("to")?.value
+                                    TAG + "***Class " + element.descriptor.name + " annoated with: "+element.annotation.simpleName()+ " " + roundEnvironment.module?.name + " with target class :"+targetClass?.name
                             )
-
-
-
                         }
                     }
 
                     processingEnv.messager.report(
-                            CompilerMessageSeverity.WARNING,
-                            TAG + "*** process ***" + it.simpleName + "\n Pack" + it.pack + "\n Annotation:" + it.annotation + "\n buildfolder" + processingEnv.buildFolder+ "\nplatform: "+roundEnvironment.platform.name
+                            CompilerMessageSeverity.WARNING, ""
+                            //TAG + "*** process ***" + it.simpleName + "\n Pack" + it.pack + "\n Annotation:" + it.annotation + "\n buildfolder" + processingEnv.buildFolder+ "\nplatform: "+roundEnvironment.platform.name
                     )
-
-
-
-
 
 
                     val greeterClass = ClassName("", "Greeter")
@@ -100,8 +77,25 @@ class Generator(configuration: CompilerConfiguration) :
                                     .build())
                             .build()
 
-                    file.writeTo(File(processingEnv.projectFolder + "/src/jsMain/kotlin/generated/"))
+                    // file.writeTo(File(processingEnv.projectFolder + "/src/jsMain/kotlin/generated/"))
 
+                }
+
+
+        roundEnvironment
+                .getElementsAnnotatedWith("sample.FunExt")
+                .forEach {
+                    val es = it
+                    when (es) {
+
+
+                        is Element.FunctionElement -> {
+                            processingEnv.messager.report(
+                                    CompilerMessageSeverity.WARNING,
+                                    TAG + "***Function-------> " + es.simpleName +  " annotated with " + es.annotation.simpleName()
+                            )
+                        }
+                    }
                 }
         return true
     }
@@ -129,6 +123,11 @@ class Generator(configuration: CompilerConfiguration) :
 
     }
 
+
+}
+
+private fun AnnotationDescriptor?.simpleName(): String {
+    return this?.fqName?.shortName()?.asString()?: "No Name"
 
 }
 

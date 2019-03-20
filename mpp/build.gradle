@@ -33,18 +33,17 @@ def compilerPlugin = project(':kotlin-compiler-plugin')
 
 
 kotlin {
-    jvm(){
+    jvm() {
         configure([compilations.main]) {
             def pluginJar = new File(compilerPlugin.buildDir, "libs/${compilerPlugin.name}-0.0.1.jar").toString()
-           // def pluginJar = new File(compilerPlugin.buildDir, "libs/${compilerPlugin.name}-0.0.1.jar").toString() //Test
+            // def pluginJar = new File(compilerPlugin.buildDir, "libs/${compilerPlugin.name}-0.0.1.jar").toString() //Test
 
             evaluationDependsOn(":$compilerPlugin.name")
 
 
             compileKotlinJvm.kotlinOptions {
-               // freeCompilerArgs = ['-Xplugin=/home/jens/Code/2019/KotlinCompilerPluginHelloWorld/kotlin-compiler-plugin/build/libs/kotlin-compiler-plugin-0.0.1.jar']
+                // freeCompilerArgs = ['-Xplugin=/home/jens/Code/2019/KotlinCompilerPluginHelloWorld/kotlin-compiler-plugin/build/libs/kotlin-compiler-plugin-0.0.1.jar']
                 freeCompilerArgs = ["-Xplugin=$pluginJar"]
-
 
 
             }
@@ -55,7 +54,7 @@ kotlin {
 
         }
     }
-    js(){
+    js() {
         configure([compilations.main]) {
             def pluginJar = new File(compilerPlugin.buildDir, "libs/${compilerPlugin.name}-0.0.1.jar").toString()
 

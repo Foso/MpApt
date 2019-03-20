@@ -1,8 +1,13 @@
 package sample
 
 
-fun test(){
+class JsSample() {
+
+
+    @FunExt
+    fun jsTest() {
+
+    }
 
 }
 
-class Test()

@@ -17,5 +17,5 @@ interface Processor {
 }
 
 enum class Platform {
-    ALL, JVM, JS, COMMON
+    ALL, JVM, JS, COMMON, UNKNONWN
 }

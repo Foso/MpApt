@@ -54,7 +54,6 @@ dependencies {
     compileOnly "com.google.auto.service:auto-service:1.0-rc4"
     kapt "com.google.auto.service:auto-service:1.0-rc4"
     compile 'com.squareup:kotlinpoet:1.1.0'
-  
 
 
 }
@@ -70,7 +69,6 @@ task fatJar(type: Jar) {
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
 }
-
 
 
 uploadArchives {
@@ -91,7 +89,6 @@ shadowJar {
 }
 
 
-
 publishing {
     publications {
         shadow(MavenPublication) { publication ->
@@ -106,8 +103,6 @@ publishing {
 }
 
 build.finalizedBy(publishToMavenLocal)
-
-
 
 
 kapt {

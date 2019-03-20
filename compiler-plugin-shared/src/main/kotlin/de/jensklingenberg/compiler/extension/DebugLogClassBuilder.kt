@@ -1,11 +1,8 @@
 package de.jensklingenberg.compiler.extension
 
 
-import de.jensklingenberg.compiler.common.ClassParser
 import de.jensklingenberg.compiler.kaptmpp.AbstractProcessor
-import de.jensklingenberg.compiler.kaptmpp.Element
 import de.jensklingenberg.compiler.kaptmpp.Platform
-import de.jensklingenberg.compiler.kaptmpp.RoundEnvironment
 import org.jetbrains.kotlin.codegen.ClassBuilder
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.descriptors.FunctionDescriptor
@@ -22,7 +19,7 @@ import org.jetbrains.org.objectweb.asm.commons.InstructionAdapter
 internal class DebugLogClassBuilder(
         private val debugLogAnnotations: List<String>,
         delegateBuilder: ClassBuilder,
-       val generator: AbstractProcessor
+        val abstractProcessor: AbstractProcessor
 ) : DelegatingClassBuilder(delegateBuilder) {
 
     override fun defineClass(origin: PsiElement?, version: Int, access: Int, name: String, signature: String?, superName: String, interfaces: Array<out String>) {
@@ -37,27 +34,47 @@ internal class DebugLogClassBuilder(
             origin: JvmDeclarationOrigin,
             /* not used: */ access: Int, name: String, desc: String, signature: String?, exceptions: Array<out String>?
     ): MethodVisitor {
+
+
         val original = super.newMethod(origin, access, name, desc, signature, exceptions)
+
+
+
+        if (abstractProcessor.getSupportedPlatform().contains(Platform.JS)) {
+            return original
+
+        }
+
 
         val function = origin.descriptor as? FunctionDescriptor ?: return original
 
-        ClassParser.parseMethod(function,generator, RoundEnvironment(Platform.JVM))
+        // ClassParser.parseMethod(function,generator, RoundEnvironment(Platform.JVM))
 
+
+        abstractProcessor.getSupportedAnnotationTypes().forEach { annotation ->
+
+
+            if (function.annotations.hasAnnotation(FqName(annotation))) {
+                // generator.log(TAG + "*** IT' YYYYY  ***"+function.name.asString())
+
+                val func = function.annotations.findAnnotation(FqName(annotation))
+                val annotation = func?.fqName?.shortName().toString()
+
+                //    abstractProcessor.process(RoundEnvironment(Platform.JVM).also { it.elements.add(Element.FunctionElement(simpleName = function.name.asString(),annotation = "sample.FunExt")) })
+
+            }
+
+        }
 
 
         if (debugLogAnnotations.none { function.annotations.hasAnnotation(FqName(it)) }) {
             // none of the debugLogAnnotations were on this function; return the original behavior
-            if(function.annotations.hasAnnotation(FqName("sample.FunExt"))){
-                val func= function.annotations.findAnnotation(FqName("sample.FunExt"))
-               val annotation = func?.fqName?.shortName().toString()
 
-              //  generator.process(RoundEnvironment(Platform.JVM).also { it.elements.add(Element.FunctionElement(simpleName = func?.fqName?.shortName()?.asString()?:"",annotation = "de.jensklingenberg.annotation.Extension")) })
-            }
 
             return original
         }
 
-        val ii =1
+        val ii = 1
 
         return object : MethodVisitor(Opcodes.ASM5, original) {
             override fun visitCode() {

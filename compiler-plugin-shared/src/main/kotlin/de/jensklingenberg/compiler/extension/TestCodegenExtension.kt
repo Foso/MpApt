@@ -22,14 +22,15 @@ class TestCodegenExtension(
     override fun generateClassSyntheticParts(codegen: ImplementationBodyCodegen) {
 
 
-
         val roundEnvironment = RoundEnvironment(Platform.JVM)
 
         if (abstractProcessor.getSupportedPlatform().contains(Platform.JVM) ||
                 abstractProcessor.getSupportedPlatform().contains(Platform.ALL)) {
             val targetClass = codegen.descriptor
-            ClassParser.parse(targetClass, abstractProcessor, roundEnvironment)
+              ClassParser.parse(targetClass, abstractProcessor, roundEnvironment)
 
+        } else {
+            abstractProcessor.log("----------------------------------------hhh--------------------Hier passiert was")
         }
     }
 
