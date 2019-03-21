@@ -19,8 +19,8 @@ class ClassParser() {
         fun parse(descriptor: ClassDescriptor, generator: AbstractProcessor, roundEnvironment: RoundEnvironment) {
             val targetClass = descriptor
 
-            val buildFolder = guessingProjectFolder(targetClass) + "build/"
-            generator.processingEnv.projectFolder = guessingProjectFolder(targetClass)
+            val buildFolder = targetClass.guessingProjectFolder() + "build/"
+            generator.processingEnv.projectFolder = targetClass.guessingProjectFolder()
             generator.processingEnv.buildFolder = buildFolder
 
             generator.getSupportedAnnotationTypes().forEach { annotation ->
@@ -36,26 +36,9 @@ class ClassParser() {
 
             }
 
-
-
-
-
-
-
-
         }
 
-        private fun guessingProjectFolder(descriptor: ClassDescriptor): String {
-            //Remove <> from module name
-            val cleanedModuleName = descriptor.module.name.asString().replace("<", "").replace(">", "")
 
-            val projectPath = (descriptor.source.containingFile as PsiSourceFile).psiFile.virtualFile.canonicalPath?.replaceAfter(cleanedModuleName + "/", "")
-
-
-            return projectPath ?: "Project folder not found"
-
-
-        }
 
         fun parseMethod(descriptor: ClassDescriptor, function: FunctionDescriptor, generator: AbstractProcessor, roundEnvironment: RoundEnvironment) {
 

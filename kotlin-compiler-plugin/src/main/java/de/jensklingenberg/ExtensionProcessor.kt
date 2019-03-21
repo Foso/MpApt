@@ -3,18 +3,22 @@ package de.jensklingenberg
 import com.squareup.kotlinpoet.*
 import de.jensklingenberg.annotation.Extension
 import de.jensklingenberg.compiler.common.findAnnotation
+import de.jensklingenberg.compiler.common.methods
 import de.jensklingenberg.compiler.common.readArgument
+import de.jensklingenberg.compiler.common.simpleName
 import de.jensklingenberg.compiler.kaptmpp.*
 import org.jetbrains.kotlin.cli.common.config.kotlinSourceRoots
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.config.CompilerConfiguration
-import org.jetbrains.kotlin.descriptors.ClassDescriptor
+import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.descriptors.annotations.AnnotationDescriptor
 import org.jetbrains.kotlin.resolve.constants.KClassValue
 import org.jetbrains.kotlin.resolve.descriptorUtil.module
 
 class ExtensionProcessor(configuration: CompilerConfiguration) :
         AbstractProcessor(configuration) {
+
+
     override fun getSupportedPlatform() = listOf(Platform.ALL)
 
     val TAG = "ExtensionProcessor:"
@@ -38,16 +42,28 @@ class ExtensionProcessor(configuration: CompilerConfiguration) :
 
                     when (element) {
 
-//      (element.annotation.readArgument("to").value as ArrayList<KClassValue>).first().getArgumentType(element.descriptor.module)?.constructor?.declarationDescriptor as? ClassDescriptor
                         is Element.ClassElement -> {
 
-                            val targetClass = (element.annotation?.readArgument("to")?.value as ArrayList<KClassValue>).first().getArgumentType(element.descriptor.module)?.constructor?.declarationDescriptor as? ClassDescriptor
+                            val targetClass = (element.annotation?.readArgument("to")?.value as ArrayList<KClassValue>).map { it.getArgumentType(element.descriptor.module)?.constructor?.declarationDescriptor as? ClassDescriptor }.filterNotNull()
+
+                            targetClass.forEach {
+                                processingEnv.messager.report(
+                                        CompilerMessageSeverity.WARNING,
+                                        TAG + "***Class " + element.descriptor.name + " annoated with: "+element.annotation.simpleName()+ " " + roundEnvironment.module?.name + " with target class :"+it.name
+                                )
+
+                                it.methods().forEach {method->
+                                    processingEnv.messager.report(
+                                            CompilerMessageSeverity.WARNING,
+                                            TAG + "***Method " + method.name
+                                    )
+                                }
+
+                            }
 
 
-                            processingEnv.messager.report(
-                                    CompilerMessageSeverity.WARNING,
-                                    TAG + "***Class " + element.descriptor.name + " annoated with: "+element.annotation.simpleName()+ " " + roundEnvironment.module?.name + " with target class :"+targetClass?.name
-                            )
+
+
                         }
                     }
 
@@ -125,9 +141,3 @@ class ExtensionProcessor(configuration: CompilerConfiguration) :
 
 
 }
-
-private fun AnnotationDescriptor?.simpleName(): String {
-    return this?.fqName?.shortName()?.asString()?: "No Name"
-
-}
-
