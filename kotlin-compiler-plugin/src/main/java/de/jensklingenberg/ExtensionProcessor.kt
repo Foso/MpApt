@@ -9,11 +9,13 @@ import de.jensklingenberg.compiler.common.simpleName
 import de.jensklingenberg.compiler.kaptmpp.*
 import org.jetbrains.kotlin.cli.common.config.kotlinSourceRoots
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
+import org.jetbrains.kotlin.cli.jvm.K2JVMCompiler
 import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.descriptors.annotations.AnnotationDescriptor
 import org.jetbrains.kotlin.resolve.constants.KClassValue
 import org.jetbrains.kotlin.resolve.descriptorUtil.module
+import java.io.File
 
 class ExtensionProcessor(configuration: CompilerConfiguration) :
         AbstractProcessor(configuration) {
@@ -28,7 +30,7 @@ class ExtensionProcessor(configuration: CompilerConfiguration) :
 
 
         roundEnvironment
-                .getElementsAnnotatedWith(Extension::class.qualifiedName.toString())
+                .getElementsAnnotatedWith(listOf("annotation.Module","sample.FunExt"))
                 .forEach { element ->
 
 
@@ -44,7 +46,8 @@ class ExtensionProcessor(configuration: CompilerConfiguration) :
 
                         is Element.ClassElement -> {
 
-                            val targetClass = (element.annotation?.readArgument("to")?.value as ArrayList<KClassValue>).map { it.getArgumentType(element.descriptor.module)?.constructor?.declarationDescriptor as? ClassDescriptor }.filterNotNull()
+                            val targetClass = listOf(element.descriptor)
+                          //  val targetClass = (element.annotation?.readArgument("to")?.value as ArrayList<KClassValue>).map { it.getArgumentType(element.descriptor.module)?.constructor?.declarationDescriptor as? ClassDescriptor }.filterNotNull()
 
                             targetClass.forEach {
                                 processingEnv.messager.report(
@@ -74,32 +77,24 @@ class ExtensionProcessor(configuration: CompilerConfiguration) :
 
 
                     val greeterClass = ClassName("", "Greeter")
-                    val file = FileSpec.builder("de.jensklingenberg", "HelloWorld")
+                    val file = FileSpec.builder("de.jensklingenberg", "DaggerAppComponent")
                             .addComment("//Generated")
-                            .addType(TypeSpec.classBuilder("Greeter")
-                                    .primaryConstructor(FunSpec.constructorBuilder()
-                                            .addParameter("name", String::class)
-                                            .build())
-                                    .addProperty(PropertySpec.builder("name", String::class)
-                                            .initializer("name")
-                                            .build())
+                            .addType(TypeSpec.classBuilder("DaggerAppComponent").addSuperinterface(ClassName("sample", "AppComponent"))
                                     .addFunction(FunSpec.builder("greet")
                                             .addStatement("println(%P)", "Hello, \$name")
                                             .build())
                                     .build())
-                            .addFunction(FunSpec.builder("main")
-                                    .addParameter("args", String::class, KModifier.VARARG)
-                                    .addStatement("%T(args[0]).greet()", greeterClass)
-                                    .build())
-                            .build()
 
-                    // file.writeTo(File(processingEnv.projectFolder + "/src/jsMain/kotlin/generated/"))
+                            .build()
+                    // file.writeTo(File(processingEnv.projectFolder + "generated/jvm/kotlin"))
 
                 }
 
 
+
+
         roundEnvironment
-                .getElementsAnnotatedWith("sample.FunExt")
+                .getElementsAnnotatedWith("annotation.Module")
                 .forEach {
                     val es = it
                     when (es) {
@@ -124,7 +119,7 @@ class ExtensionProcessor(configuration: CompilerConfiguration) :
 
     override fun getSupportedAnnotationTypes(): MutableSet<String> {
         return mutableSetOf(
-                "de.jensklingenberg.annotation.Extension","sample.FunExt"
+                "de.jensklingenberg.annotation.Extension","sample.FunExt","annotation.Module"
         )
 
     }

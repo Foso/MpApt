@@ -14,5 +14,10 @@ class RoundEnvironment(val platform: Platform = Platform.ALL) {
     }
 
 
+    fun getElementsAnnotatedWith(annotationName: List<String>): List<Element> {
+        return elements.filter { annotationName.contains( it.annotation?.fqName?.asString()) }
+
+    }
+
 }
 

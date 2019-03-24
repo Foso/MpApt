@@ -4,6 +4,7 @@ import com.google.auto.service.AutoService
 import de.jensklingenberg.compiler.extension.*
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
+import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.codegen.extensions.ClassBuilderInterceptorExtension
 import org.jetbrains.kotlin.codegen.extensions.ExpressionCodegenExtension
@@ -22,7 +23,18 @@ class CommonComponentRegistrar : ComponentRegistrar {
             configuration: CompilerConfiguration
     ) {
 
+        if (configuration[KEY_ENABLED] == false) {
+            return
+        }
+
         val messageCollector = configuration.get(CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY, MessageCollector.NONE)
+
+
+
+        messageCollector.report(
+                CompilerMessageSeverity.WARNING,
+                "*** CommonComponentRegistrar: ->>><  optionname "+configuration[KEY_ENABLED])
+
         val generator = ExtensionProcessor(configuration)
 
         ClassBuilderInterceptorExtension.registerExtension(project, DebugLogClassGenerationInterceptor(emptyList(), generator))

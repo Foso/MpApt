@@ -4,5 +4,6 @@ include ':test-compiler-plugin'
 include ':kotlin-compiler-plugin'
 include ':mpp'
 include ':compiler-plugin-shared'
+include ':gradle-plugin'
 
 enableFeaturePreview('GRADLE_METADATA')
