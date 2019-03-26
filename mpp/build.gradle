@@ -30,7 +30,7 @@ apply plugin: "compiler.plugin.helloworld"
 
 MpApt {
     enabled = true
-    annotations = [ "com.sample.myapp.annotations.DebugLog" ]
+    supportedModules = [ "jvmMain" ]
 }
 
 def compilerPlugin = project(':kotlin-compiler-plugin')
@@ -62,7 +62,7 @@ kotlin {
     // For Linux, should be changed to e.g. linuxX64
     // For MacOS, should be changed to e.g. macosX64
     // For Windows, should be changed to e.g. mingwX64
-    // linuxX64("linux")
+     linuxX64("linux")
     sourceSets {
         commonMain {
 
@@ -86,10 +86,11 @@ kotlin {
         jvmMain {
             kotlin.srcDirs += ['generated/jvm/kotlin', 'src/main/res-android-tv']
 
+
+
             dependencies {
                 implementation kotlin('stdlib-jdk8')
                 //  compileOnly "org.jetbrains.kotlin:kotlin-compiler-embeddable:$kotlin_version"
-
 
             }
         }
@@ -102,7 +103,7 @@ kotlin {
             }
         }
         jsMain {
-            kotlin.srcDirs += ['generated', 'src/main/res-android-tv']
+            kotlin.srcDirs += ['generated/jsMain', 'src/main/res-android-tv']
 
             dependencies {
                 implementation kotlin('stdlib-js')
@@ -115,6 +116,7 @@ kotlin {
             }
         }
         linuxMain {
+            kotlin.srcDirs += ['generated/linux/kotlin', 'src/main/res-android-tv']
 
 
         }

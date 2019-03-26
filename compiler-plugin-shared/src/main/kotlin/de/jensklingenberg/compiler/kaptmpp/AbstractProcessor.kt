@@ -25,5 +25,11 @@ abstract class AbstractProcessor(val configuration: CompilerConfiguration) : Pro
                 CompilerMessageLocation.create(null))
     }
 
+    override fun processingOver() {
+
+
+    }
+
+
 
 }

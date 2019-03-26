@@ -1,8 +1,7 @@
 package de.jensklingenberg
 
 import com.google.auto.service.AutoService
-
-
+import com.intellij.mock.MockProject
 import de.jensklingenberg.compiler.ProcessorProject
 import de.jensklingenberg.compiler.extension.*
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
@@ -11,7 +10,6 @@ import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.codegen.extensions.ClassBuilderInterceptorExtension
 import org.jetbrains.kotlin.codegen.extensions.ExpressionCodegenExtension
-import org.jetbrains.kotlin.com.intellij.mock.MockProject
 import org.jetbrains.kotlin.compiler.plugin.ComponentRegistrar
 import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.extensions.DeclarationAttributeAltererExtension
@@ -20,7 +18,7 @@ import org.jetbrains.kotlin.resolve.extensions.SyntheticResolveExtension
 
 
 @AutoService(ComponentRegistrar::class)
-class CommonComponentRegistrar : ComponentRegistrar {
+class NativeComponentRegistrar : ComponentRegistrar {
 
     override fun registerProjectComponents(
             project: MockProject,
@@ -37,7 +35,7 @@ class CommonComponentRegistrar : ComponentRegistrar {
 
         messageCollector.report(
                 CompilerMessageSeverity.WARNING,
-                "*** CommonComponentRegistrar: ->>><  optionname " + configuration[KEY_ENABLED])
+                "*** NativeComponentRegistrar: ->>><  optionname " + configuration[KEY_ENABLED])
 
         val generator = ExtensionProcessor(configuration)
 

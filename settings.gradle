@@ -2,6 +2,8 @@ rootProject.name = 'mpapt-compiler-plugin'
 include ':test-compiler-plugin'
 
 include ':kotlin-compiler-plugin'
+include ':kotlin-compiler-native-plugin'
+
 include ':mpp'
 include ':compiler-plugin-shared'
 include ':gradle-plugin'

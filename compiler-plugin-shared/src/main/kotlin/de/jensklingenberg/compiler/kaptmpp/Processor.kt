@@ -13,6 +13,7 @@ interface Processor {
 
     fun getSupportedPlatform(): List<Platform>
 
+    fun processingOver()
 
 }
 

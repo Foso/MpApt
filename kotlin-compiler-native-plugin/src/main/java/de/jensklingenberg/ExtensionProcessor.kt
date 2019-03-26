@@ -76,17 +76,7 @@ class ExtensionProcessor(configuration: CompilerConfiguration) :
                     )
 
 
-                    val greeterClass = ClassName("", "Greeter")
-                    val file = FileSpec.builder("de.jensklingenberg", "DaggerAppComponent")
-                            .addComment("//Generated")
-                            .addType(TypeSpec.classBuilder("DaggerAppComponent").addSuperinterface(ClassName("sample", "AppComponent"))
-                                    .addFunction(FunSpec.builder("greet")
-                                            .addStatement("println(%P)", "Hello, \$name")
-                                            .build())
-                                    .build())
 
-                            .build()
-                   //  file.writeTo(File(processingEnv.projectFolder + "generated/jvm/kotlin"))
 
                 }
 
@@ -136,11 +126,25 @@ class ExtensionProcessor(configuration: CompilerConfiguration) :
 
     override fun processingOver(){
 
+        File(processingEnv.projectFolder + "generated/jvm/kotlin").deleteRecursively()
+
         processingEnv.messager.report(
                 CompilerMessageSeverity.WARNING,
                 //  "*** IT'S ENTER FUNCTION ***"+function.elements.hasAnnotation(FqName("me.eugeniomarletti.Hallo")))
                 TAG + "***Processor over ***"
         )
+
+        val greeterClass = ClassName("", "Greeter")
+        val file = FileSpec.builder("de.jensklingenberg", "DaggerAppComponent")
+                .addComment("//Generated")
+                .addType(TypeSpec.classBuilder("DaggerAppComponent").addSuperinterface(ClassName("sample", "AppComponent"))
+                        .addFunction(FunSpec.builder("greet")
+                                .addStatement("println(%P)", "Hello, \$name")
+                                .build())
+                        .build())
+
+                .build()
+        file.writeTo(File(processingEnv.projectFolder + "generated/linuxMain/kotlin"))
     }
 
 

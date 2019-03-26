@@ -26,7 +26,7 @@ class HelloWorldGradleSubplugin : KotlinGradleSubplugin<AbstractCompile> {
 
 
         val enabledOption = SubpluginOption(key = "enabled", value = extension.enabled.toString())
-        val annotationOptions = extension.annotations.map { SubpluginOption(key = "debugLogAnnotation", value = it) }
+        val annotationOptions = extension.supportedModules.map { SubpluginOption(key = "debugLogAnnotation", value = it) }
 
         return listOf(enabledOption)
 
