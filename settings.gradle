@@ -5,7 +5,9 @@ include ':kotlin-compiler-plugin'
 include ':kotlin-compiler-native-plugin'
 
 include ':mpp'
-include ':compiler-plugin-shared'
+include ':mpapt-runtime'
 include ':gradle-plugin'
+include ':ktor-swagger-annotations'
 
-enableFeaturePreview('GRADLE_METADATA')
+
+

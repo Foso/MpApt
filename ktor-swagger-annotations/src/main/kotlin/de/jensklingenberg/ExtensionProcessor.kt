@@ -1,20 +1,15 @@
 package de.jensklingenberg
 
-import com.squareup.kotlinpoet.*
-import de.jensklingenberg.annotation.Extension
-import de.jensklingenberg.compiler.common.findAnnotation
+import com.squareup.kotlinpoet.ClassName
+import com.squareup.kotlinpoet.FileSpec
+import com.squareup.kotlinpoet.FunSpec
+import com.squareup.kotlinpoet.TypeSpec
 import de.jensklingenberg.compiler.common.methods
-import de.jensklingenberg.compiler.common.readArgument
 import de.jensklingenberg.compiler.common.simpleName
 import de.jensklingenberg.compiler.kaptmpp.*
 import org.jetbrains.kotlin.cli.common.config.kotlinSourceRoots
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
-import org.jetbrains.kotlin.cli.jvm.K2JVMCompiler
 import org.jetbrains.kotlin.config.CompilerConfiguration
-import org.jetbrains.kotlin.descriptors.*
-import org.jetbrains.kotlin.descriptors.annotations.AnnotationDescriptor
-import org.jetbrains.kotlin.resolve.constants.KClassValue
-import org.jetbrains.kotlin.resolve.descriptorUtil.module
 import java.io.File
 
 class ExtensionProcessor(configuration: CompilerConfiguration) :
@@ -30,7 +25,7 @@ class ExtensionProcessor(configuration: CompilerConfiguration) :
 
 
         roundEnvironment
-                .getElementsAnnotatedWith(listOf("annotation.Module","sample.FunExt"))
+                .getElementsAnnotatedWith(listOf("annotation.Module","sample.FunExt","sample.Hello"))
                 .forEach { element ->
 
 
@@ -109,7 +104,7 @@ class ExtensionProcessor(configuration: CompilerConfiguration) :
 
     override fun getSupportedAnnotationTypes(): MutableSet<String> {
         return mutableSetOf(
-                "de.jensklingenberg.annotation.Extension","sample.FunExt","annotation.Module"
+                "de.jensklingenberg.annotation.Extension","sample.FunExt","annotation.Module","sample.Hello"
         )
 
     }
@@ -144,7 +139,7 @@ class ExtensionProcessor(configuration: CompilerConfiguration) :
                         .build())
 
                 .build()
-        file.writeTo(File(processingEnv.projectFolder + "generated/linuxMain/kotlin"))
+        //file.writeTo(File(processingEnv.projectFolder + "generated/linuxMain/kotlin"))
     }
 
 

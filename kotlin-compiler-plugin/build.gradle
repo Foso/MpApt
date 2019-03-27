@@ -46,7 +46,8 @@ version = "0.0.1"
 
 
 dependencies {
-    compile project(':compiler-plugin-shared')
+   // compile project(':compiler-plugin-shared')
+    compile project(':ktor-swagger-annotations')
 
     compileOnly "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compileOnly "org.jetbrains.kotlin:kotlin-compiler-embeddable:$kotlin_version"
