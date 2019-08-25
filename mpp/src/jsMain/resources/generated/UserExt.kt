@@ -1,6 +1,0 @@
-package generated
-
-
-fun generated() {
-
-}
