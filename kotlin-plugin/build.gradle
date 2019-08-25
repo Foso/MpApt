@@ -1,0 +1,57 @@
+buildscript {
+    ext.kotlin_version = '1.3.50'
+
+
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.github.jengelman.gradle.plugins:shadow:5.0.0'
+    }
+
+    allprojects {
+        repositories {
+            mavenLocal()
+            jcenter()
+        }
+    }
+}
+
+
+
+apply plugin: "org.jetbrains.kotlin.jvm"
+apply plugin: "kotlin-kapt"
+apply plugin: "maven"
+
+
+group = "de.jensklingenberg"
+archivesBaseName = "kotlin-compiler-plugin"
+version = "0.0.1"
+
+install {
+    repositories.mavenInstaller {
+        pom.artifactId = 'kotlin-compiler-plugin'
+    }
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    jcenter()
+}
+
+dependencies {
+    implementation 'com.squareup:kotlinpoet:1.3.0'
+    compile project(':mpapt')
+    compile "de.jensklingenberg.mpapt.testAnnotations:annotations-jvm:0.0.1"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    compileOnly "org.jetbrains.kotlin:kotlin-compiler-embeddable"
+    compileOnly "com.google.auto.service:auto-service:1.0-rc6"
+    kapt "com.google.auto.service:auto-service:1.0-rc6"
+}
+
+
+kapt {
+    includeCompileClasspath = true
+}

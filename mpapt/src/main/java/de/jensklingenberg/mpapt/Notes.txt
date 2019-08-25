@@ -1,0 +1,2 @@
+Check if class has constructor with a annotation
+classDescriptor.constructors.toList().get(0).annotations.hasAnnotation("de.jensklingenberg.ktorfit.Fancy")

@@ -1,0 +1,49 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.3.50'
+}
+apply plugin: "java-gradle-plugin"
+apply plugin: "kotlin-kapt"
+apply plugin: "maven"
+
+
+group = "de.jensklingenberg"
+archivesBaseName = "mpapt-gradle"
+version = "1.0.0"
+
+repositories {
+    // The org.jetbrains.kotlin.jvm plugin requires a repository
+    // where to download the Kotlin compiler dependencies from.
+    jcenter()
+}
+
+
+allprojects {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url "https://maven.google.com" }
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+}
+
+install {
+    repositories.mavenInstaller {
+        pom.artifactId = 'mpapt-gradle'
+    }
+}
+
+gradlePlugin {
+    plugins {
+        simplePlugin {
+            id = "de.jensklingenberg.mpapt" // users will do `apply plugin: "de.jensklingenberg.mpapt"`
+            implementationClass = "de.jensklingenberg.mpapt.MpAptGradlePlugin" // entry-point class
+        }
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation "org.jetbrains.kotlin:kotlin-gradle-plugin-api:1.3.50"
+    compileOnly "com.google.auto.service:auto-service:1.0-rc6"
+    kapt "com.google.auto.service:auto-service:1.0-rc6"
+}

@@ -1,0 +1,9 @@
+/mpapt/build/
+/kotlin-plugin/build/
+/gradle-plugin/build/
+/example/build/
+/.idea/
+/annotations/build/
+/kotlin-compiler-native-plugin/build/
+/.gradle/
+/build/

@@ -1,0 +1,6 @@
+include ':gradle-plugin'
+include 'annotations'
+include 'example'
+include ':kotlin-compiler-native-plugin'
+include ':kotlin-plugin'
+include ':mpapt'
