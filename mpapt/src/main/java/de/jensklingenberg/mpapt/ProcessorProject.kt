@@ -28,25 +28,9 @@ class ProcessorProject {
 
         fun init(project: Project, generator: AbstractProcessor) {
            // PackageFragmentProviderExtension.registerExtension(project,)
-            AnalysisHandlerExtension.registerExtension(project, AnalysisHandlerExtensionImpl(generator.messageCollector))
-            IrGenerationExtension.registerExtension(project, MyIrGenerationExtension(generator))
-            SyntheticResolveExtension.registerExtension(project, SyntheticResolveExtensionImpl(generator))
-            DeclarationAttributeAltererExtension.registerExtension(
-                    project,
-                    MyDeclarationAttributeAltererExtension(generator)
-            )
-            //  PreprocessedVirtualFileFactoryExtension.registerExtension(project, MetaPreprocessedVirtualFileFactoryExtension())
-            DeclarationAttributeAltererExtension.registerExtension(project, object : DeclarationAttributeAltererExtension {})
 
-
-            CompilerConfigurationExtension.registerExtension(project, CompilerConfigurationExtensionExt(generator))
-
-            IrGenerationExtension.registerExtension(project, MetaIrGenerationExtension(generator))
-            ExpressionCodegenExtension.registerExtension(project, ExpressionCodegenExtensionImpl(generator))
 
         }
-
-
 
 
     }

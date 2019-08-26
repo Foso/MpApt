@@ -27,6 +27,9 @@ class SyntheticResolveExtensionImpl(val abstractProcessor: AbstractProcessor) : 
         return super.getSyntheticFunctionNames(thisDescriptor)
     }
 
+    override fun getSyntheticNestedClassNames(thisDescriptor: ClassDescriptor): List<Name> {
+        return super.getSyntheticNestedClassNames(thisDescriptor)
+    }
 
     override fun generateSyntheticClasses(thisDescriptor: ClassDescriptor, name: Name, ctx: LazyClassContext, declarationProvider: ClassMemberDeclarationProvider, result: MutableSet<ClassDescriptor>) {
         //  abstractProcessor.log("SyntheticResolveExtensionImpl    generateSyntheticClasses"+abstractProcessor.configuration.guessingPlatform())
@@ -43,6 +46,8 @@ class SyntheticResolveExtensionImpl(val abstractProcessor: AbstractProcessor) : 
         super.generateSyntheticClasses(thisDescriptor, name, ctx, declarationProvider, result)
     }
 
+
+
     override fun generateSyntheticMethods(
             thisDescriptor: ClassDescriptor,
             name: Name,
@@ -50,18 +55,19 @@ class SyntheticResolveExtensionImpl(val abstractProcessor: AbstractProcessor) : 
             fromSupertypes: List<SimpleFunctionDescriptor>,
             result: MutableCollection<SimpleFunctionDescriptor>
     ) {
-        result.forEachIndexed { index, function ->
+        result.forEach { function ->
             ClassParser.parseMethod(thisDescriptor, function, abstractProcessor, RoundEnvironment(abstractProcessor.configuration.guessingPlatform()))
         }
     }
-
+//((function.findPsi().children.filterIsInstance<KtBlockExpression>().map { it as KtBlockExpression }.get(0).children.get(0) as KtProperty).annotationEntries.get(0) as KtAnnotationEntry).shortName
     override fun generateSyntheticProperties(thisDescriptor: ClassDescriptor, name: Name, bindingContext: BindingContext, fromSupertypes: ArrayList<PropertyDescriptor>, result: MutableSet<PropertyDescriptor>) {
-
+//function.findPsi().children.filterIsInstance<KtBlockExpression>().get(0).statements.filterIsInstance<KtProperty>().get(0).getAnnotationEntries().get(0).shortName
         result.forEach {
             ClassParser.parseProperty(it, abstractProcessor, RoundEnvironment(abstractProcessor.configuration.guessingPlatform()))
         }
 
         super.generateSyntheticProperties(thisDescriptor, name, bindingContext, fromSupertypes, result)
     }
+
 
 }

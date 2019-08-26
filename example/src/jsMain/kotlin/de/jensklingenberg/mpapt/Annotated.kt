@@ -1,24 +1,41 @@
-package de.jensklingenberg.mpapt
+@file:TestFile package de.jensklingenberg.mpapt
 
-import de.jensklingenberg.testAnnotations.TestClass
-import de.jensklingenberg.testAnnotations.TestFunction
-import de.jensklingenberg.testAnnotations.TestProperty
-import de.jensklingenberg.testAnnotations.TestValueParameter
+import de.jensklingenberg.testAnnotations.*
 
+
+@TestTypeAlias typealias MyString = String
+@TestAnnotationClass annotation class Ttest
 
 @TestClass
-class Annotated{
+class Annotated @TestConstructor constructor() {
 
-    @TestProperty
-    val name : String?=null
+    @TestProperty @TestField
+    val name : @TestType String?=null
+
+    var jens : String @TestPropertyGetter get() {
+        return "Hello"
+    } @TestPropertySetter set(value) {
+
+    }
 
     @TestFunction
     fun genFunction(){
 
     }
 
-    fun genFunctionWithParameters(@TestValueParameter param:String){
+    fun genFunctionWithParameters(@TestValueParameter param:String,@TestValueParameter param2:String){
 
+       @TestLocalVariable  val HERERRERERERERER = 1
+
+        print(HERERRERERERERER)
+       @TestExpression when{
+                     true->{
+
+                    }
+                    false->{
+
+                    }
+        }
     }
 
     companion object{

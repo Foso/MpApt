@@ -1,9 +1,6 @@
 package de.jensklingenberg.mpapt.model
 
-import org.jetbrains.kotlin.descriptors.ClassDescriptor
-import org.jetbrains.kotlin.descriptors.FunctionDescriptor
-import org.jetbrains.kotlin.descriptors.PropertyDescriptor
-import org.jetbrains.kotlin.descriptors.ValueParameterDescriptor
+import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.descriptors.annotations.AnnotationDescriptor
 
 sealed class Element constructor(
@@ -52,6 +49,25 @@ sealed class Element constructor(
                                      override val elementKind: ElementKind = ElementKind.VALUE_PARAMETER
     )
         : Element()
+
+    data class PropertyGetterElement(val propertyGetterDescriptor: PropertyGetterDescriptor,
+                                     override val annotation: AnnotationDescriptor? = null,
+                                     override val elementKind: ElementKind = ElementKind.PROPERTY_GETTER
+    )
+        : Element()
+
+    data class PropertySetterElement(val propertySetterDescriptor: PropertySetterDescriptor,
+                                     override val annotation: AnnotationDescriptor? = null,
+                                     override val elementKind: ElementKind = ElementKind.PROPERTY_SETTER
+    )
+        : Element()
+
+    data class LocalVariableElement(val propertySetterDescriptor: PropertySetterDescriptor,
+                                     override val annotation: AnnotationDescriptor? = null,
+                                     override val elementKind: ElementKind = ElementKind.PROPERTY_SETTER
+    )
+        : Element()
+
 }
 
 

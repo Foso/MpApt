@@ -78,3 +78,17 @@ kotlin {
 
     }
 }
+
+
+task hello3(type: Exec) {
+    doFirst {
+        println 'start gradle....'
+    }
+    commandLine 'gradle',':annotations:install'
+    doLast {
+        println 'end gradle....'
+    }
+}
+
+
+build.finalizedBy(publishToMavenLocal)

@@ -6,22 +6,30 @@ import de.jensklingenberg.mpapt.model.Element
 import org.jetbrains.kotlin.descriptors.ClassDescriptor
 import org.jetbrains.kotlin.descriptors.FunctionDescriptor
 import org.jetbrains.kotlin.descriptors.PropertyDescriptor
+import org.jetbrains.kotlin.descriptors.SourceElement
+import org.jetbrains.kotlin.descriptors.annotations.AnnotationDescriptor
+import org.jetbrains.kotlin.js.resolve.diagnostics.findPsi
 import org.jetbrains.kotlin.name.FqName
+import org.jetbrains.kotlin.name.Name
+import org.jetbrains.kotlin.psi.KtBlockExpression
+import org.jetbrains.kotlin.psi.KtProperty
+import org.jetbrains.kotlin.resolve.constants.ConstantValue
 import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameSafe
 import org.jetbrains.kotlin.resolve.descriptorUtil.module
+import org.jetbrains.kotlin.types.KotlinType
 
 class ClassParser() {
 
 
     companion object {
 
-        fun parse(descriptor: ClassDescriptor, generator: AbstractProcessor, roundEnvironment: RoundEnvironment) {
+        fun parse(descriptor: ClassDescriptor, processor: AbstractProcessor, roundEnvironment: RoundEnvironment) {
 
-          //  val buildFolder = descriptor.guessingBuildFolder()
-            generator.processingEnv.projectFolder = "fffff"//descriptor.guessingProjectFolder()
-            generator.processingEnv.buildFolder = "TODO"
+            //  val buildFolder = descriptor.guessingBuildFolder()
+            processor.processingEnv.projectFolder = "fffff"//descriptor.guessingProjectFolder()
+            processor.processingEnv.buildFolder = "TODO"
 
-            generator.getSupportedAnnotationTypes().forEach { annotation ->
+            processor.getSupportedAnnotationTypes().forEach { annotation ->
                 if (descriptor.hasAnnotation(annotation)) {
                     roundEnvironment.module = descriptor.module
                     roundEnvironment.elements.add(
@@ -32,7 +40,7 @@ class ClassParser() {
                                     pack = descriptor.original.containingDeclaration.fqNameSafe.asString()
                             )
                     )
-                    generator.process(roundEnvironment)
+                    processor.process(roundEnvironment)
                 }
 
             }
@@ -43,40 +51,37 @@ class ClassParser() {
         fun parseMethod(
                 descriptor: ClassDescriptor,
                 function: FunctionDescriptor,
-                generator: AbstractProcessor,
+                processor: AbstractProcessor,
                 roundEnvironment: RoundEnvironment
         ) {
 
-            //function.valueParameters.get(0).annotations.hasAnnotation(FqName("de.jensklingenberg.ktorfit.TestValueParameter"))
+            processor.getSupportedAnnotationTypes().forEach { annotationNames ->
 
-            generator.getSupportedAnnotationTypes().forEach { annotationNames ->
+                function.valueParameters.forEach { parameterDescriptor ->
+                    if (parameterDescriptor.annotations.hasAnnotation(FqName(annotationNames))) {
+                        val annotation = parameterDescriptor.annotations.findAnnotation(FqName(annotationNames))
 
+                        roundEnvironment.apply {
+                            module = descriptor.module
+                            elements.add(
+                                    Element.ValueParameterElement(
+                                            annotation = annotation
+                                            , valueParameterDescriptor = parameterDescriptor
 
-                function.valueParameters.forEach {parameterDescriptor->
-                        if(parameterDescriptor.annotations.hasAnnotation(FqName(annotationNames))){
-                            val annotation = parameterDescriptor.annotations.findAnnotation(FqName(annotationNames))
-
-                            roundEnvironment.also {
-                                it.module = descriptor.module
-                                it.elements.add(
-                                        Element.ValueParameterElement(
-                                                annotation = annotation
-                                        ,valueParameterDescriptor = parameterDescriptor
-
-                                        )
-                                )
-                            }
-                            generator.process(roundEnvironment)
-
+                                    )
+                            )
                         }
+                        processor.process(roundEnvironment)
+
+                    }
                 }
 
                 if (function.annotations.hasAnnotation(FqName(annotationNames))) {
                     val annotation = function.annotations.findAnnotation(FqName(annotationNames))
 
-                    roundEnvironment.also {
-                        it.module = descriptor.module
-                        it.elements.add(
+                    roundEnvironment.apply {
+                        module = descriptor.module
+                        elements.add(
                                 Element.FunctionElement(
                                         simpleName = function.name.asString(),
                                         annotation = annotation,
@@ -86,7 +91,7 @@ class ClassParser() {
                         )
                     }
 
-                    generator.process(roundEnvironment)
+                    processor.process(roundEnvironment)
 
                 }
 
@@ -95,23 +100,58 @@ class ClassParser() {
 
         }
 
-        fun parseProperty(propertyDescriptor: PropertyDescriptor, generator: AbstractProcessor, roundEnvironment: RoundEnvironment) {
+        fun parseProperty(propertyDescriptor: PropertyDescriptor, processor: AbstractProcessor, roundEnvironment: RoundEnvironment) {
 
-            generator.getSupportedAnnotationTypes().forEach { annotationNames ->
+            processor.getSupportedAnnotationTypes().forEach { annotationNames ->
+
+                propertyDescriptor.getter?.let { setterDesc ->
+                    if (setterDesc.annotations.hasAnnotation(annotationNames)) {
+                        val annotation = setterDesc.annotations.findAnnotation(annotationNames)
+
+                        roundEnvironment.apply {
+                            module = propertyDescriptor.module
+                            elements.add(
+                                    Element.PropertyGetterElement(
+                                            setterDesc,
+                                            annotation
+                                    )
+                            )
+                        }
+
+                        processor.process(roundEnvironment)
+                    }
+                }
+
+                propertyDescriptor.setter?.let { setterDesc ->
+                    if (setterDesc.annotations.hasAnnotation(annotationNames)) {
+                        val annotation = setterDesc.annotations.findAnnotation(annotationNames)
+
+                        roundEnvironment.apply {
+                            module = propertyDescriptor.module
+                            elements.add(
+                                    Element.PropertySetterElement(
+                                            setterDesc, annotation
+                                    )
+                            )
+                        }
+
+                        processor.process(roundEnvironment)
+                    }
+                }
 
                 if (propertyDescriptor.annotations.hasAnnotation(annotationNames)) {
                     val annotation = propertyDescriptor.annotations.findAnnotation(annotationNames)
 
-                    roundEnvironment.also {
-                        it.module = propertyDescriptor.module
-                        it.elements.add(
+                    roundEnvironment.apply {
+                        module = propertyDescriptor.module
+                        elements.add(
                                 Element.PropertyElement(
-                                        propertyDescriptor,annotation
+                                        propertyDescriptor, annotation
                                 )
                         )
                     }
 
-                    generator.process(roundEnvironment)
+                    processor.process(roundEnvironment)
 
                 }
 
@@ -122,4 +162,13 @@ class ClassParser() {
     }
 
 
+}
+
+private fun KtProperty.hasAnnotation(name:String): Boolean {
+    return this.annotationEntries.any { name.contains(it.shortName?.identifier?:"" )}
+
+}
+
+private fun FunctionDescriptor.ktproperties():List<KtProperty> {
+   return this.findPsi()?.children?.filterIsInstance<KtBlockExpression>()?.flatMap { it.statements.filterIsInstance<KtProperty>()}?: emptyList()
 }

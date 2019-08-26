@@ -41,5 +41,9 @@ class ExpressionCodegenExtensionImpl(
         }
     }
 
+    override fun applyProperty(receiver: StackValue, resolvedCall: ResolvedCall<*>, c: ExpressionCodegenExtension.Context): StackValue? {
+        return super.applyProperty(receiver, resolvedCall, c)
+    }
+
 
 }
