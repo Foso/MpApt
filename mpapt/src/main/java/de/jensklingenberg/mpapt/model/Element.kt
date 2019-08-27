@@ -50,23 +50,35 @@ sealed class Element constructor(
     )
         : Element()
 
+    /**
+     * Elements annotated with [AnnotationTarget.PROPERTY_GETTER]
+     */
     data class PropertyGetterElement(val propertyGetterDescriptor: PropertyGetterDescriptor,
                                      override val annotation: AnnotationDescriptor? = null,
                                      override val elementKind: ElementKind = ElementKind.PROPERTY_GETTER
     )
         : Element()
 
+    /**
+     * Elements annotated with [AnnotationTarget.PROPERTY_SETTER]
+     */
     data class PropertySetterElement(val propertySetterDescriptor: PropertySetterDescriptor,
                                      override val annotation: AnnotationDescriptor? = null,
                                      override val elementKind: ElementKind = ElementKind.PROPERTY_SETTER
     )
         : Element()
 
-    data class LocalVariableElement(val propertySetterDescriptor: PropertySetterDescriptor,
-                                     override val annotation: AnnotationDescriptor? = null,
-                                     override val elementKind: ElementKind = ElementKind.PROPERTY_SETTER
+
+    /**
+     * Elements annotated with [AnnotationTarget.CONSTRUCTOR]
+     */
+    data class ClassConstrucorElement(val classConstructorDescriptor: ClassConstructorDescriptor,
+                                      override val annotation: AnnotationDescriptor? = null,
+                                      override val elementKind: ElementKind = ElementKind.CONSTRUCTOR
     )
         : Element()
+
+
 
 }
 

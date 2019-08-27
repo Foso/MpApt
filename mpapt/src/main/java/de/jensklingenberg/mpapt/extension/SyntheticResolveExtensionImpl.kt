@@ -5,15 +5,13 @@ import de.jensklingenberg.mpapt.RoundEnvironment
 import de.jensklingenberg.mpapt.common.ClassParser
 import de.jensklingenberg.mpapt.common.guessingPlatform
 import de.jensklingenberg.mpapt.model.Platform
-import org.jetbrains.kotlin.descriptors.ClassConstructorDescriptor
-import org.jetbrains.kotlin.descriptors.ClassDescriptor
-import org.jetbrains.kotlin.descriptors.PropertyDescriptor
-import org.jetbrains.kotlin.descriptors.SimpleFunctionDescriptor
+import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.resolve.extensions.SyntheticResolveExtension
 import org.jetbrains.kotlin.resolve.lazy.LazyClassContext
 import org.jetbrains.kotlin.resolve.lazy.declarations.ClassMemberDeclarationProvider
+import org.jetbrains.kotlin.resolve.lazy.declarations.PackageMemberDeclarationProvider
 import java.util.*
 
 class SyntheticResolveExtensionImpl(val abstractProcessor: AbstractProcessor) : SyntheticResolveExtension {
@@ -40,12 +38,21 @@ class SyntheticResolveExtensionImpl(val abstractProcessor: AbstractProcessor) : 
         if (abstractProcessor.getSupportedPlatform().contains(platform) ||
                 abstractProcessor.getSupportedPlatform().contains(Platform.ALL)
         ) {
-            ClassParser.parse(thisDescriptor, abstractProcessor, roundEnvironment)
+
+                if(!thisDescriptor.isCompanionObject && !name.identifier.equals("Companion")){
+                    abstractProcessor.log("HEREHREHRHERHERHR")
+                    ClassParser.parse(thisDescriptor, abstractProcessor, roundEnvironment)
+
+                }
+
 
         }
         super.generateSyntheticClasses(thisDescriptor, name, ctx, declarationProvider, result)
     }
 
+    override fun generateSyntheticClasses(thisDescriptor: PackageFragmentDescriptor, name: Name, ctx: LazyClassContext, declarationProvider: PackageMemberDeclarationProvider, result: MutableSet<ClassDescriptor>) {
+        super.generateSyntheticClasses(thisDescriptor, name, ctx, declarationProvider, result)
+    }
 
 
     override fun generateSyntheticMethods(

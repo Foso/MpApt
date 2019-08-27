@@ -3,20 +3,16 @@ package de.jensklingenberg.mpapt.common
 import de.jensklingenberg.mpapt.AbstractProcessor
 import de.jensklingenberg.mpapt.RoundEnvironment
 import de.jensklingenberg.mpapt.model.Element
+import org.jetbrains.kotlin.descriptors.ClassConstructorDescriptor
 import org.jetbrains.kotlin.descriptors.ClassDescriptor
 import org.jetbrains.kotlin.descriptors.FunctionDescriptor
 import org.jetbrains.kotlin.descriptors.PropertyDescriptor
-import org.jetbrains.kotlin.descriptors.SourceElement
-import org.jetbrains.kotlin.descriptors.annotations.AnnotationDescriptor
 import org.jetbrains.kotlin.js.resolve.diagnostics.findPsi
 import org.jetbrains.kotlin.name.FqName
-import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.psi.KtBlockExpression
 import org.jetbrains.kotlin.psi.KtProperty
-import org.jetbrains.kotlin.resolve.constants.ConstantValue
 import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameSafe
 import org.jetbrains.kotlin.resolve.descriptorUtil.module
-import org.jetbrains.kotlin.types.KotlinType
 
 class ClassParser() {
 
@@ -42,10 +38,42 @@ class ClassParser() {
                     )
                     processor.process(roundEnvironment)
                 }
+                processor.messageCollector.warn(descriptor.name.identifier)
+
+
+                descriptor.constructors.forEach {
+                    if (checkit(it,annotation)) {
+                        val annotatedConstructor = descriptor.constructors.first { it.hasAnnotation(annotation) }
+                        val annotationDesc = annotatedConstructor.annotations.findAnnotation(annotation)
+                        roundEnvironment.module = descriptor.module
+                        roundEnvironment.elements.add(
+                                Element.ClassConstrucorElement(
+                                        classConstructorDescriptor = annotatedConstructor,
+                                        annotation = annotationDesc
+
+                                )
+                        )
+                        processor.process(roundEnvironment)
+                    }
+                }
+
 
             }
 
         }
+
+        private fun checkit(it: ClassConstructorDescriptor, annotation: String): Boolean {
+            /**I dont like this approach*/
+
+            try {
+               val test = it.annotations.hasAnnotation(FqName(annotation))?:true
+                return test
+            }catch (any:Exception){
+              return  false
+            }
+            return false
+        }
+
 
 
         fun parseMethod(
@@ -164,11 +192,12 @@ class ClassParser() {
 
 }
 
-private fun KtProperty.hasAnnotation(name:String): Boolean {
-    return this.annotationEntries.any { name.contains(it.shortName?.identifier?:"" )}
+private fun KtProperty.hasAnnotation(name: String): Boolean {
+    return this.annotationEntries.any { name.contains(it.shortName?.identifier ?: "") }
 
 }
 
-private fun FunctionDescriptor.ktproperties():List<KtProperty> {
-   return this.findPsi()?.children?.filterIsInstance<KtBlockExpression>()?.flatMap { it.statements.filterIsInstance<KtProperty>()}?: emptyList()
+private fun FunctionDescriptor.ktproperties(): List<KtProperty> {
+    return this.findPsi()?.children?.filterIsInstance<KtBlockExpression>()?.flatMap { it.statements.filterIsInstance<KtProperty>() }
+            ?: emptyList()
 }

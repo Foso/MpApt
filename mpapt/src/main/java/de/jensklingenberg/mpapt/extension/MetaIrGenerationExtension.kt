@@ -7,5 +7,7 @@ import org.jetbrains.kotlin.ir.declarations.IrFile
 import org.jetbrains.kotlin.resolve.BindingContext
 
 class MetaIrGenerationExtension(val processor: AbstractProcessor) : IrGenerationExtension {
-    override fun generate(file: IrFile, backendContext: BackendContext, bindingContext: BindingContext) {}
+    override fun generate(file: IrFile, backendContext: BackendContext, bindingContext: BindingContext) {
+        val i = 1
+    }
 }

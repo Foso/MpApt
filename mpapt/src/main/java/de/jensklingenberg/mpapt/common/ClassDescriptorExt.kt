@@ -1,9 +1,6 @@
 package de.jensklingenberg.mpapt.common
 
-import org.jetbrains.kotlin.descriptors.CallableMemberDescriptor
-import org.jetbrains.kotlin.descriptors.ClassDescriptor
-import org.jetbrains.kotlin.descriptors.PropertyDescriptor
-import org.jetbrains.kotlin.descriptors.SimpleFunctionDescriptor
+import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.descriptors.annotations.AnnotationDescriptor
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameSafe
@@ -50,3 +47,6 @@ fun ClassDescriptor.methods(kind: CallableMemberDescriptor.Kind): Collection<Cal
             .filter { it.kind.equals(kind) }
             .filterIsInstance<SimpleFunctionDescriptor>()
 }
+
+fun ClassConstructorDescriptor.hasAnnotation(name:String): Boolean = this.annotations.hasAnnotation(name)
+

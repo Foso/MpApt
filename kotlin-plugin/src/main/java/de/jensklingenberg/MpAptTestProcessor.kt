@@ -20,8 +20,9 @@ class MpAptTestProcessor(configuration: CompilerConfiguration) : AbstractProcess
     val testProperty = TestProperty::class.java.name
     val testValueParameter = TestValueParameter::class.java.name
     val testPropertyGetter = TestPropertyGetter::class.java.name
-
     val testPropertySetter = TestPropertySetter::class.java.name
+    val testConstructor = TestConstructor::class.java.name
+
 
     override fun process(roundEnvironment: RoundEnvironment): Boolean {
 
@@ -73,6 +74,14 @@ class MpAptTestProcessor(configuration: CompilerConfiguration) : AbstractProcess
             }
         }
 
+        roundEnvironment.getElementsAnnotatedWith(testConstructor).forEach {
+            when (it) {
+                is Element.ClassConstrucorElement -> {
+                    log("Found ClassConstrucor: " + it.classConstructorDescriptor.name + " Module: " + it.classConstructorDescriptor.module.simpleName() + " platform   " + roundEnvironment.platform)
+                }
+            }
+        }
+
         return true
     }
 
@@ -81,7 +90,7 @@ class MpAptTestProcessor(configuration: CompilerConfiguration) : AbstractProcess
 
     override fun getSupportedPlatform(): List<Platform> = listOf(Platform.ALL)
 
-    override fun getSupportedAnnotationTypes(): Set<String> = setOf(testClass, testFunction, testProperty,testValueParameter,testPropertyGetter,testPropertySetter)
+    override fun getSupportedAnnotationTypes(): Set<String> = setOf(testClass, testFunction, testProperty,testValueParameter,testPropertyGetter,testPropertySetter,testConstructor)
 
     override fun processingOver() {
         processingEnv.messager.warn("$TAG***Processor over ***")

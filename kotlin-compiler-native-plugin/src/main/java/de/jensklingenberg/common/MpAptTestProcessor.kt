@@ -8,10 +8,7 @@ import de.jensklingenberg.mpapt.common.warn
 import de.jensklingenberg.mpapt.model.Element
 import de.jensklingenberg.mpapt.model.Platform
 import de.jensklingenberg.mpapt.model.SourceVersion
-import de.jensklingenberg.testAnnotations.TestClass
-import de.jensklingenberg.testAnnotations.TestFunction
-import de.jensklingenberg.testAnnotations.TestProperty
-import de.jensklingenberg.testAnnotations.TestValueParameter
+import de.jensklingenberg.testAnnotations.*
 import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.resolve.descriptorUtil.module
 
@@ -21,6 +18,11 @@ class MpAptTestProcessor(configuration: CompilerConfiguration) : AbstractProcess
     val testFunction = TestFunction::class.java.name
     val testProperty = TestProperty::class.java.name
     val testValueParameter = TestValueParameter::class.java.name
+    val testConstructor = TestConstructor::class.java.name
+    val testPropertyGetter = TestPropertyGetter::class.java.name
+    val testPropertySetter = TestPropertySetter::class.java.name
+
+
 
     override fun process(roundEnvironment: RoundEnvironment): Boolean {
 
@@ -56,6 +58,14 @@ class MpAptTestProcessor(configuration: CompilerConfiguration) : AbstractProcess
             }
         }
 
+
+        roundEnvironment.getElementsAnnotatedWith(testConstructor).forEach {
+            when (it) {
+                is Element.ClassConstrucorElement -> {
+                    log("Found ClassConstructor: " + it.classConstructorDescriptor.name + " Module: " + it.classConstructorDescriptor.module.simpleName() + " platform   " + roundEnvironment.platform)
+                }
+            }
+        }
         return true
     }
 
@@ -64,7 +74,7 @@ class MpAptTestProcessor(configuration: CompilerConfiguration) : AbstractProcess
 
     override fun getSupportedPlatform(): List<Platform> = listOf(Platform.ALL)
 
-    override fun getSupportedAnnotationTypes(): Set<String> = setOf(testClass, testFunction, testProperty,testValueParameter)
+    override fun getSupportedAnnotationTypes(): Set<String> = setOf(testClass, testFunction, testProperty,testValueParameter,testPropertyGetter,testPropertySetter,testConstructor)
 
     override fun processingOver() {
         processingEnv.messager.warn("$TAG***Processor over ***")

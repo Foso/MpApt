@@ -22,7 +22,7 @@ class AnalysisHandlerExtensionImpl(val messageCollector: MessageCollector) : Ana
             componentProvider: ComponentProvider
     ): AnalysisResult? {
        // messageCollector.warn("*** Started analysis")
-        return null
+return super.doAnalysis(project, module, projectContext, files, bindingTrace, componentProvider)
     }
 
     override fun analysisCompleted(

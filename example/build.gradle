@@ -60,15 +60,8 @@ allprojects {
 def compilerPlugin = project(':kotlin-compiler-native-plugin')
 
 kotlin {
-   // jvm()
-    linuxX64("linux"){
-        configure([compilations.main]) {
-            tasks.getByName(compileKotlinTaskName).kotlinOptions {
 
-            }
-        }
-    }
-    js() {
+   js() {
         configure([compilations.main]) {
             tasks.getByName(compileKotlinTaskName).kotlinOptions {
                 sourceMap = true

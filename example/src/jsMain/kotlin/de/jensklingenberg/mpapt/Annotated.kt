@@ -10,7 +10,7 @@ import de.jensklingenberg.testAnnotations.*
 class Annotated @TestConstructor constructor() {
 
     @TestProperty @TestField
-    val name : @TestType String?=null
+    lateinit var myProperty : @TestType String
 
     var jens : String @TestPropertyGetter get() {
         return "Hello"
