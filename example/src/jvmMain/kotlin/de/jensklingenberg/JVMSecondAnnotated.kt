@@ -1,4 +1,4 @@
-package de.jensklingenberg.mpapt
+package de.jensklingenberg
 
 import de.jensklingenberg.testAnnotations.TestClass
 import de.jensklingenberg.testAnnotations.TestFunction
@@ -7,17 +7,17 @@ import de.jensklingenberg.testAnnotations.TestValueParameter
 
 
 @TestClass
-class Annotated{
+class JVMSecondAnnotated{
 
     @TestProperty
     val name : String?=null
 
     @TestFunction
-    fun genFunction(){
+    fun what(){
 
     }
 
-    fun genFunctionWithParameters(@TestValueParameter param:String){
+    fun elses(@TestValueParameter param:String){
 
     }
 

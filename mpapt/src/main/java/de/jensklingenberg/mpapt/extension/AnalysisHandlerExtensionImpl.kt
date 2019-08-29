@@ -11,6 +11,10 @@ import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.resolve.BindingTrace
 import org.jetbrains.kotlin.resolve.jvm.extensions.AnalysisHandlerExtension
 
+
+/**
+ * I think this is only used on JVM
+ */
 class AnalysisHandlerExtensionImpl(val messageCollector: MessageCollector) : AnalysisHandlerExtension {
 
     override fun doAnalysis(

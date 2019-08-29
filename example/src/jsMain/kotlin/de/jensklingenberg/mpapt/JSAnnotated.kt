@@ -25,16 +25,15 @@ class Annotated @TestConstructor constructor() {
 
     fun genFunctionWithParameters(@TestValueParameter param:String,@TestValueParameter param2:String){
 
-        @TestLocalVariable  val HERERRERERERERER = 1
+       @TestLocalVariable  val HERERRERERERERER = 1
 
-        print(HERERRERERERERER)
-        @TestExpression when{
-            true->{
+       @TestExpression when{
+                     true->{
 
-            }
-            false->{
+                    }
+                    false->{
 
-            }
+                    }
         }
     }
 

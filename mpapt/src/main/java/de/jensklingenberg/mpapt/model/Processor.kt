@@ -1,7 +1,5 @@
 package de.jensklingenberg.mpapt.model
 
-import de.jensklingenberg.mpapt.RoundEnvironment
-
 
 interface Processor {
     fun getSupportedAnnotationTypes(): Set<String>

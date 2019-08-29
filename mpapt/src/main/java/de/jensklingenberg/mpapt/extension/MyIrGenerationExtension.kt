@@ -1,6 +1,6 @@
 package de.jensklingenberg.mpapt.extension
 
-import de.jensklingenberg.mpapt.AbstractProcessor
+import de.jensklingenberg.mpapt.model.AbstractProcessor
 import org.jetbrains.kotlin.backend.common.BackendContext
 import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.ir.declarations.IrFile

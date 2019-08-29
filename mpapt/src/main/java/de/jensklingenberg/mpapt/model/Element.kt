@@ -2,6 +2,7 @@ package de.jensklingenberg.mpapt.model
 
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.descriptors.annotations.AnnotationDescriptor
+import org.jetbrains.kotlin.psi.KtProperty
 
 sealed class Element constructor(
         open val simpleName: String = "",
@@ -78,7 +79,15 @@ sealed class Element constructor(
     )
         : Element()
 
-
+    /**
+     * Elements annotated with [AnnotationTarget.CONSTRUCTOR]
+     */
+    data class LocalVariableElement(val classConstructorDescriptor: KtProperty,
+                                    val func: FunctionDescriptor,
+                                      override val annotation: AnnotationDescriptor? = null,
+                                      override val elementKind: ElementKind = ElementKind.LOCAL_VARIABLE
+    )
+        : Element()
 
 }
 

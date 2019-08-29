@@ -60,7 +60,13 @@ allprojects {
 def compilerPlugin = project(':kotlin-compiler-native-plugin')
 
 kotlin {
+    linuxX64("linux"){
+        configure([compilations.main]) {
+            tasks.getByName(compileKotlinTaskName).kotlinOptions {
 
+            }
+        }
+    }
    js() {
         configure([compilations.main]) {
             tasks.getByName(compileKotlinTaskName).kotlinOptions {
@@ -73,6 +79,7 @@ kotlin {
             }
         }
     }
+    jvm()
     sourceSets {
         commonMain {
             dependencies {

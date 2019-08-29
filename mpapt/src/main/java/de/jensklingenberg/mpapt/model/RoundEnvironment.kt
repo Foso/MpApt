@@ -1,7 +1,5 @@
-package de.jensklingenberg.mpapt
+package de.jensklingenberg.mpapt.model
 
-import de.jensklingenberg.mpapt.model.Element
-import de.jensklingenberg.mpapt.model.Platform
 import org.jetbrains.kotlin.descriptors.ModuleDescriptor
 
 class RoundEnvironment(val platform: Platform = Platform.ALL) {

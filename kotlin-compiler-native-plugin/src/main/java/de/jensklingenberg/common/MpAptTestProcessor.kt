@@ -1,8 +1,8 @@
 package de.jensklingenberg.common
 
 
-import de.jensklingenberg.mpapt.AbstractProcessor
-import de.jensklingenberg.mpapt.RoundEnvironment
+import de.jensklingenberg.mpapt.model.AbstractProcessor
+import de.jensklingenberg.mpapt.model.RoundEnvironment
 import de.jensklingenberg.mpapt.common.simpleName
 import de.jensklingenberg.mpapt.common.warn
 import de.jensklingenberg.mpapt.model.Element
@@ -14,14 +14,15 @@ import org.jetbrains.kotlin.resolve.descriptorUtil.module
 
 class MpAptTestProcessor(configuration: CompilerConfiguration) : AbstractProcessor(configuration) {
     val TAG = "MyAnnotationProcessor"
+
     val testClass = TestClass::class.java.name
     val testFunction = TestFunction::class.java.name
     val testProperty = TestProperty::class.java.name
     val testValueParameter = TestValueParameter::class.java.name
-    val testConstructor = TestConstructor::class.java.name
     val testPropertyGetter = TestPropertyGetter::class.java.name
     val testPropertySetter = TestPropertySetter::class.java.name
-
+    val testConstructor = TestConstructor::class.java.name
+    val testLocalVariable = TestLocalVariable::class.java.name
 
 
     override fun process(roundEnvironment: RoundEnvironment): Boolean {
@@ -58,14 +59,30 @@ class MpAptTestProcessor(configuration: CompilerConfiguration) : AbstractProcess
             }
         }
 
+        roundEnvironment.getElementsAnnotatedWith(testPropertyGetter).forEach {
+            when (it) {
+                is Element.PropertyGetterElement -> {
+                    log("Found PropertyGetter: " + it.propertyGetterDescriptor.name + " Module: " + it.propertyGetterDescriptor.module.simpleName() + " platform   " + roundEnvironment.platform)
+                }
+            }
+        }
+
+        roundEnvironment.getElementsAnnotatedWith(testPropertySetter).forEach {
+            when (it) {
+                is Element.PropertySetterElement -> {
+                    log("Found PropertySetter: " + it.propertySetterDescriptor.name + " Module: " + it.propertySetterDescriptor.module.simpleName() + " platform   " + roundEnvironment.platform)
+                }
+            }
+        }
 
         roundEnvironment.getElementsAnnotatedWith(testConstructor).forEach {
             when (it) {
                 is Element.ClassConstrucorElement -> {
-                    log("Found ClassConstructor: " + it.classConstructorDescriptor.name + " Module: " + it.classConstructorDescriptor.module.simpleName() + " platform   " + roundEnvironment.platform)
+                    log("Found ClassConstrucor: " + it.classConstructorDescriptor.name + " Module: " + it.classConstructorDescriptor.module.simpleName() + " platform   " + roundEnvironment.platform)
                 }
             }
         }
+
         return true
     }
 
@@ -74,7 +91,7 @@ class MpAptTestProcessor(configuration: CompilerConfiguration) : AbstractProcess
 
     override fun getSupportedPlatform(): List<Platform> = listOf(Platform.ALL)
 
-    override fun getSupportedAnnotationTypes(): Set<String> = setOf(testClass, testFunction, testProperty,testValueParameter,testPropertyGetter,testPropertySetter,testConstructor)
+    override fun getSupportedAnnotationTypes(): Set<String> = setOf(testClass, testFunction, testProperty,testValueParameter,testPropertyGetter,testPropertySetter,testConstructor,testLocalVariable)
 
     override fun processingOver() {
         processingEnv.messager.warn("$TAG***Processor over ***")

@@ -1,4 +1,4 @@
-package de.jensklingenberg.mpapt
+package de.jensklingenberg.mpapt.model
 
 import de.jensklingenberg.mpapt.model.ProcessingEnvironment
 import de.jensklingenberg.mpapt.model.Processor

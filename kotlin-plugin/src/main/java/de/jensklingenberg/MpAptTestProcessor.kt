@@ -1,8 +1,8 @@
 package de.jensklingenberg
 
 
-import de.jensklingenberg.mpapt.AbstractProcessor
-import de.jensklingenberg.mpapt.RoundEnvironment
+import de.jensklingenberg.mpapt.model.AbstractProcessor
+import de.jensklingenberg.mpapt.model.RoundEnvironment
 import de.jensklingenberg.mpapt.common.simpleName
 import de.jensklingenberg.mpapt.common.warn
 import de.jensklingenberg.mpapt.model.Element
@@ -22,6 +22,7 @@ class MpAptTestProcessor(configuration: CompilerConfiguration) : AbstractProcess
     val testPropertyGetter = TestPropertyGetter::class.java.name
     val testPropertySetter = TestPropertySetter::class.java.name
     val testConstructor = TestConstructor::class.java.name
+    val testLocalVariable = TestLocalVariable::class.java.name
 
 
     override fun process(roundEnvironment: RoundEnvironment): Boolean {
@@ -90,7 +91,7 @@ class MpAptTestProcessor(configuration: CompilerConfiguration) : AbstractProcess
 
     override fun getSupportedPlatform(): List<Platform> = listOf(Platform.ALL)
 
-    override fun getSupportedAnnotationTypes(): Set<String> = setOf(testClass, testFunction, testProperty,testValueParameter,testPropertyGetter,testPropertySetter,testConstructor)
+    override fun getSupportedAnnotationTypes(): Set<String> = setOf(testClass, testFunction, testProperty,testValueParameter,testPropertyGetter,testPropertySetter,testConstructor,testLocalVariable)
 
     override fun processingOver() {
         processingEnv.messager.warn("$TAG***Processor over ***")
