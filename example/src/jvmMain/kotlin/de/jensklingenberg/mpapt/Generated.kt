@@ -1,5 +1,5 @@
 package de.jensklingenberg.mpapt
 
-class Generated{
+class Generated {
 
 }

@@ -2,7 +2,10 @@ package de.jensklingenberg.mpapt.common
 
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.descriptors.annotations.AnnotationDescriptor
+import org.jetbrains.kotlin.js.resolve.diagnostics.findPsi
 import org.jetbrains.kotlin.name.FqName
+import org.jetbrains.kotlin.psi.KtBlockExpression
+import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameSafe
 import org.jetbrains.kotlin.resolve.descriptorUtil.module
 import org.jetbrains.kotlin.resolve.lazy.descriptors.LazyClassDescriptor
@@ -12,6 +15,7 @@ import org.jetbrains.kotlin.resolve.source.PsiSourceFile
 fun ClassDescriptor.hasAnnotation(name: String): Boolean = this.annotations.hasAnnotation(FqName(name))
 fun ClassDescriptor.findAnnotation(name: String): AnnotationDescriptor? = this.annotations.findAnnotation(FqName(name))
 
+//TODO:this doesnt work with Native
 fun ClassDescriptor.canonicalFilePath() =
         (this.source.containingFile as PsiSourceFile).psiFile.virtualFile.canonicalPath
 
@@ -48,5 +52,14 @@ fun ClassDescriptor.methods(kind: CallableMemberDescriptor.Kind): Collection<Cal
             .filterIsInstance<SimpleFunctionDescriptor>()
 }
 
-fun ClassConstructorDescriptor.hasAnnotation(name:String): Boolean = this.annotations.hasAnnotation(name)
+fun ClassConstructorDescriptor.hasAnnotation(name: String): Boolean = this.annotations.hasAnnotation(name)
 
+private fun KtProperty.hasAnnotation(name: String): Boolean {
+    return this.annotationEntries.any { name.contains(it.shortName?.identifier ?: "") }
+
+}
+
+private fun FunctionDescriptor.ktproperties(): List<KtProperty> {
+    return this.findPsi()?.children?.filterIsInstance<KtBlockExpression>()?.flatMap { it.statements.filterIsInstance<KtProperty>() }
+            ?: emptyList()
+}

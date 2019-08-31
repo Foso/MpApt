@@ -11,9 +11,9 @@ sealed class Element constructor(
         open val annotation: AnnotationDescriptor? = null,
         open val pack: String = ""
 ) {
-/**
- * Elements annotated with [AnnotationTarget.CLASS]
- */
+    /**
+     * Elements annotated with [AnnotationTarget.CLASS]
+     */
     data class ClassElement(
             override val simpleName: String = "",
             override val path: String = "",
@@ -22,6 +22,7 @@ sealed class Element constructor(
             override val pack: String = "",
             val classDescriptor: ClassDescriptor
     ) : Element()
+
     /**
      * Elements annotated with [AnnotationTarget.FUNCTION]
      */
@@ -39,8 +40,7 @@ sealed class Element constructor(
     data class PropertyElement(val propertyDescriptor: PropertyDescriptor,
                                override val annotation: AnnotationDescriptor? = null,
                                override val elementKind: ElementKind = ElementKind.PROPERTY
-                               )
-        : Element()
+    ) : Element()
 
     /**
      * Elements annotated with [AnnotationTarget.VALUE_PARAMETER]
@@ -48,8 +48,7 @@ sealed class Element constructor(
     data class ValueParameterElement(val valueParameterDescriptor: ValueParameterDescriptor,
                                      override val annotation: AnnotationDescriptor? = null,
                                      override val elementKind: ElementKind = ElementKind.VALUE_PARAMETER
-    )
-        : Element()
+    ) : Element()
 
     /**
      * Elements annotated with [AnnotationTarget.PROPERTY_GETTER]
@@ -57,8 +56,7 @@ sealed class Element constructor(
     data class PropertyGetterElement(val propertyGetterDescriptor: PropertyGetterDescriptor,
                                      override val annotation: AnnotationDescriptor? = null,
                                      override val elementKind: ElementKind = ElementKind.PROPERTY_GETTER
-    )
-        : Element()
+    ) : Element()
 
     /**
      * Elements annotated with [AnnotationTarget.PROPERTY_SETTER]
@@ -66,28 +64,25 @@ sealed class Element constructor(
     data class PropertySetterElement(val propertySetterDescriptor: PropertySetterDescriptor,
                                      override val annotation: AnnotationDescriptor? = null,
                                      override val elementKind: ElementKind = ElementKind.PROPERTY_SETTER
-    )
-        : Element()
+    ) : Element()
 
 
     /**
      * Elements annotated with [AnnotationTarget.CONSTRUCTOR]
      */
-    data class ClassConstrucorElement(val classConstructorDescriptor: ClassConstructorDescriptor,
-                                      override val annotation: AnnotationDescriptor? = null,
-                                      override val elementKind: ElementKind = ElementKind.CONSTRUCTOR
-    )
-        : Element()
+    data class ClassConstructorElement(val classConstructorDescriptor: ClassConstructorDescriptor,
+                                       override val annotation: AnnotationDescriptor? = null,
+                                       override val elementKind: ElementKind = ElementKind.CONSTRUCTOR
+    ) : Element()
 
     /**
      * Elements annotated with [AnnotationTarget.CONSTRUCTOR]
      */
     data class LocalVariableElement(val classConstructorDescriptor: KtProperty,
                                     val func: FunctionDescriptor,
-                                      override val annotation: AnnotationDescriptor? = null,
-                                      override val elementKind: ElementKind = ElementKind.LOCAL_VARIABLE
-    )
-        : Element()
+                                    override val annotation: AnnotationDescriptor? = null,
+                                    override val elementKind: ElementKind = ElementKind.LOCAL_VARIABLE
+    ) : Element()
 
 }
 

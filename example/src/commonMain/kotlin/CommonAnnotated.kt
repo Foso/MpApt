@@ -5,11 +5,8 @@ package de.jensklingenberg.mpapt
 import de.jensklingenberg.testAnnotations.*
 
 
-@TestTypeAlias
-typealias MyString = String
-
 @TestClass
-class Annotated @TestConstructor constructor() {
+class CommonAnnotated @TestConstructor constructor() {
 
     @TestConstructor
     constructor(name: String) : this()

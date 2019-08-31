@@ -1,8 +1,7 @@
-package de.jensklingenberg.mpapt.extension
+package de.jensklingenberg.mpapt.extension.unused
 
-import de.jensklingenberg.mpapt.common.warn
+import de.jensklingenberg.mpapt.model.AbstractProcessor
 import org.jetbrains.kotlin.analyzer.AnalysisResult
-import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.com.intellij.openapi.project.Project
 import org.jetbrains.kotlin.container.ComponentProvider
 import org.jetbrains.kotlin.context.ProjectContext
@@ -15,7 +14,7 @@ import org.jetbrains.kotlin.resolve.jvm.extensions.AnalysisHandlerExtension
 /**
  * I think this is only used on JVM
  */
-class AnalysisHandlerExtensionImpl(val messageCollector: MessageCollector) : AnalysisHandlerExtension {
+class AnalysisHandlerExtensionImpl(val messageCollector: AbstractProcessor) : AnalysisHandlerExtension {
 
     override fun doAnalysis(
             project: Project,
@@ -25,8 +24,8 @@ class AnalysisHandlerExtensionImpl(val messageCollector: MessageCollector) : Ana
             bindingTrace: BindingTrace,
             componentProvider: ComponentProvider
     ): AnalysisResult? {
-       // messageCollector.warn("*** Started analysis")
-return super.doAnalysis(project, module, projectContext, files, bindingTrace, componentProvider)
+        // messageCollector.warn("*** Started analysis")
+        return super.doAnalysis(project, module, projectContext, files, bindingTrace, componentProvider)
     }
 
     override fun analysisCompleted(
@@ -35,7 +34,7 @@ return super.doAnalysis(project, module, projectContext, files, bindingTrace, co
             bindingTrace: BindingTrace,
             files: Collection<KtFile>
     ): AnalysisResult? {
-       // messageCollector.warn("*** SOTPPP ANALASyX ")
+        // messageCollector.warn("*** SOTPPP ANALASyX ")
         return super.analysisCompleted(project, module, bindingTrace, files)
     }
 }

@@ -1,4 +1,4 @@
-package de.jensklingenberg
+package de.jensklingenberg.mpapt
 
 import de.jensklingenberg.testAnnotations.TestClass
 import de.jensklingenberg.testAnnotations.TestFunction
@@ -7,9 +7,10 @@ import de.jensklingenberg.testAnnotations.TestValueParameter
 
 
 @TestClass
-class JVMSecondAnnotated {
+class JsSecondAnnotated {
 
-
+    @TestProperty
+    val name: String? = null
 
     @TestFunction
     fun what() {

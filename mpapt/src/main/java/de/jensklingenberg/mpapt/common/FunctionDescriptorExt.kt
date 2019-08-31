@@ -1,7 +1,11 @@
 package de.jensklingenberg.mpapt.common
 
 import de.jensklingenberg.mpapt.model.FunctionParameter
+import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.descriptors.FunctionDescriptor
+import org.jetbrains.kotlin.descriptors.SourceElement
+import org.jetbrains.kotlin.resolve.source.KotlinSourceElement
+import org.jetbrains.kotlin.resolve.source.getPsi
 
 
 /**
@@ -33,4 +37,17 @@ fun FunctionDescriptor.getFunctionParameters(): List<FunctionParameter> {
 fun FunctionDescriptor.getReturnTypeImport(): String = this.toString().substringAfter("): ").substringBefore(" defined")
 
 fun FunctionDescriptor.simpleName(): String = this.name.asString()
+
+/**
+ * getPsi() on Kotlin Native was always crashing
+ */
+fun SourceElement.safeAsPsi(): PsiElement? {
+    if (this is KotlinSourceElement) {
+        return this.psi
+    } else {
+        this.getPsi()
+    }
+    return null
+}
+
 

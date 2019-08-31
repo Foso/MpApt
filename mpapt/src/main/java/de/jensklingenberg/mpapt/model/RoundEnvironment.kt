@@ -2,7 +2,7 @@ package de.jensklingenberg.mpapt.model
 
 import org.jetbrains.kotlin.descriptors.ModuleDescriptor
 
-class RoundEnvironment(val platform: Platform = Platform.ALL) {
+class RoundEnvironment() {
 
     var elements: MutableList<Element> = mutableListOf()
 

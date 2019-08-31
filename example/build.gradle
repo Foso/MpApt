@@ -11,7 +11,7 @@ buildscript {
     }
 
     dependencies {
-       classpath "de.jensklingenberg:mpapt-gradle:1.0.0"
+        classpath "de.jensklingenberg:mpapt-gradle:1.0.0"
 
     }
 
@@ -39,9 +39,6 @@ allprojects {
 }
 
 
-
-
-
 allprojects {
     ext.buildMaven = { p -> repositories { maven { url p } } }
 
@@ -57,29 +54,18 @@ allprojects {
     }
 }
 
-def compilerPlugin = project(':kotlin-compiler-native-plugin')
 
 kotlin {
-    linuxX64("linux"){
-        configure([compilations.main]) {
-            tasks.getByName(compileKotlinTaskName).kotlinOptions {
-
-            }
-        }
-    }
-   js() {
-        configure([compilations.main]) {
-            tasks.getByName(compileKotlinTaskName).kotlinOptions {
-                sourceMap = true
-
-                moduleKind = "commonjs"
-                metaInfo = true
-                outputFile = "${project.buildDir.path}/js/${project.name}.js"
-                main = "call"
-            }
-        }
-    }
     jvm()
+    js()
+    linuxX64("linux") {
+        configure([compilations.main]) {
+            tasks.getByName(compileKotlinTaskName).kotlinOptions {
+
+            }
+        }
+    }
+
     sourceSets {
         commonMain {
             dependencies {
@@ -118,7 +104,7 @@ kotlin {
         }
         jvmTest {
             dependencies {
-              //  implementation kotlin('test-junit')
+                //  implementation kotlin('test-junit')
                 implementation group: 'junit', name: 'junit', version: '4.4'
             }
         }
@@ -132,7 +118,6 @@ kotlin {
 
     }
 }
-
 
 
 build {

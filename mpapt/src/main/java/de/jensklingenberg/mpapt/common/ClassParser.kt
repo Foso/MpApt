@@ -1,19 +1,14 @@
 package de.jensklingenberg.mpapt.common
 
 import de.jensklingenberg.mpapt.model.AbstractProcessor
-import de.jensklingenberg.mpapt.model.RoundEnvironment
 import de.jensklingenberg.mpapt.model.Element
-import de.jensklingenberg.mpapt.model.Platform
+import de.jensklingenberg.mpapt.model.RoundEnvironment
 import org.jetbrains.kotlin.descriptors.*
-import org.jetbrains.kotlin.js.resolve.diagnostics.findPsi
 import org.jetbrains.kotlin.name.FqName
-import org.jetbrains.kotlin.psi.KtBlockExpression
-import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameSafe
 import org.jetbrains.kotlin.resolve.descriptorUtil.module
 import org.jetbrains.kotlin.resolve.scopes.DescriptorKindFilter
 import org.jetbrains.kotlin.resolve.scopes.getDescriptorsFiltered
-import org.jetbrains.kotlin.resolve.source.getPsi
 
 class ClassParser() {
 
@@ -21,10 +16,6 @@ class ClassParser() {
     companion object {
 
         fun parse(descriptor: ClassDescriptor, processor: AbstractProcessor, roundEnvironment: RoundEnvironment) {
-
-            //  val buildFolder = descriptor.guessingBuildFolder()
-            processor.processingEnv.projectFolder = "fffff"//descriptor.guessingProjectFolder()
-            processor.processingEnv.buildFolder = "TODO"
 
             processor.getSupportedAnnotationTypes().forEach { annotation ->
                 if (descriptor.hasAnnotation(annotation)) {
@@ -39,26 +30,35 @@ class ClassParser() {
                     )
                     processor.process(roundEnvironment)
                 }
-                //  processor.messageCollector.warn(descriptor.name.identifier)
+
+                parseClassConstructor(descriptor, processor, roundEnvironment, annotation)
 
 
-                descriptor.constructors.forEach {
-                    if (checkit(it, annotation)) {
-                        val annotatedConstructor = descriptor.constructors.first { it.hasAnnotation(annotation) }
+            }
+
+        }
+
+        private fun parseClassConstructor(descriptor: ClassDescriptor, processor: AbstractProcessor, round: RoundEnvironment, annotation: String) {
+            descriptor.constructors.forEach {
+                if (checkit(it, annotation)) {
+                    val annotatedConstructors = descriptor.constructors.filter { constructor -> constructor.hasAnnotation(annotation) }
+
+                    annotatedConstructors.forEach { annotatedConstructor ->
+
                         val annotationDesc = annotatedConstructor.annotations.findAnnotation(annotation)
-                        roundEnvironment.module = descriptor.module
-                        roundEnvironment.elements.add(
-                                Element.ClassConstrucorElement(
+
+                        round.module = descriptor.module
+                        round.elements.add(
+                                Element.ClassConstructorElement(
                                         classConstructorDescriptor = annotatedConstructor,
                                         annotation = annotationDesc
 
                                 )
                         )
-                        processor.process(roundEnvironment)
+                        processor.process(round)
                     }
+
                 }
-
-
             }
 
         }
@@ -73,32 +73,11 @@ class ClassParser() {
 
             processor.getSupportedAnnotationTypes().forEach { annotationNames ->
 
+                checkValueParameter(descriptor,
+                        function,
+                        processor,
+                        roundEnvironment, annotationNames)
 
-                if(roundEnvironment.platform != Platform.NATIVE){
-                    /**
-                     * On Native the psi file cant be found
-                     */
-                    checkLocalVariable(processor,function)
-                }
-
-                function.valueParameters.forEach { parameterDescriptor ->
-                    if (parameterDescriptor.annotations.hasAnnotation(FqName(annotationNames))) {
-                        val annotation = parameterDescriptor.annotations.findAnnotation(FqName(annotationNames))
-
-                        roundEnvironment.apply {
-                            module = descriptor.module
-                            elements.add(
-                                    Element.ValueParameterElement(
-                                            annotation = annotation
-                                            , valueParameterDescriptor = parameterDescriptor
-
-                                    )
-                            )
-                        }
-                        processor.process(roundEnvironment)
-
-                    }
-                }
 
                 if (function.annotations.hasAnnotation(FqName(annotationNames))) {
                     val annotation = function.annotations.findAnnotation(FqName(annotationNames))
@@ -124,7 +103,30 @@ class ClassParser() {
 
         }
 
+        private fun checkValueParameter(descriptor: ClassDescriptor, function: FunctionDescriptor, processor: AbstractProcessor, roundEnvironment: RoundEnvironment, annotationNames: String) {
+            function.valueParameters.forEach { parameterDescriptor ->
+                if (parameterDescriptor.annotations.hasAnnotation(FqName(annotationNames))) {
+                    val annotation = parameterDescriptor.annotations.findAnnotation(FqName(annotationNames))
+
+                    roundEnvironment.apply {
+                        module = descriptor.module
+                        elements.add(
+                                Element.ValueParameterElement(
+                                        annotation = annotation
+                                        , valueParameterDescriptor = parameterDescriptor
+
+                                )
+                        )
+                    }
+                    processor.process(roundEnvironment)
+
+                }
+            }
+
+        }
+
         private fun checkLocalVariable(processor: AbstractProcessor, functionDescriptor: FunctionDescriptor) {
+
 
             val ktfunction = functionDescriptor.source
 
@@ -133,58 +135,23 @@ class ClassParser() {
 
 
 
-                    if(ktfunction.getPsi()?.text?.contains(annotationWithoutPackage) == true){
+                if (ktfunction.safeAsPsi()?.text?.contains(annotationWithoutPackage) == true) {
 
 
-
-                        processor.log("I FOUND .,,A LOCAL "+functionDescriptor?.name)
-                    }
-
+                    //  processor.log("I FOUND .,,A LOCAL "+ functionDescriptor.name)
                 }
 
-
+            }
 
 
         }
 
-        fun parseProperty(propertyDescriptor: PropertyDescriptor, processor: AbstractProcessor, roundEnvironment: RoundEnvironment) {
+        fun parseProperty(propertyDescriptor: PropertyDescriptor, processor: AbstractProcessor, roundEnvironment: RoundEnvironment, isLastClass: Boolean = false) {
 
-            processor.getSupportedAnnotationTypes().forEach { annotationNames ->
+            processor.getSupportedAnnotationTypes().forEachIndexed { index, annotationNames ->
 
-                propertyDescriptor.getter?.let { setterDesc ->
-                    if (setterDesc.annotations.hasAnnotation(annotationNames)) {
-                        val annotation = setterDesc.annotations.findAnnotation(annotationNames)
-
-                        roundEnvironment.apply {
-                            module = propertyDescriptor.module
-                            elements.add(
-                                    Element.PropertyGetterElement(
-                                            setterDesc,
-                                            annotation
-                                    )
-                            )
-                        }
-
-                        processor.process(roundEnvironment)
-                    }
-                }
-
-                propertyDescriptor.setter?.let { setterDesc ->
-                    if (setterDesc.annotations.hasAnnotation(annotationNames)) {
-                        val annotation = setterDesc.annotations.findAnnotation(annotationNames)
-
-                        roundEnvironment.apply {
-                            module = propertyDescriptor.module
-                            elements.add(
-                                    Element.PropertySetterElement(
-                                            setterDesc, annotation
-                                    )
-                            )
-                        }
-
-                        processor.process(roundEnvironment)
-                    }
-                }
+                checkPropertyGetter(propertyDescriptor, processor, roundEnvironment, annotationNames)
+                checkPropertySetter(propertyDescriptor, processor, roundEnvironment, annotationNames)
 
                 if (propertyDescriptor.annotations.hasAnnotation(annotationNames)) {
                     val annotation = propertyDescriptor.annotations.findAnnotation(annotationNames)
@@ -204,6 +171,48 @@ class ClassParser() {
 
             }
 
+
+        }
+
+        private fun checkPropertySetter(propertyDescriptor: PropertyDescriptor, processor: AbstractProcessor, roundEnvironment: RoundEnvironment, annotationNames: String) {
+            propertyDescriptor.setter?.let { setterDesc ->
+                if (setterDesc.annotations.hasAnnotation(annotationNames)) {
+                    val annotation = setterDesc.annotations.findAnnotation(annotationNames)
+
+                    roundEnvironment.apply {
+                        module = propertyDescriptor.module
+                        elements.add(
+                                Element.PropertySetterElement(
+                                        setterDesc, annotation
+                                )
+                        )
+                    }
+
+                    processor.process(roundEnvironment)
+                }
+            }
+
+        }
+
+        private fun checkPropertyGetter(propertyDescriptor: PropertyDescriptor, processor: AbstractProcessor, roundEnvironment: RoundEnvironment, annotationNames: String) {
+            propertyDescriptor.getter?.let { setterDesc ->
+                if (setterDesc.annotations.hasAnnotation(annotationNames)) {
+                    val annotation = setterDesc.annotations.findAnnotation(annotationNames)
+
+                    roundEnvironment.apply {
+                        module = propertyDescriptor.module
+                        elements.add(
+                                Element.PropertyGetterElement(
+                                        setterDesc,
+                                        annotation
+                                )
+                        )
+                    }
+
+                    processor.process(roundEnvironment)
+                }
+            }
+
         }
 
         fun parsePackage(thisDescriptor: PackageFragmentDescriptor, processor: AbstractProcessor, roundEnvironment: RoundEnvironment) {
@@ -211,10 +220,8 @@ class ClassParser() {
             processor.getSupportedAnnotationTypes().forEach { annotationNames ->
 
 
-               // if (checkTypeAlias(thisDescriptor, annotationNames)) {
-
-
             }
+
 
         }
 
@@ -222,15 +229,14 @@ class ClassParser() {
             /**I dont like this approach*/
 
             try {
-                val test = it.annotations.hasAnnotation(FqName(annotation)) ?: true
+                val test = it.annotations.hasAnnotation(FqName(annotation))
                 return test
             } catch (any: Exception) {
                 return false
             }
-            return false
         }
 
-        private fun checkTypeAlias(it: PackageFragmentDescriptor, annotation: String): Boolean {
+        fun checkTypeAlias(it: PackageFragmentDescriptor, annotation: String): Boolean {
             /**I dont like this approach*/
 
             try {
@@ -239,17 +245,8 @@ class ClassParser() {
             } catch (any: Exception) {
                 return false
             }
-            return false
         }
 
 
-        private fun KtProperty.hasAnnotation(name: String): Boolean {
-            return this.annotationEntries.any { name.contains(it.shortName?.identifier ?: "") }
-
-        }
-
-        private fun FunctionDescriptor.ktproperties(): List<KtProperty> {
-            return this.findPsi()?.children?.filterIsInstance<KtBlockExpression>()?.flatMap { it.statements.filterIsInstance<KtProperty>() }
-                    ?: emptyList()
-        }
-    }}
+    }
+}

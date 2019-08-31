@@ -1,17 +1,30 @@
 package de.jensklingenberg
 
 import com.google.auto.service.AutoService
-import de.jensklingenberg.mpapt.extension.*
-import debuglog.plugin.DebugLogClassGenerationInterceptor
-import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
+import de.jensklingenberg.mpapt.common.MpAptProject
+import org.jetbrains.kotlin.cli.common.ExitCode
+import org.jetbrains.kotlin.cli.common.arguments.CommonCompilerArguments
+import org.jetbrains.kotlin.cli.common.extensions.ShellExtension
+import org.jetbrains.kotlin.codegen.ClassBuilderFactory
 import org.jetbrains.kotlin.codegen.extensions.ClassBuilderInterceptorExtension
 import org.jetbrains.kotlin.codegen.extensions.ExpressionCodegenExtension
+import org.jetbrains.kotlin.com.intellij.core.JavaCoreProjectEnvironment
 import org.jetbrains.kotlin.com.intellij.mock.MockProject
+import org.jetbrains.kotlin.com.intellij.openapi.project.Project
+import org.jetbrains.kotlin.com.intellij.openapi.vfs.ex.VirtualFileManagerEx
 import org.jetbrains.kotlin.compiler.plugin.ComponentRegistrar
 import org.jetbrains.kotlin.config.CompilerConfiguration
+import org.jetbrains.kotlin.diagnostics.DiagnosticSink
+import org.jetbrains.kotlin.extensions.CollectAdditionalSourcesExtension
+import org.jetbrains.kotlin.extensions.CompilerConfigurationExtension
+import org.jetbrains.kotlin.extensions.PreprocessedVirtualFileFactoryExtension
+import org.jetbrains.kotlin.extensions.StorageComponentContainerContributor
 import org.jetbrains.kotlin.js.translate.extensions.JsSyntheticTranslateExtension
+import org.jetbrains.kotlin.psi.KtFile
+import org.jetbrains.kotlin.psi.KtImportInfo
+import org.jetbrains.kotlin.resolve.BindingContext
+import org.jetbrains.kotlin.resolve.extensions.ExtraImportsProviderExtension
 import org.jetbrains.kotlin.resolve.extensions.SyntheticResolveExtension
-import org.jetbrains.kotlin.resolve.jvm.extensions.AnalysisHandlerExtension
 
 /**
  * This is the entry class for a compiler plugin
@@ -19,24 +32,24 @@ import org.jetbrains.kotlin.resolve.jvm.extensions.AnalysisHandlerExtension
 @AutoService(ComponentRegistrar::class)
 open class CommonComponentRegistrar : ComponentRegistrar {
 
-
-
     override fun registerProjectComponents(
             project: MockProject,
             configuration: CompilerConfiguration
     ) {
-        val test = MpAptTestProcessor(configuration)
-        //ProcessorProject.init(project, test)
-        AnalysisHandlerExtension.registerExtension(project, AnalysisHandlerExtensionImpl(test.messageCollector))
-        JsSyntheticTranslateExtension.registerExtension(project,JsSyntheticTranslateExtensionExt(test))
+        val processor = MpAptTestProcessor(configuration)
+        val mpapt = MpAptProject(processor)
 
-        ExpressionCodegenExtension.registerExtension(project, ExpressionCodegenExtensionImpl(test))
-        IrGenerationExtension.registerExtension(project, MetaIrGenerationExtension(test))
-        SyntheticResolveExtension.registerExtension(project, SyntheticResolveExtensionImpl(test))
-        ClassBuilderInterceptorExtension.registerExtension(
-                project,
-                DebugLogClassGenerationInterceptor(test)
-        )
+        StorageComponentContainerContributor.registerExtension(project,mpapt)
+     //   IrGenerationExtension.registerExtension(project, mpapt)
+
+        SyntheticResolveExtension.registerExtension(project, mpapt)
+      //  AnalysisHandlerExtension.registerExtension(project,mpapt)
+       CompilerConfigurationExtension.registerExtension(project,mpapt)
+       ExpressionCodegenExtension.registerExtension(project,mpapt)
+        PreprocessedVirtualFileFactoryExtension.registerExtension(project,mpapt)
+        //VirtualFileManagerEx.VFS_STRUCTURE_MODIFICATIONS
+        ClassBuilderInterceptorExtension.registerExtension(project,mpapt)
+        JsSyntheticTranslateExtension.registerExtension(project,mpapt)
 
 
     }

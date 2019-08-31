@@ -1,11 +1,16 @@
+@file:TestFile
+
+package de.jensklingenberg.mpapt
+
 import de.jensklingenberg.testAnnotations.*
 
 
 @TestClass
-class Annotated @TestConstructor constructor() {
+class LinuxAnnotated @TestConstructor constructor() {
 
     @TestConstructor
     constructor(name: String) : this()
+
 
     @TestProperty
     @TestField
@@ -20,17 +25,15 @@ class Annotated @TestConstructor constructor() {
         }
 
     @TestFunction
-    fun firstFunction() {
+    fun genFunction() {
 
     }
 
-    @TestFunction
-    fun secondFunction() {
+    fun genFunctionWithParameters(@TestValueParameter param: String, @TestValueParameter param2: String) {
 
     }
 
-    fun thirdFunction(@TestValueParameter param: String, @TestValueParameter param2: String) {
+    companion object {
 
     }
-
 }

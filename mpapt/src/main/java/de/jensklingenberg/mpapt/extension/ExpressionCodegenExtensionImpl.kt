@@ -2,8 +2,6 @@ package de.jensklingenberg.mpapt.extension;
 
 
 import de.jensklingenberg.mpapt.model.AbstractProcessor
-import de.jensklingenberg.mpapt.model.Platform
-import de.jensklingenberg.mpapt.model.RoundEnvironment
 import org.jetbrains.kotlin.codegen.ImplementationBodyCodegen
 import org.jetbrains.kotlin.codegen.StackValue
 import org.jetbrains.kotlin.codegen.extensions.ExpressionCodegenExtension
@@ -19,24 +17,15 @@ class ExpressionCodegenExtensionImpl(
             resolvedCall: ResolvedCall<*>,
             c: ExpressionCodegenExtension.Context
     ): StackValue? {
+        abstractProcessor.log("Apply function")
         return super.applyFunction(receiver, resolvedCall, c)
     }
 
 
     override fun generateClassSyntheticParts(codegen: ImplementationBodyCodegen) {
+        abstractProcessor.log("Apply function")
 
-       // abstractProcessor.messageCollector.warn("----------------------------------------hhh--------------------generateClassSyntheticParts")
 
-        val roundEnvironment = RoundEnvironment(Platform.JVM)
-
-        if (abstractProcessor.getSupportedPlatform().contains(Platform.JVM) ||
-                abstractProcessor.getSupportedPlatform().contains(Platform.ALL)
-        ) {
-           // ClassParser.parse(codegen.descriptor, abstractProcessor, roundEnvironment)
-
-        } else {
-         //   abstractProcessor.messageCollector.warn("----------------------------------------hhh--------------------Hier passiert was")
-        }
     }
 
     override fun applyProperty(receiver: StackValue, resolvedCall: ResolvedCall<*>, c: ExpressionCodegenExtension.Context): StackValue? {
