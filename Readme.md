@@ -11,7 +11,10 @@
 ## Introduction 🙋‍♂️ 🙋‍
 I wrote an annotation processing libary that can detect annotations in Kotlin Native/JS and Jvm projects, because Kapt is only working with KotlinJvm,. The library can used in Kotlin Compiler plugins. Tested with Kotlin 1.3.41 and 1.3.50
 
-It can detect annotations with following targets: (CLASS,FUNCTION,PROPERTY,VALUE_PARAMETER,PROPERTY_GETTER,PROPERTY_GETTER,CONSTRUCTOR)
+It can detect annotations with following targets: 
+```groovy
+(CLASS,FUNCTION,PROPERTY,VALUE_PARAMETER,PROPERTY_GETTER,PROPERTY_GETTER,CONSTRUCTOR)
+```
 
 
 ### Show some :heart: and star the repo to support the project
