@@ -14,6 +14,11 @@ I wrote an annotation processing libary that can detect annotations in Kotlin Na
 It can detect annotations with following targets: (CLASS,FUNCTION,PROPERTY,VALUE_PARAMETER,PROPERTY_GETTER,PROPERTY_GETTER,CONSTRUCTOR)
 
 
+### Show some :heart: and star the repo to support the project
+
+[![GitHub stars](https://img.shields.io/github/stars/Foso/MpApt.svg?style=social&label=Star)](https://github.com/Foso/MpApt) [![GitHub forks](https://img.shields.io/github/forks/Foso/MpApt.svg?style=social&label=Fork)](https://github.com/Foso/MpApt/fork) [![GitHub watchers](https://img.shields.io/github/watchers/Foso/MpApt.svg?style=social&label=Watch)](https://github.com/Foso/MpApt) [![Twitter Follow](https://img.shields.io/twitter/follow/jklingenberg_.svg?style=social)](https://twitter.com/jklingenberg_)
+
+
 ## Usage
 
 Inside your compiler plugin, add the dependency from MavenCentral 
@@ -29,16 +34,16 @@ dependencies {
 ```
 1) Create a class that extends de.jensklingenberg.mpapt.model.AbstractProcessor
 
-```java
+```kotlin
 class MpAptTestProcessor(configuration: CompilerConfiguration) : AbstractProcessor(configuration) {
 
 ```
 2) Add the names of your annotations that you want to detect:
-```java
+```kotlin
 override fun getSupportedAnnotationTypes(): Set<String> = setOf(TestClass::class.java.name, TestFunction::class.java.name)
 ```
 3) Do something with detected annotations:
-```java
+```kotlin
 override fun process(roundEnvironment: RoundEnvironment) {
 roundEnvironment.getElementsAnnotatedWith(TestClass::class.java.name).forEach {
             when (it) {
@@ -62,7 +67,7 @@ Pass a instance of your processor into MpAptProject
 Then add an instance of MpAptProject to the following extension classes:
 
 Inside a Kotlin Native Compiler Plugin:
-```java
+```kotlin
 override fun registerProjectComponents(project: MockProject, configuration: CompilerConfiguration) {
         val generator = MpAptTestProcessor(configuration)
         val mpapt = MpAptProject(generator)
@@ -74,7 +79,7 @@ override fun registerProjectComponents(project: MockProject, configuration: Comp
 ```
 
 Inside a Kotlin JVM/JS Compiler Plugin:
-```java
+```kotlin
  override fun registerProjectComponents(
             project: MockProject,
             configuration: CompilerConfiguration
@@ -89,18 +94,15 @@ Inside a Kotlin JVM/JS Compiler Plugin:
 ```
 5) That's it
 
-### Show some :heart: and star the repo to support the project
-
-[![GitHub stars](https://img.shields.io/github/stars/Foso/MpApt.svg?style=social&label=Star)](https://github.com/Foso/MpApt) [![GitHub forks](https://img.shields.io/github/forks/Foso/MpApt.svg?style=social&label=Fork)](https://github.com/Foso/MpApt/fork) [![GitHub watchers](https://img.shields.io/github/watchers/Foso/MpApt.svg?style=social&label=Watch)](https://github.com/Foso/MpApt) [![Twitter Follow](https://img.shields.io/twitter/follow/jklingenberg_.svg?style=social)](https://twitter.com/jklingenberg_)
+# See also
+* [How to use a Kotlin Compiler Plugin from Gradle Plugin](https://github.com/Foso/MpApt/wiki/How-to-use-a-Kotlin-Compiler-Plugin-from-Gradle-Plugin)
+* [How to write a Kotlin Compiler Plugin](https://github.com/Foso/MpApt/wiki/How-to-write-a-Kotlin-Compiler-Plugin)
+* [How to debug Kotlin Compiler Plugin](https://github.com/Foso/MpApt/wiki/How-to-debug-Kotlin-Compiler-Plugin)
 
 ## 📜 License
 
 This project is licensed under the Apache License, Version 2.0 - see the [LICENSE.md](https://github.com/Foso/MpApt/blob/master/LICENSE) file for details
 
-### Find this project useful ? :heart:
-* Support it by clicking the :star: button on the upper right of this page. :v:
-
-License
 -------
 
     Copyright 2019 Jens Klingenberg
