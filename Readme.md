@@ -18,7 +18,7 @@ It can detect annotations with following targets:
 ```
 
 <p align="left">
-  Example output of my example plugin:
+  Example output of my example plugin on Kotlin Native:
   <img src ="https://raw.githubusercontent.com/Foso/MpApt/master/docs/images/logNative.png"  />
 </p>
 
