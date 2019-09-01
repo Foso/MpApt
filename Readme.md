@@ -107,6 +107,15 @@ Inside a Kotlin JVM/JS Compiler Plugin:
 
 Feel free to send feedback on [Twitter](https://twitter.com/jklingenberg_) or [file an issue](https://github.com/foso/MpApt/issues/new). Feature requests are always welcome. If you wish to contribute, please take a quick look at [How to develop?](https://github.com/Foso/MpApt/wiki/How-to-develop%3F)
 
+### 👷 Development Project Structure
+* <kbd>annotations</kbd> - A Kotlin Multiplatform project which contains test annotations 
+* <kbd>example</kbd> - A Kotlin Multiplatform project which applies a gradle plugin(de.jensklingenberg.mpapt) whichs triggers the compiler plugin.
+* <kbd>buildSrc</kbd> - This module contains the gradle plugin which trigger the compiler plugin
+* <kbd>kotlin-plugin</kbd> - This module contains the Kotlin Compiler Plugin for JVM/JS targets, it implements the <kbd>kotlin-plugin-shared</kbd>-module
+* <kbd>kotlin-compiler-native-plugin</kbd> - This module contains the Kotlin Compiler Plugin for Native targets, it implements the <kbd>kotlin-plugin-shared</kbd>-module
+* <kbd>kotlin-plugin-shared</kbd> Contains a implementation of MpApt
+
+
 # See also
 * [How to use a Kotlin Compiler Plugin from Gradle Plugin](https://github.com/Foso/MpApt/wiki/How-to-use-a-Kotlin-Compiler-Plugin-from-Gradle-Plugin)
 * [How to write a Kotlin Compiler Plugin](https://github.com/Foso/MpApt/wiki/How-to-write-a-Kotlin-Compiler-Plugin)
