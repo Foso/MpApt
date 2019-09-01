@@ -57,6 +57,37 @@ roundEnvironment.getElementsAnnotatedWith(TestClass::class.java.name).forEach {
         }
 }
 ```
+4) Init MpApt inside your ComponentRegistrar:
+Pass a instance of your processor into MpAptProject
+Then add a instace of MpAptProject to the following extension classes:
+
+Inside a Kotlin Native Compiler Plugin:
+```java
+override fun registerProjectComponents(project: MockProject, configuration: CompilerConfiguration) {
+        val generator = MpAptTestProcessor(configuration)
+        val mpapt = MpAptProject(generator)
+
+        StorageComponentContainerContributor.registerExtension(project,mpapt)
+        SyntheticResolveExtension.registerExtension(project, mpapt)
+        IrGenerationExtension.registerExtension(project,mpapt)
+    }
+```
+
+Inside a Kotlin JVM/JS Compiler Plugin:
+```java
+ override fun registerProjectComponents(
+            project: MockProject,
+            configuration: CompilerConfiguration
+    ) {
+        val processor = MpAptTestProcessor(configuration)
+        val mpapt = MpAptProject(processor)
+        StorageComponentContainerContributor.registerExtension(project,mpapt)
+        SyntheticResolveExtension.registerExtension(project, mpapt)
+        ClassBuilderInterceptorExtension.registerExtension(project,mpapt)
+        JsSyntheticTranslateExtension.registerExtension(project,mpapt)
+    }
+```
+
 
 ### Show some :heart: and star the repo to support the project
 
