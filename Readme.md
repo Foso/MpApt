@@ -17,6 +17,11 @@ It can detect annotations with following targets:
 (CLASS,FUNCTION,PROPERTY,VALUE_PARAMETER,PROPERTY_GETTER,PROPERTY_GETTER,CONSTRUCTOR)
 ```
 
+<p align="left">
+  Example output of my example plugin:
+  <img src ="https://raw.githubusercontent.com/Foso/MpApt/master/docs/images/logNative.png"  />
+</p>
+
 
 ### Show some :heart: and star the repo to support the project
 
@@ -97,6 +102,10 @@ Inside a Kotlin JVM/JS Compiler Plugin:
     }
 ```
 5) That's it
+
+## ✍️ Feedback
+
+Feel free to send feedback on [Twitter](https://twitter.com/jklingenberg_) or [file an issue](https://github.com/foso/MpApt/issues/new). Feature requests are always welcome. If you wish to contribute, please take a quick look at [How to develop?](https://github.com/Foso/MpApt/wiki/How-to-develop%3F)
 
 # See also
 * [How to use a Kotlin Compiler Plugin from Gradle Plugin](https://github.com/Foso/MpApt/wiki/How-to-use-a-Kotlin-Compiler-Plugin-from-Gradle-Plugin)
