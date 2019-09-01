@@ -62,8 +62,7 @@ roundEnvironment.getElementsAnnotatedWith(TestClass::class.java.name).forEach {
         }
 }
 ```
-4) 
-* Init MpApt inside your ComponentRegistrar:
+4)  Init MpApt inside your ComponentRegistrar:
 * Pass a instance of your processor into MpAptProject
 * Then add an instance of MpAptProject to the following extension classes:
 
