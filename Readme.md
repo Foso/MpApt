@@ -87,7 +87,7 @@ Inside a Kotlin JVM/JS Compiler Plugin:
         JsSyntheticTranslateExtension.registerExtension(project,mpapt)
     }
 ```
-
+5) That's it
 
 ### Show some :heart: and star the repo to support the project
 
