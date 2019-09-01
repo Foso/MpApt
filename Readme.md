@@ -14,6 +14,22 @@ I wrote an annotation processing libary that can detect annotations in Kotlin Na
 It can detect annotations with following targets: (CLASS,FUNCTION,PROPERTY,VALUE_PARAMETER,PROPERTY_GETTER,PROPERTY_GETTER,CONSTRUCTOR)
 
 
+## Usage
+
+> :information_source: Please be aware that the Kotlin Compiler Plugin API still doesn’t have any stable API and there is no backwards compatibility guaranteed. Kotlin versions above 1.3.50 can have all totally different API.
+
+Inside your compiler plugin, add the dependency from MavenCentral 
+
+```groovy
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+   compile 'de.jensklingenberg:mpapt-runtime:0.8.0'
+}
+```
+
 
 
 ### Show some :heart: and star the repo to support the project
