@@ -7,7 +7,3 @@ open class MpAptGradlePlugin : org.gradle.api.Plugin<Project> {
 
     }
 }
-
-open class TestCompilerExtension {
-    var enabled: Boolean = true
-}

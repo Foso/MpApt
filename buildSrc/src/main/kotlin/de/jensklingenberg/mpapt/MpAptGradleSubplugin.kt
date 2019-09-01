@@ -19,10 +19,6 @@ class MpAptGradleSubplugin : KotlinGradleSubplugin<AbstractCompile> {
             androidProjectHandler: Any?,
             kotlinCompilation: KotlinCompilation<KotlinCommonOptions>?
     ): List<SubpluginOption> {
-        val extension = project.extensions.findByType(TestCompilerExtension::class.java)
-                ?: TestCompilerExtension()
-
-        val enabledOption = SubpluginOption(key = "enabled", value = extension.enabled.toString())
         return emptyList()
 
     }
