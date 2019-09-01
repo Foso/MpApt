@@ -103,7 +103,7 @@ This project is licensed under the Apache License, Version 2.0 - see the [LICENS
 License
 -------
 
-    Copyright 2018 Jens Klingenberg
+    Copyright 2019 Jens Klingenberg
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
