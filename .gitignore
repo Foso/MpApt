@@ -7,4 +7,5 @@
 /kotlin-compiler-native-plugin/build/
 /.gradle/
 /build/
-/mpapt-runtime/build/
+/mpapt-runtime/build/*
+/kotlin-plugin-shared/build/

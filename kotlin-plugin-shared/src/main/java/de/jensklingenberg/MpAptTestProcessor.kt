@@ -5,7 +5,6 @@ import de.jensklingenberg.mpapt.model.AbstractProcessor
 import de.jensklingenberg.mpapt.model.RoundEnvironment
 import de.jensklingenberg.mpapt.common.simpleName
 import de.jensklingenberg.mpapt.model.Element
-import de.jensklingenberg.mpapt.model.Platform
 import de.jensklingenberg.testAnnotations.*
 import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.resolve.descriptorUtil.module
@@ -13,8 +12,6 @@ import org.jetbrains.kotlin.resolve.descriptorUtil.module
 class MpAptTestProcessor(configuration: CompilerConfiguration) : AbstractProcessor(configuration) {
     val TAG = "MyAnnotationProcessor"
 
-    val testClass = TestClass::class.java.name
-    val testFunction = TestFunction::class.java.name
     val testProperty = TestProperty::class.java.name
     val testValueParameter = TestValueParameter::class.java.name
     val testPropertyGetter = TestPropertyGetter::class.java.name
@@ -25,7 +22,7 @@ class MpAptTestProcessor(configuration: CompilerConfiguration) : AbstractProcess
 
     override fun process(roundEnvironment: RoundEnvironment) {
 
-        roundEnvironment.getElementsAnnotatedWith(testClass).forEach {
+        roundEnvironment.getElementsAnnotatedWith(TestClass::class.java.name).forEach {
             when (it) {
                 is Element.ClassElement -> {
                     log("Found Class: " + it.classDescriptor.name + " Module: " + it.classDescriptor.module.simpleName() + " platform   " + activeTargetPlatform.first().platformName)
@@ -33,7 +30,7 @@ class MpAptTestProcessor(configuration: CompilerConfiguration) : AbstractProcess
             }
         }
 
-        roundEnvironment.getElementsAnnotatedWith(testFunction).forEach {
+        roundEnvironment.getElementsAnnotatedWith(TestFunction::class.java.name).forEach {
             when (it) {
                 is Element.FunctionElement -> {
                     log("Found Function: " + it.func.name + " Module: " + it.func.module.simpleName() + " platform   " + activeTargetPlatform.first().platformName)
@@ -84,9 +81,8 @@ class MpAptTestProcessor(configuration: CompilerConfiguration) : AbstractProcess
 
     }
 
-    override fun supportedTargetPlatform(): List<Platform> = listOf(Platform.ALL)
 
-    override fun getSupportedAnnotationTypes(): Set<String> = setOf(testClass, testFunction, testProperty,testValueParameter,testPropertyGetter,testPropertySetter,testConstructor,testLocalVariable)
+    override fun getSupportedAnnotationTypes(): Set<String> = setOf(TestClass::class.java.name, TestFunction::class.java.name)
 
     override fun processingOver() {
         log("$TAG***Processor over ***")
