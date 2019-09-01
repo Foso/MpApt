@@ -40,7 +40,6 @@ kotlin {
         commonMain {
             dependencies {
                 implementation kotlin('stdlib-common')
-                implementation "io.ktor:ktor-client-core:1.2.3"
 
             }
         }
@@ -54,7 +53,6 @@ kotlin {
         jsMain {
             dependencies {
                 implementation kotlin('stdlib-js')
-                implementation "io.ktor:ktor-client-js:1.2.3"
 
             }
         }
@@ -67,7 +65,6 @@ kotlin {
         jvmMain {
             dependencies {
                 implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-                implementation "io.ktor:ktor-client-okhttp:1.2.3"
             }
         }
         jsTest {
@@ -80,15 +77,6 @@ kotlin {
 }
 
 
-task hello3(type: Exec) {
-    doFirst {
-        println 'start gradle....'
-    }
-    commandLine 'gradle',':annotations:install'
-    doLast {
-        println 'end gradle....'
-    }
-}
 
 
 build.finalizedBy(publishToMavenLocal)

@@ -17,7 +17,6 @@ buildscript {
 
 }
 
-
 plugins {
     id 'org.jetbrains.kotlin.multiplatform' version '1.3.50'
 }
@@ -70,7 +69,6 @@ kotlin {
         commonMain {
             dependencies {
                 implementation kotlin('stdlib-common')
-                implementation "io.ktor:ktor-client-core:1.2.3"
                 implementation project(":annotations")
 
             }
@@ -86,7 +84,6 @@ kotlin {
         jsMain {
             dependencies {
                 implementation kotlin('stdlib-js')
-                implementation "io.ktor:ktor-client-js:1.2.3"
 
             }
         }
@@ -99,7 +96,6 @@ kotlin {
         jvmMain {
             dependencies {
                 implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-                implementation "io.ktor:ktor-client-okhttp:1.2.3"
             }
         }
         jvmTest {
@@ -120,15 +116,6 @@ kotlin {
 }
 
 
-build {
-
-    dependsOn ':kotlin-plugin:install'
-
-    dependsOn ':gradle-plugin:install'
-    dependsOn ':kotlin-compiler-native-plugin:build'
-
-
-}
 
 // workaround for https://youtrack.jetbrains.com/issue/KT-27170
 configurations {

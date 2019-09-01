@@ -101,9 +101,14 @@ kapt {
 
 install{
     dependsOn(shadowJar)
+
 }
 
 build{
+    dependsOn ':kotlin-plugin-shared:install'
+
    dependsOn(shadowJar)
+
+
     finalizedBy(publishToMavenLocal)
 }

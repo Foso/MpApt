@@ -23,7 +23,7 @@ class MpAptGradleSubplugin : KotlinGradleSubplugin<AbstractCompile> {
                 ?: TestCompilerExtension()
 
         val enabledOption = SubpluginOption(key = "enabled", value = extension.enabled.toString())
-        return listOf(enabledOption)
+        return emptyList()
 
     }
 
@@ -42,9 +42,9 @@ class MpAptGradleSubplugin : KotlinGradleSubplugin<AbstractCompile> {
             version = "0.0.1" // remember to bump this version before any release!
     )
 
-    override fun getNativeCompilerPluginArtifact()=SubpluginArtifact(
-    groupId = "de.jensklingenberg",
-    artifactId = "kotlin-compiler-native-plugin",
-    version = "0.0.1" // remember to bump this version before any release!
+    override fun getNativeCompilerPluginArtifact() = SubpluginArtifact(
+            groupId = "de.jensklingenberg",
+            artifactId = "kotlin-compiler-native-plugin",
+            version = "0.0.1" // remember to bump this version before any release!
     )
 }

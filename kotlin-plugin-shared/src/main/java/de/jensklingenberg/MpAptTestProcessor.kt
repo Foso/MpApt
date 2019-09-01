@@ -12,6 +12,7 @@ import org.jetbrains.kotlin.resolve.descriptorUtil.module
 class MpAptTestProcessor(configuration: CompilerConfiguration) : AbstractProcessor(configuration) {
     val TAG = "MyAnnotationProcessor"
 
+    val testFunction = TestFunction::class.java.name
     val testProperty = TestProperty::class.java.name
     val testValueParameter = TestValueParameter::class.java.name
     val testPropertyGetter = TestPropertyGetter::class.java.name
@@ -82,7 +83,7 @@ class MpAptTestProcessor(configuration: CompilerConfiguration) : AbstractProcess
     }
 
 
-    override fun getSupportedAnnotationTypes(): Set<String> = setOf(TestClass::class.java.name, TestFunction::class.java.name)
+    override fun getSupportedAnnotationTypes(): Set<String> = setOf(TestClass::class.java.name, testFunction, testProperty,testValueParameter,testPropertyGetter,testPropertySetter,testConstructor,testLocalVariable)
 
     override fun processingOver() {
         log("$TAG***Processor over ***")

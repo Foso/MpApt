@@ -29,6 +29,8 @@ archivesBaseName = "kotlin-plugin-shared"
 version = "0.0.1"
 
 install {
+    dependsOn ':mpapt-runtime:install'
+
     repositories.mavenInstaller {
         pom.artifactId = archivesBaseName
     }
@@ -40,7 +42,7 @@ repositories {
 }
 
 dependencies {
-    compile 'de.jensklingenberg:mpapt-runtime:0.8.0'
+    compile project(':mpapt-runtime')
     compile "de.jensklingenberg.mpapt.testAnnotations:annotations-jvm:0.0.1"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     compileOnly "org.jetbrains.kotlin:kotlin-compiler-embeddable"
