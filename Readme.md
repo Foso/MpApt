@@ -27,8 +27,36 @@ dependencies {
    compile 'de.jensklingenberg:mpapt-runtime:0.8.0'
 }
 ```
+1) Create a class that extends de.jensklingenberg.mpapt.model.AbstractProcessor
 
+```java
+class MpAptTestProcessor(configuration: CompilerConfiguration) : AbstractProcessor(configuration) {
 
+```
+2) Add the your annoations that you want to detect:
+```java
+override fun getSupportedAnnotationTypes(): Set<String> = setOf(TestClass::class.java.name, TestFunction::class.java.name)
+```
+3) Do something with detected annotations:
+```java
+override fun process(roundEnvironment: RoundEnvironment) {
+roundEnvironment.getElementsAnnotatedWith(TestClass::class.java.name).forEach {
+            when (it) {
+                is Element.ClassElement -> {
+                    log("Found Class: " + it.classDescriptor.name + " Module: " + it.classDescriptor.module.simpleName() + " platform   " + activeTargetPlatform.first().platformName)
+                }
+            }
+        }
+
+        roundEnvironment.getElementsAnnotatedWith(TestFunction::class.java.name).forEach {
+            when (it) {
+                is Element.FunctionElement -> {
+                    log("Found Function: " + it.func.name + " Module: " + it.func.module.simpleName() + " platform   " + activeTargetPlatform.first().platformName)
+                }
+            }
+        }
+}
+```
 
 ### Show some :heart: and star the repo to support the project
 
