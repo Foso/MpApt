@@ -34,16 +34,16 @@ dependencies {
 ```
 1) Create a class that extends de.jensklingenberg.mpapt.model.AbstractProcessor
 
-```java
+```kotlin
 class MpAptTestProcessor(configuration: CompilerConfiguration) : AbstractProcessor(configuration) {
 
 ```
 2) Add the names of your annotations that you want to detect:
-```java
+```kotlin
 override fun getSupportedAnnotationTypes(): Set<String> = setOf(TestClass::class.java.name, TestFunction::class.java.name)
 ```
 3) Do something with detected annotations:
-```java
+```kotlin
 override fun process(roundEnvironment: RoundEnvironment) {
 roundEnvironment.getElementsAnnotatedWith(TestClass::class.java.name).forEach {
             when (it) {
@@ -67,7 +67,7 @@ Pass a instance of your processor into MpAptProject
 Then add an instance of MpAptProject to the following extension classes:
 
 Inside a Kotlin Native Compiler Plugin:
-```java
+```kotlin
 override fun registerProjectComponents(project: MockProject, configuration: CompilerConfiguration) {
         val generator = MpAptTestProcessor(configuration)
         val mpapt = MpAptProject(generator)
@@ -79,7 +79,7 @@ override fun registerProjectComponents(project: MockProject, configuration: Comp
 ```
 
 Inside a Kotlin JVM/JS Compiler Plugin:
-```java
+```kotlin
  override fun registerProjectComponents(
             project: MockProject,
             configuration: CompilerConfiguration
