@@ -33,7 +33,7 @@ dependencies {
 class MpAptTestProcessor(configuration: CompilerConfiguration) : AbstractProcessor(configuration) {
 
 ```
-2) Add the your annoations that you want to detect:
+2) Add the names of your annoations that you want to detect:
 ```java
 override fun getSupportedAnnotationTypes(): Set<String> = setOf(TestClass::class.java.name, TestFunction::class.java.name)
 ```
