@@ -16,8 +16,6 @@ It can detect annotations with following targets: (CLASS,FUNCTION,PROPERTY,VALUE
 
 ## Usage
 
-> :information_source: Please be aware that the Kotlin Compiler Plugin API still doesn’t have any stable API and there is no backwards compatibility guaranteed. Kotlin versions above 1.3.50 can have all totally different API.
-
 Inside your compiler plugin, add the dependency from MavenCentral 
 
 ```groovy
