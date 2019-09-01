@@ -97,7 +97,7 @@ Inside a Kotlin JVM/JS Compiler Plugin:
 # See also
 * [How to write a Kotlin Compiler Plugin](https://github.com/Foso/MpApt/wiki/How-to-write-a-Kotlin-Compiler-Plugin)
 * [How to debug Kotlin Compiler Plugin](https://github.com/Foso/MpApt/wiki/How-to-debug-Kotlin-Compiler-Plugin)
-
+* [How to use a Kotlin Compiler from Gradle Plugin](https://github.com/Foso/MpApt/wiki/How-to-use-a-Kotlin-Compiler-from-Gradle-Plugin)
 ## 📜 License
 
 This project is licensed under the Apache License, Version 2.0 - see the [LICENSE.md](https://github.com/Foso/MpApt/blob/master/LICENSE) file for details
