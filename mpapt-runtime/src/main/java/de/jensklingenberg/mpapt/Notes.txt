@@ -1,0 +1,169 @@
+Check if class has constructor with a annotation
+classDescriptor.constructors.toList().get(0).annotations.hasAnnotation("de.jensklingenberg.ktorfit.Fancy")
+
+
+CollectAdditionalSourcesExtension.registerExtension(project,object :CollectAdditionalSourcesExtension{
+
+            override fun collectAdditionalSourcesAndUpdateConfiguration(knownSources: Collection<KtFile>, configuration: CompilerConfiguration, project: Project): Collection<KtFile> {
+                processor.log("collect")
+                return knownSources
+            }
+        })
+
+
+        ShellExtension.registerExtension(project,object :ShellExtension{
+                    override fun isAccepted(arguments: CommonCompilerArguments): Boolean {
+                        processor.log("ISACCTED")
+                        return false
+
+                    }
+
+                    override fun run(arguments: CommonCompilerArguments, configuration: CompilerConfiguration, projectEnvironment: JavaCoreProjectEnvironment): ExitCode {
+                        processor.log("run")
+
+                        return ExitCode.OK
+                    }
+
+                })
+
+
+================================================
+
+  function.accept(object:  DeclarationDescriptorVisitor<Any, Any> {
+               override fun visitPropertySetterDescriptor(p0: PropertySetterDescriptor?, p1: Any?): Any {
+                 return ""
+               }
+
+               override fun visitConstructorDescriptor(p0: ConstructorDescriptor?, p1: Any?): Any {
+                 return ""
+               }
+
+               override fun visitReceiverParameterDescriptor(p0: ReceiverParameterDescriptor?, p1: Any?): Any {
+                 return ""
+               }
+
+               override fun visitPackageViewDescriptor(p0: PackageViewDescriptor?, p1: Any?): Any {
+                 return ""
+               }
+
+               override fun visitFunctionDescriptor(p0: FunctionDescriptor?, p1: Any?): Any {
+                 return ""
+               }
+
+               override fun visitModuleDeclaration(p0: ModuleDescriptor?, p1: Any?): Any {
+                 return ""
+               }
+
+               override fun visitClassDescriptor(p0: ClassDescriptor?, p1: Any?): Any {
+                 return ""
+               }
+
+               override fun visitPackageFragmentDescriptor(p0: PackageFragmentDescriptor?, p1: Any?): Any {
+                 return ""
+               }
+
+               override fun visitValueParameterDescriptor(p0: ValueParameterDescriptor?, p1: Any?): Any {
+                 return ""
+               }
+
+               override fun visitTypeParameterDescriptor(p0: TypeParameterDescriptor?, p1: Any?): Any {
+                 return ""
+               }
+
+               override fun visitScriptDescriptor(p0: ScriptDescriptor?, p1: Any?): Any {
+                 return ""
+               }
+
+               override fun visitTypeAliasDescriptor(p0: TypeAliasDescriptor?, p1: Any?): Any {
+                 return ""
+               }
+
+               override fun visitPropertyGetterDescriptor(p0: PropertyGetterDescriptor?, p1: Any?): Any {
+                 return ""
+               }
+
+               override fun visitVariableDescriptor(p0: VariableDescriptor?, p1: Any?): Any {
+                 return ""
+               }
+
+               override fun visitPropertyDescriptor(p0: PropertyDescriptor?, p1: Any?): Any {
+                 return ""
+               }
+
+           },"")
+
+
+
+           ===========================================
+
+             private fun checkLocalVariable(declaration: KtPureClassOrObject) {
+                   abstractProcessor.getSupportedAnnotationTypes().forEach { annoation ->
+                       val annotationWithoutPackage = annoation.substringAfterLast(".")
+                       declaration.body?.functions?.forEach { ktfunction ->
+
+
+                           val findanno: KtProperty? = ktfunction.bodyBlockExpression?.statements?.filterIsInstance<KtProperty>()?.firstOrNull { property ->
+                               val che = property.annotationEntries.any() { it.shortName?.identifier.equals(annotationWithoutPackage) ?: false }
+
+
+                               che
+                           }
+
+                          // val getAnno= findanno?.type
+
+                        if(findanno!=null){
+                           val roundEnvironment= RoundEnvironment()
+
+
+                            roundEnvironment.apply {
+                                elements.add(
+                                        Element.LocalVariableElement(
+                                               classConstructorDescriptor = findanno,
+                                                func = WrappedSimpleFunctionDescriptor(Annotations.EMPTY,ktfunction.toSourceElement())
+                                               // annotation =AnnotationDescriptor
+
+                                        )
+                                )
+                            }
+
+
+
+                            abstractProcessor.process(roundEnvironment)
+
+                            //abstractProcessor.log("I FOUND A LOCAL "+findanno?.name)
+                        }
+
+                       }
+
+
+                   }
+
+               }
+
+
+
+
+               =====================================================
+                private fun checkLocalVariable(processor: AbstractProcessor, functionDescriptor: FunctionDescriptor) {
+
+
+                           val ktfunction = functionDescriptor.source
+
+                           processor.getSupportedAnnotationTypes().forEach { annoation ->
+                               val annotationWithoutPackage = annoation.substringAfterLast(".")
+
+
+
+                               if (ktfunction.safeAsPsi()?.text?.contains(annotationWithoutPackage) == true) {
+
+
+                                   //  processor.log("I FOUND .,,A LOCAL "+ functionDescriptor.name)
+                               }
+
+                           }
+
+
+                       }
+===================================
+
+class MyDeclarationAttributeAltererExtension(generator: AbstractProcessor) : DeclarationAttributeAltererExtension {

@@ -3,6 +3,7 @@ include 'annotations'
 include 'example'
 include ':kotlin-compiler-native-plugin'
 include ':kotlin-plugin'
-include ':mpapt'
-include 'testplugin'
+include ':kotlin-plugin-shared'
+
+include ':mpapt-runtime'
 

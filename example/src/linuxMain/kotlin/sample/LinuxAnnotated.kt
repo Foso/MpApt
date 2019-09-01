@@ -11,7 +11,6 @@ class LinuxAnnotated @TestConstructor constructor() {
     @TestConstructor
     constructor(name: String) : this()
 
-
     @TestProperty
     @TestField
     lateinit var myProperty: @TestType String
@@ -25,15 +24,17 @@ class LinuxAnnotated @TestConstructor constructor() {
         }
 
     @TestFunction
-    fun genFunction() {
+    fun firstFunction() {
 
     }
 
-    fun genFunctionWithParameters(@TestValueParameter param: String, @TestValueParameter param2: String) {
+    @TestFunction
+    fun secondFunction() {
 
     }
 
-    companion object {
+    fun thirdFunction(@TestValueParameter param: String, @TestValueParameter param2: String) {
 
     }
+
 }

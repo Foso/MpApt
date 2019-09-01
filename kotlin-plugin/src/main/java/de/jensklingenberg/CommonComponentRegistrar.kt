@@ -40,14 +40,7 @@ open class CommonComponentRegistrar : ComponentRegistrar {
         val mpapt = MpAptProject(processor)
 
         StorageComponentContainerContributor.registerExtension(project,mpapt)
-     //   IrGenerationExtension.registerExtension(project, mpapt)
-
         SyntheticResolveExtension.registerExtension(project, mpapt)
-      //  AnalysisHandlerExtension.registerExtension(project,mpapt)
-       CompilerConfigurationExtension.registerExtension(project,mpapt)
-       ExpressionCodegenExtension.registerExtension(project,mpapt)
-        PreprocessedVirtualFileFactoryExtension.registerExtension(project,mpapt)
-        //VirtualFileManagerEx.VFS_STRUCTURE_MODIFICATIONS
         ClassBuilderInterceptorExtension.registerExtension(project,mpapt)
         JsSyntheticTranslateExtension.registerExtension(project,mpapt)
 

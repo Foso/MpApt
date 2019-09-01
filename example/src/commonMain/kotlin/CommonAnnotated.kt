@@ -8,9 +8,9 @@ import de.jensklingenberg.testAnnotations.*
 @TestClass
 class CommonAnnotated @TestConstructor constructor() {
 
+
     @TestConstructor
     constructor(name: String) : this()
-
 
     @TestProperty
     @TestField
@@ -25,25 +25,17 @@ class CommonAnnotated @TestConstructor constructor() {
         }
 
     @TestFunction
-    fun genFunction() {
+    fun firstFunction() {
 
     }
 
-    fun genFunctionWithParameters(@TestValueParameter param: String, @TestValueParameter param2: String) {
-
-        @TestLocalVariable val HERERRERERERERER = 1
-
-        @TestExpression when {
-            true -> {
-
-            }
-            false -> {
-
-            }
-        }
-    }
-
-    companion object {
+    @TestFunction
+    fun secondFunction() {
 
     }
+
+    fun thirdFunction(@TestValueParameter param: String, @TestValueParameter param2: String) {
+
+    }
+
 }

@@ -39,10 +39,10 @@ compileKotlin {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
     compileOnly "org.jetbrains.kotlin:kotlin-compiler"
-    compile "de.jensklingenberg.mpapt.testAnnotations:annotations-jvm:0.0.1"
     compileOnly "com.google.auto.service:auto-service:1.0-rc6"
     kapt "com.google.auto.service:auto-service:1.0-rc6"
-    compile project(":mpapt")
+    compile project(':kotlin-plugin-shared')
+
 
 }
 
