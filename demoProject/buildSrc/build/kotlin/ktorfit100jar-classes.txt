@@ -1,0 +1,1 @@
+/home/jens/Code/2019/MpApt/demoProject/buildSrc/build/classes/kotlin/main/de/jensklingenberg/mpapt/MpAptGradlePlugin.class:/home/jens/Code/2019/MpApt/demoProject/buildSrc/build/classes/kotlin/main/de/jensklingenberg/mpapt/MpAptGradleSubplugin.class

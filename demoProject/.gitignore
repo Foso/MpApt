@@ -1,0 +1,4 @@
+/ktorfit-shared/build/
+/example/build/
+/buildSrc/.gradle/
+/.idea/

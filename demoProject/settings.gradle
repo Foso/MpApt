@@ -1,0 +1,4 @@
+include 'example'
+include ':kotlin-plugin'
+include ':ktorfit-shared'
+include 'ktorfit-annotations'

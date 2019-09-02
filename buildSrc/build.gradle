@@ -38,7 +38,7 @@ version = "1.0.0"
 
 install {
     repositories.mavenInstaller {
-        pom.artifactId = 'mpapt-gradle'
+        pom.artifactId = archivesBaseName
     }
 }
 
