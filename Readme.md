@@ -1,6 +1,7 @@
 <h1 align="center">MpApt - Kotlin (Native/JS/JVM) Annotation Processor library</h1>
 
-[![jCenter](https://img.shields.io/badge/Apache-2.0-green.svg)](https://github.com/Foso/MpApt/blob/master/LICENSE)
+[![jCenter](https://img.shields.io/badge/Kotlin-1.3.50-green.svg
+)](https://github.com/Foso/MpApt/blob/master/LICENSE)[![jCenter](https://img.shields.io/badge/Apache-2.0-green.svg)](https://github.com/Foso/MpApt/blob/master/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-range.svg?style=flat-square)](#contributors)
   <a href="https://twitter.com/intent/tweet?text=Hey, check out MpApt https://github.com/Foso/MpApt via @jklingenberg_ #Android 
@@ -11,7 +12,15 @@
 ## Introduction 🙋‍♂️ 🙋‍
 I wrote an annotation processing libary that can detect annotations in Kotlin Native/JS and Jvm projects, because Kapt is only working with KotlinJvm,. The library can used in Kotlin Compiler plugins. Tested with Kotlin 1.3.41 and 1.3.50
 
-It can detect annotations with following targets: (CLASS,FUNCTION,PROPERTY,VALUE_PARAMETER,PROPERTY_GETTER,PROPERTY_GETTER,CONSTRUCTOR)
+It can detect annotations with following targets: 
+```groovy
+(CLASS,FUNCTION,PROPERTY,VALUE_PARAMETER,PROPERTY_GETTER,PROPERTY_GETTER,CONSTRUCTOR)
+```
+
+<p align="left">
+  Example output of my example plugin on Kotlin Native:
+  <img src ="https://raw.githubusercontent.com/Foso/MpApt/master/docs/images/logNative.png"  />
+</p>
 
 
 ### Show some :heart: and star the repo to support the project
@@ -62,9 +71,9 @@ roundEnvironment.getElementsAnnotatedWith(TestClass::class.java.name).forEach {
         }
 }
 ```
-4) Init MpApt inside your ComponentRegistrar:
-Pass a instance of your processor into MpAptProject
-Then add an instance of MpAptProject to the following extension classes:
+4)  Init MpApt inside your ComponentRegistrar:
+* Pass a instance of your processor into MpAptProject
+* Then add an instance of MpAptProject to the following extension classes:
 
 Inside a Kotlin Native Compiler Plugin:
 ```kotlin
@@ -93,6 +102,19 @@ Inside a Kotlin JVM/JS Compiler Plugin:
     }
 ```
 5) That's it
+
+## ✍️ Feedback
+
+Feel free to send feedback on [Twitter](https://twitter.com/jklingenberg_) or [file an issue](https://github.com/foso/MpApt/issues/new). Feature requests are always welcome. If you wish to contribute, please take a quick look at [How to develop?](https://github.com/Foso/MpApt/wiki/How-to-develop%3F)
+
+### 👷 Development Project Structure
+* <kbd>annotations</kbd> - A Kotlin Multiplatform project which contains test annotations 
+* <kbd>example</kbd> - A Kotlin Multiplatform project which applies a gradle plugin(de.jensklingenberg.mpapt) whichs triggers the compiler plugin.
+* <kbd>buildSrc</kbd> - This module contains the gradle plugin which trigger the compiler plugin
+* <kbd>kotlin-plugin</kbd> - This module contains the Kotlin Compiler Plugin for JVM/JS targets, it implements the <kbd>kotlin-plugin-shared</kbd>-module
+* <kbd>kotlin-compiler-native-plugin</kbd> - This module contains the Kotlin Compiler Plugin for Native targets, it implements the <kbd>kotlin-plugin-shared</kbd>-module
+* <kbd>kotlin-plugin-shared</kbd> Contains a implementation of MpApt
+
 
 # See also
 * [How to use a Kotlin Compiler Plugin from Gradle Plugin](https://github.com/Foso/MpApt/wiki/How-to-use-a-Kotlin-Compiler-Plugin-from-Gradle-Plugin)
