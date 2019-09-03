@@ -115,7 +115,7 @@ Feel free to send feedback on [Twitter](https://twitter.com/jklingenberg_) or [f
 * <kbd>buildSrc</kbd> - This module contains the gradle plugin which trigger the compiler plugin
 * <kbd>kotlin-plugin</kbd> - This module contains the Kotlin Compiler Plugin for JVM/JS targets, it implements the <kbd>kotlin-plugin-shared</kbd>-module
 * <kbd>kotlin-compiler-native-plugin</kbd> - This module contains the Kotlin Compiler Plugin for Native targets, it implements the <kbd>kotlin-plugin-shared</kbd>-module
-* <kbd>kotlin-plugin-shared</kbd> Contains a implementation of MpApt
+* <kbd>kotlin-plugin-shared</kbd> Contains an implementation of MpApt
 
 
 # See also
