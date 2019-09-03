@@ -7,10 +7,8 @@ import org.jetbrains.kotlin.resolve.jvm.diagnostics.JvmDeclarationOrigin
 import org.jetbrains.org.objectweb.asm.FieldVisitor
 import org.jetbrains.org.objectweb.asm.MethodVisitor
 
-class DebugLogClassBuilder(
-        val delegateBuilder: ClassBuilder,
-        val test: AbstractProcessor
-) : org.jetbrains.kotlin.codegen.DelegatingClassBuilder() {
+class DelegatingClassBuilderImpl(
+        val delegateBuilder: ClassBuilder) : org.jetbrains.kotlin.codegen.DelegatingClassBuilder() {
     override fun getDelegate() = delegateBuilder
 
 

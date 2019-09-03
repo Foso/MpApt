@@ -18,8 +18,8 @@ import org.jetbrains.kotlin.resolve.extensions.SyntheticResolveExtension
 class NativeTestComponentRegistrar : ComponentRegistrar {
 
     override fun registerProjectComponents(project: MockProject, configuration: CompilerConfiguration) {
-        val generator = MpAptTestProcessor(configuration)
-        val mpapt = MpAptProject(generator)
+        val generator = MpAptTestProcessor()
+        val mpapt = MpAptProject(generator,configuration)
 
         StorageComponentContainerContributor.registerExtension(project,mpapt)
         SyntheticResolveExtension.registerExtension(project, mpapt)

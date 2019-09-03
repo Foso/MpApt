@@ -9,3 +9,5 @@
 /build/
 /mpapt-runtime/build/*
 /kotlin-plugin-shared/build/
+/buildSrc/build/
+/buildSrc/.gradle/

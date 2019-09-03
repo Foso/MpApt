@@ -7,9 +7,10 @@ import de.jensklingenberg.mpapt.common.simpleName
 import de.jensklingenberg.mpapt.model.Element
 import de.jensklingenberg.testAnnotations.*
 import org.jetbrains.kotlin.config.CompilerConfiguration
+import org.jetbrains.kotlin.platform.TargetPlatform
 import org.jetbrains.kotlin.resolve.descriptorUtil.module
 
-class MpAptTestProcessor(configuration: CompilerConfiguration) : AbstractProcessor(configuration) {
+class MpAptTestProcessor : AbstractProcessor() {
     val TAG = "MyAnnotationProcessor"
 
     val testFunction = TestFunction::class.java.name
@@ -20,6 +21,19 @@ class MpAptTestProcessor(configuration: CompilerConfiguration) : AbstractProcess
     val testConstructor = TestConstructor::class.java.name
     val testLocalVariable = TestLocalVariable::class.java.name
 
+    override fun isTargetPlatformSupported(platform: TargetPlatform): Boolean {
+        val targetName = platform.first().platformName
+
+       return when(targetName){
+            "JS"->false
+           "JVM"->true
+           else -> {
+               log(targetName)
+               false
+           }
+       }
+
+    }
 
     override fun process(roundEnvironment: RoundEnvironment) {
 

@@ -1,5 +1,7 @@
 package de.jensklingenberg.mpapt.model
 
+import org.jetbrains.kotlin.platform.TargetPlatform
+
 
 interface Processor {
 
@@ -17,14 +19,10 @@ interface Processor {
      * */
     fun process(roundEnvironment: RoundEnvironment)
 
-    /**
-     * The [Platform]s for which the processor should be enabled.
-     * The default is [Platform.ALL]
-     */
-    fun supportedTargetPlatform(): List<Platform>
-
     fun processingOver()
 
+
+    fun isTargetPlatformSupported() : Boolean
 
 }
 
