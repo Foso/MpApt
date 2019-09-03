@@ -6,6 +6,7 @@ import org.jetbrains.kotlin.descriptors.FunctionDescriptor
 import org.jetbrains.kotlin.descriptors.SourceElement
 import org.jetbrains.kotlin.resolve.source.KotlinSourceElement
 import org.jetbrains.kotlin.resolve.source.getPsi
+import de.jensklingenberg.mpapt.model.Package
 
 
 /**
@@ -15,15 +16,23 @@ fun FunctionDescriptor.getFunctionParameters(): List<FunctionParameter> {
     //@de.ktorfit.POST public abstract suspend fun postPictures(helloWorld: sample.model.HelloWorld): kotlin.Unit defined in sample.data.Api[SimpleFunctionDescriptorImpl@470930f5]
 
     return if (valueParameters.isNotEmpty()) {
-        val list = this.toString().replace(" ", "").substringAfter("(").substringBefore(")").split(",")
-                .map {
-                    val split = it.split(":")
-                    FunctionParameter(
-                            split.first(),
-                            de.jensklingenberg.mpapt.model.Package(split[1].substringAfterLast("."), split[1].substringBeforeLast("."))
-                    )
-                }
-        list
+        this.valueParameters.map { parameter ->
+            // normal:
+            //value-parameter id: kotlin.Int defined in de.jensklingenberg.mpapt.CommonAnnotated.firstFunction2[ValueParameterDescriptorImpl@725a91a6]
+            // Typedefs:
+            //value-parameter id: de.jensklingenberg.mpapt.Datum /* = kotlin.ranges.CharProgression */ defined in de.jensklingenberg.mpapt.CommonAnnotated.firstFunction2[ValueParameterDescriptorImpl@692444bb]
+            val fullPackage = parameter.toString().substringAfter(": ")
+                .substringBefore(" defined")
+                .substringBefore(" /* =")
+            FunctionParameter(
+                parameter.name.asString(),
+                parameter.type.toString().endsWith("?"),
+                Package(
+                    fullPackage.split(".").last().replace("?", ""),
+                    fullPackage.split(".").dropLast(1).joinToString(".")
+                )
+            )
+        }.toList()
     } else {
         emptyList()
     }
