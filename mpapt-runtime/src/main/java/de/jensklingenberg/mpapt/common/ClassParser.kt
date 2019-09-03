@@ -39,26 +39,31 @@ class ClassParser() {
         }
 
         private fun parseClassConstructor(descriptor: ClassDescriptor, processor: AbstractProcessor, round: RoundEnvironment, annotation: String) {
-            descriptor.constructors.forEach {
-                if (checkit(it, annotation)) {
-                    val annotatedConstructors = descriptor.constructors.filter { constructor -> constructor.hasAnnotation(annotation) }
+            try {
+                descriptor.constructors.forEach {
+                    if (checkit(it, annotation)) {
+                        val annotatedConstructors =
+                            descriptor.constructors.filter { constructor -> constructor.hasAnnotation(annotation) }
 
-                    annotatedConstructors.forEach { annotatedConstructor ->
+                        annotatedConstructors.forEach { annotatedConstructor ->
 
-                        val annotationDesc = annotatedConstructor.annotations.findAnnotation(annotation)
+                            val annotationDesc = annotatedConstructor.annotations.findAnnotation(annotation)
 
-                        round.module = descriptor.module
-                        round.elements.add(
+                            round.module = descriptor.module
+                            round.elements.add(
                                 Element.ClassConstructorElement(
-                                        classConstructorDescriptor = annotatedConstructor,
-                                        annotation = annotationDesc
+                                    classConstructorDescriptor = annotatedConstructor,
+                                    annotation = annotationDesc
 
                                 )
-                        )
-                        processor.process(round)
-                    }
+                            )
+                            processor.process(round)
+                        }
 
+                    }
                 }
+            } catch (e: Exception) {
+                println(e)
             }
 
         }

@@ -56,9 +56,6 @@ internal class SyntheticResolveExtensionImpl(val abstractProcessor: AbstractProc
     }
 
     override fun generateSyntheticProperties(thisDescriptor: ClassDescriptor, name: Name, bindingContext: BindingContext, fromSupertypes: ArrayList<PropertyDescriptor>, result: MutableSet<PropertyDescriptor>) {
-        val isLastClass = abstractProcessor.configuration.kotlinSourceRoots.last().path == (thisDescriptor.source as KotlinSourceElement).psi.containingKtFile.virtualFilePath
-        val isLastProperty = ((thisDescriptor.source as KotlinSourceElement).psi as KtClass).getProperties().last().equals(name)
-
 
         result.forEach {
             ClassParser.parseProperty(it, abstractProcessor, RoundEnvironment())
