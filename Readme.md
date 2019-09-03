@@ -10,7 +10,7 @@
 
 
 ## Introduction 🙋‍♂️ 🙋‍
-I wrote an annotation processing libary that can detect annotations in Kotlin Native/JS and Jvm projects, because Kapt is only working with KotlinJvm,. The library can used in Kotlin Compiler plugins. Tested with Kotlin 1.3.41 and 1.3.50
+I wrote an annotation processing libary that can detect annotations in Kotlin Native/JS and Jvm projects, because Kapt is only working with KotlinJvm. The library can be used in Kotlin Compiler plugins. Tested with Kotlin 1.3.41 and 1.3.50
 
 It can detect annotations with following targets: 
 ```groovy
@@ -72,7 +72,7 @@ roundEnvironment.getElementsAnnotatedWith(TestClass::class.java.name).forEach {
 }
 ```
 4)  Init MpApt inside your ComponentRegistrar:
-* Pass a instance of your processor into MpAptProject
+* Pass an instance of your processor into MpAptProject
 * Then add an instance of MpAptProject to the following extension classes:
 
 Inside a Kotlin Native Compiler Plugin:
