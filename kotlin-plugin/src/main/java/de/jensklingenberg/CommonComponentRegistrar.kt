@@ -3,6 +3,7 @@ package de.jensklingenberg
 import com.google.auto.service.AutoService
 import de.jensklingenberg.mpapt.common.MpAptProject
 import org.jetbrains.kotlin.codegen.extensions.ClassBuilderInterceptorExtension
+import org.jetbrains.kotlin.codegen.extensions.ExpressionCodegenExtension
 import org.jetbrains.kotlin.com.intellij.mock.MockProject
 import org.jetbrains.kotlin.compiler.plugin.ComponentRegistrar
 import org.jetbrains.kotlin.config.CompilerConfiguration
@@ -22,7 +23,9 @@ open class CommonComponentRegistrar : ComponentRegistrar {
     ) {
         val processor = MpAptTestProcessor()
         val mpapt = MpAptProject(processor,configuration)
+
         StorageComponentContainerContributor.registerExtension(project,mpapt)
+        ExpressionCodegenExtension.registerExtension(project,mpapt)
         SyntheticResolveExtension.registerExtension(project, mpapt)
         ClassBuilderInterceptorExtension.registerExtension(project,mpapt)
         JsSyntheticTranslateExtension.registerExtension(project,mpapt)

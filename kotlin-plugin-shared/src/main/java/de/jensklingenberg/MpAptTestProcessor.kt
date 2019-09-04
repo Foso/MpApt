@@ -22,6 +22,7 @@ class MpAptTestProcessor : AbstractProcessor() {
     val testPropertySetter = TestPropertySetter::class.java.name
     val testConstructor = TestConstructor::class.java.name
     val testLocalVariable = TestLocalVariable::class.java.name
+    val redacted = Redacted::class.java.name
 
     override fun isTargetPlatformSupported(platform: TargetPlatform): Boolean {
         val targetName = platform.first().platformName
@@ -73,6 +74,15 @@ class MpAptTestProcessor : AbstractProcessor() {
             }
         }
 
+        roundEnvironment.getElementsAnnotatedWith(redacted).forEach {
+            when (it) {
+                is Element.PropertyElement -> {
+                    redactedValue = "HELLO"
+                    log("Found Property: " + it.propertyDescriptor.name + " Module: " + it.propertyDescriptor.module.simpleName() + " platform   " + activeTargetPlatform.first().platformName)
+                }
+            }
+        }
+
         roundEnvironment.getElementsAnnotatedWith(testValueParameter).forEach {
             when (it) {
                 is Element.ValueParameterElement -> {
@@ -109,7 +119,7 @@ class MpAptTestProcessor : AbstractProcessor() {
     }
 
 
-    override fun getSupportedAnnotationTypes(): Set<String> = setOf(TestClass::class.java.name, testFunction, testProperty, testValueParameter, testPropertyGetter, testPropertySetter, testConstructor, testLocalVariable)
+    override fun getSupportedAnnotationTypes(): Set<String> = setOf(TestClass::class.java.name, testFunction, testProperty, testValueParameter, testPropertyGetter, testPropertySetter, testConstructor, testLocalVariable,redacted)
 
     override fun processingOver() {
         log("$TAG***Processor over ***")

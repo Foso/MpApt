@@ -45,6 +45,8 @@ annotation class TestField
 annotation class TestLocalVariable
 
 
-
+@Retention(AnnotationRetention.BINARY)
+@Target(AnnotationTarget.PROPERTY)
+annotation class Redacted
 
 

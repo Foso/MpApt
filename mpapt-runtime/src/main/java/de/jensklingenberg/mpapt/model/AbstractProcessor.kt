@@ -8,6 +8,9 @@ import org.jetbrains.kotlin.platform.SimplePlatform
 import org.jetbrains.kotlin.platform.TargetPlatform
 
 abstract class AbstractProcessor() : Processor {
+
+    var redactedValue :String = "\"██A\""
+
     var configuration: CompilerConfiguration = CompilerConfiguration()
 
     private fun messageCollector() = configuration.get(CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY, MessageCollector.NONE)
