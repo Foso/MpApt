@@ -123,6 +123,7 @@ Feel free to send feedback on [Twitter](https://twitter.com/jklingenberg_) or [f
 * [How to use a Kotlin Compiler Plugin from Gradle Plugin](https://github.com/Foso/MpApt/wiki/How-to-use-a-Kotlin-Compiler-Plugin-from-Gradle-Plugin)
 * [How to write a Kotlin Compiler Plugin](https://github.com/Foso/MpApt/wiki/How-to-write-a-Kotlin-Compiler-Plugin)
 * [How to debug Kotlin Compiler Plugin](https://github.com/Foso/MpApt/wiki/How-to-debug-Kotlin-Compiler-Plugin)
+* [How to develop?](https://github.com/Foso/MpApt/wiki/How-to-develop%3F)
 
 ## 📜 License
 
