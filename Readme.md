@@ -29,6 +29,7 @@ It can detect annotations with following targets:
 
 
 ## Usage
+These are the instructions for v0.8.0, check [Changelog](https://github.com/Foso/MpApt/blob/master/CHANGELOG.md) for changes on the active development branch
 
 Inside your compiler plugin, add the dependency from MavenCentral 
 
