@@ -27,7 +27,7 @@ class MpAptTestProcessor : AbstractProcessor() {
         val targetName = platform.first().platformName
 
         return when (targetName) {
-            KotlinPlatformValues.JS -> false
+            KotlinPlatformValues.JS -> true
             KotlinPlatformValues.JVM -> true
             KotlinPlatformValues.NATIVE -> {
                 return when (configuration.nativeTargetPlatformName()) {
@@ -35,13 +35,13 @@ class MpAptTestProcessor : AbstractProcessor() {
                         true
                     }
                     else -> {
-                        false
+                        true
                     }
                 }
             }
             else -> {
                 log(targetName)
-                false
+                true
             }
         }
 
