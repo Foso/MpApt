@@ -1,7 +1,7 @@
 package de.jensklingenberg.mpapt.common
 
-import de.jensklingenberg.mpapt.model.AbstractProcessor
 import de.jensklingenberg.mpapt.model.Element
+import de.jensklingenberg.mpapt.model.Processor
 import de.jensklingenberg.mpapt.model.RoundEnvironment
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.name.FqName
@@ -15,7 +15,7 @@ class ClassParser() {
 
     companion object {
 
-        fun parse(descriptor: ClassDescriptor, processor: AbstractProcessor, roundEnvironment: RoundEnvironment) {
+        fun parse(descriptor: ClassDescriptor, processor: Processor, roundEnvironment: RoundEnvironment) {
 
             processor.getSupportedAnnotationTypes().forEach { annotation ->
                 if (descriptor.hasAnnotation(annotation)) {
@@ -38,12 +38,12 @@ class ClassParser() {
 
         }
 
-        private fun parseClassConstructor(descriptor: ClassDescriptor, processor: AbstractProcessor, round: RoundEnvironment, annotation: String) {
+        private fun parseClassConstructor(descriptor: ClassDescriptor, processor: Processor, round: RoundEnvironment, annotation: String) {
             try {
                 descriptor.constructors.forEach {
-                    if (checkit(it, annotation)) {
+                    if (hasAnnnotations(it, annotation)) {
                         val annotatedConstructors =
-                            descriptor.constructors.filter { constructor -> constructor.hasAnnotation(annotation) }
+                                descriptor.constructors.filter { constructor -> constructor.hasAnnotation(annotation) }
 
                         annotatedConstructors.forEach { annotatedConstructor ->
 
@@ -51,11 +51,11 @@ class ClassParser() {
 
                             round.module = descriptor.module
                             round.elements.add(
-                                Element.ClassConstructorElement(
-                                    classConstructorDescriptor = annotatedConstructor,
-                                    annotation = annotationDesc
+                                    Element.ClassConstructorElement(
+                                            classConstructorDescriptor = annotatedConstructor,
+                                            annotation = annotationDesc
 
-                                )
+                                    )
                             )
                             processor.process(round)
                         }
@@ -72,7 +72,7 @@ class ClassParser() {
         fun parseMethod(
                 descriptor: ClassDescriptor,
                 function: FunctionDescriptor,
-                processor: AbstractProcessor,
+                processor: Processor,
                 roundEnvironment: RoundEnvironment
         ) {
 
@@ -108,7 +108,7 @@ class ClassParser() {
 
         }
 
-        private fun checkValueParameter(descriptor: ClassDescriptor, function: FunctionDescriptor, processor: AbstractProcessor, roundEnvironment: RoundEnvironment, annotationNames: String) {
+        private fun checkValueParameter(descriptor: ClassDescriptor, function: FunctionDescriptor, processor: Processor, roundEnvironment: RoundEnvironment, annotationNames: String) {
             function.valueParameters.forEach { parameterDescriptor ->
                 if (parameterDescriptor.annotations.hasAnnotation(FqName(annotationNames))) {
                     val annotation = parameterDescriptor.annotations.findAnnotation(FqName(annotationNames))
@@ -131,7 +131,7 @@ class ClassParser() {
         }
 
 
-        fun parseProperty(propertyDescriptor: PropertyDescriptor, processor: AbstractProcessor, roundEnvironment: RoundEnvironment, isLastClass: Boolean = false) {
+        fun parseProperty(propertyDescriptor: PropertyDescriptor, processor: Processor, roundEnvironment: RoundEnvironment) {
 
             processor.getSupportedAnnotationTypes().forEachIndexed { index, annotationNames ->
 
@@ -159,7 +159,7 @@ class ClassParser() {
 
         }
 
-        private fun checkPropertySetter(propertyDescriptor: PropertyDescriptor, processor: AbstractProcessor, roundEnvironment: RoundEnvironment, annotationNames: String) {
+        private fun checkPropertySetter(propertyDescriptor: PropertyDescriptor, processor: Processor, roundEnvironment: RoundEnvironment, annotationNames: String) {
             propertyDescriptor.setter?.let { setterDesc ->
                 if (setterDesc.annotations.hasAnnotation(annotationNames)) {
                     val annotation = setterDesc.annotations.findAnnotation(annotationNames)
@@ -176,10 +176,9 @@ class ClassParser() {
                     processor.process(roundEnvironment)
                 }
             }
-
         }
 
-        private fun checkPropertyGetter(propertyDescriptor: PropertyDescriptor, processor: AbstractProcessor, roundEnvironment: RoundEnvironment, annotationNames: String) {
+        private fun checkPropertyGetter(propertyDescriptor: PropertyDescriptor, processor: Processor, roundEnvironment: RoundEnvironment, annotationNames: String) {
             propertyDescriptor.getter?.let { setterDesc ->
                 if (setterDesc.annotations.hasAnnotation(annotationNames)) {
                     val annotation = setterDesc.annotations.findAnnotation(annotationNames)
@@ -200,17 +199,8 @@ class ClassParser() {
 
         }
 
-        fun parsePackage(thisDescriptor: PackageFragmentDescriptor, processor: AbstractProcessor, roundEnvironment: RoundEnvironment) {
 
-            processor.getSupportedAnnotationTypes().forEach { annotationNames ->
-
-
-            }
-
-
-        }
-
-        private fun checkit(it: ClassConstructorDescriptor, annotation: String): Boolean {
+        private fun hasAnnnotations(it: ClassConstructorDescriptor, annotation: String): Boolean {
             /**I dont like this approach*/
 
             try {

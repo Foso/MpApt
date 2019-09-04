@@ -1,6 +1,5 @@
 package de.jensklingenberg.mpapt.model
 
-
 interface Processor {
 
     /**
@@ -9,7 +8,14 @@ interface Processor {
      */
     fun getSupportedAnnotationTypes(): Set<String>
 
+    /**
+     * TODO: Implement check for source version
+     */
     fun getSupportedSourceVersion(): SourceVersion
+
+    /**
+     * This gets triggered when a new module(jvmMain,jsMain,..) is getting parsed by the processor
+     */
     fun initProcessor()
 
     /**
@@ -18,13 +24,12 @@ interface Processor {
     fun process(roundEnvironment: RoundEnvironment)
 
     /**
-     * The [Platform]s for which the processor should be enabled.
-     * The default is [Platform.ALL]
+     * This get triggered when the last class of a module was parsed.
      */
-    fun supportedTargetPlatform(): List<Platform>
-
     fun processingOver()
 
+
+    fun isTargetPlatformSupported() : Boolean
 
 }
 
