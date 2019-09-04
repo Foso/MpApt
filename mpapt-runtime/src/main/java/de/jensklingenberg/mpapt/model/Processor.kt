@@ -1,8 +1,5 @@
 package de.jensklingenberg.mpapt.model
 
-import org.jetbrains.kotlin.platform.TargetPlatform
-
-
 interface Processor {
 
     /**
@@ -11,7 +8,14 @@ interface Processor {
      */
     fun getSupportedAnnotationTypes(): Set<String>
 
+    /**
+     * TODO: Implement check for source version
+     */
     fun getSupportedSourceVersion(): SourceVersion
+
+    /**
+     * This gets triggered when a new module(jvmMain,jsMain,..) is getting parsed by the processor
+     */
     fun initProcessor()
 
     /**
@@ -19,6 +23,9 @@ interface Processor {
      * */
     fun process(roundEnvironment: RoundEnvironment)
 
+    /**
+     * This get triggered when the last class of a module was parsed.
+     */
     fun processingOver()
 
 

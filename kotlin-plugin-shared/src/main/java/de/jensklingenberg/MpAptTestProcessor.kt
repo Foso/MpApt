@@ -1,12 +1,14 @@
 package de.jensklingenberg
 
 
-import de.jensklingenberg.mpapt.model.AbstractProcessor
-import de.jensklingenberg.mpapt.model.RoundEnvironment
+import de.jensklingenberg.mpapt.common.nativeTargetPlatformName
 import de.jensklingenberg.mpapt.common.simpleName
+import de.jensklingenberg.mpapt.model.AbstractProcessor
 import de.jensklingenberg.mpapt.model.Element
+import de.jensklingenberg.mpapt.model.RoundEnvironment
+import de.jensklingenberg.mpapt.utils.KonanTargetValues
+import de.jensklingenberg.mpapt.utils.KotlinPlatformValues
 import de.jensklingenberg.testAnnotations.*
-import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.platform.TargetPlatform
 import org.jetbrains.kotlin.resolve.descriptorUtil.module
 
@@ -24,14 +26,24 @@ class MpAptTestProcessor : AbstractProcessor() {
     override fun isTargetPlatformSupported(platform: TargetPlatform): Boolean {
         val targetName = platform.first().platformName
 
-       return when(targetName){
-            "JS"->false
-           "JVM"->true
-           else -> {
-               log(targetName)
-               false
-           }
-       }
+        return when (targetName) {
+            KotlinPlatformValues.JS -> false
+            KotlinPlatformValues.JVM -> true
+            KotlinPlatformValues.NATIVE -> {
+                return when (configuration.nativeTargetPlatformName()) {
+                    KonanTargetValues.LINUX_X64, KonanTargetValues.MACOS_X64 -> {
+                        true
+                    }
+                    else -> {
+                        false
+                    }
+                }
+            }
+            else -> {
+                log(targetName)
+                false
+            }
+        }
 
     }
 
@@ -64,7 +76,7 @@ class MpAptTestProcessor : AbstractProcessor() {
         roundEnvironment.getElementsAnnotatedWith(testValueParameter).forEach {
             when (it) {
                 is Element.ValueParameterElement -> {
-                    log("Found ValueParameter: " + it.valueParameterDescriptor.name + "in : "+it.valueParameterDescriptor.containingDeclaration.name+" Module: " + it.valueParameterDescriptor.module.simpleName() + " platform   " + activeTargetPlatform.first().platformName)
+                    log("Found ValueParameter: " + it.valueParameterDescriptor.name + "in : " + it.valueParameterDescriptor.containingDeclaration.name + " Module: " + it.valueParameterDescriptor.module.simpleName() + " platform   " + activeTargetPlatform.first().platformName)
                 }
             }
         }
@@ -88,7 +100,7 @@ class MpAptTestProcessor : AbstractProcessor() {
         roundEnvironment.getElementsAnnotatedWith(testConstructor).forEach {
             when (it) {
                 is Element.ClassConstructorElement -> {
-                    log("Found ClassConstructor: " + it.classConstructorDescriptor.name + " " +it.classConstructorDescriptor.isPrimary+ " Module: " + it.classConstructorDescriptor.module.simpleName() + " platform   " + activeTargetPlatform.first().platformName)
+                    log("Found ClassConstructor: " + it.classConstructorDescriptor.name + " " + it.classConstructorDescriptor.isPrimary + " Module: " + it.classConstructorDescriptor.module.simpleName() + " platform   " + activeTargetPlatform.first().platformName)
                 }
             }
         }
@@ -97,7 +109,7 @@ class MpAptTestProcessor : AbstractProcessor() {
     }
 
 
-    override fun getSupportedAnnotationTypes(): Set<String> = setOf(TestClass::class.java.name, testFunction, testProperty,testValueParameter,testPropertyGetter,testPropertySetter,testConstructor,testLocalVariable)
+    override fun getSupportedAnnotationTypes(): Set<String> = setOf(TestClass::class.java.name, testFunction, testProperty, testValueParameter, testPropertyGetter, testPropertySetter, testConstructor, testLocalVariable)
 
     override fun processingOver() {
         log("$TAG***Processor over ***")

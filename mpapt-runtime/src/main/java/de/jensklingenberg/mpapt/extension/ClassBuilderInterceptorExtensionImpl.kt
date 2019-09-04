@@ -1,6 +1,5 @@
 package de.jensklingenberg.mpapt.extension
 
-import de.jensklingenberg.mpapt.extension.unused.DelegatingClassBuilderImpl
 import de.jensklingenberg.mpapt.model.Processor
 import org.jetbrains.kotlin.codegen.ClassBuilderFactory
 import org.jetbrains.kotlin.codegen.extensions.ClassBuilderInterceptorExtension
@@ -18,7 +17,9 @@ class ClassBuilderInterceptorExtensionImpl(val processor: Processor) : ClassBuil
     ): ClassBuilderFactory = object : ClassBuilderFactory by interceptedFactory {
 
         override fun newClassBuilder(origin: JvmDeclarationOrigin): DelegatingClassBuilderImpl {
-            processor.processingOver()
+            if(processor.isTargetPlatformSupported()){
+                processor.processingOver()
+            }
 
             return DelegatingClassBuilderImpl(interceptedFactory.newClassBuilder(origin))
         }

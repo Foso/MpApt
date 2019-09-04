@@ -167,3 +167,24 @@ CollectAdditionalSourcesExtension.registerExtension(project,object :CollectAddit
 ===================================
 
 class MyDeclarationAttributeAltererExtension(generator: AbstractProcessor) : DeclarationAttributeAltererExtension {
+
+================================================
+/**
+ * /TODO: Find more reliable way
+ * I know there is a platform property at Descriptors, but it was always null
+ */
+fun CompilerConfiguration.guessingPlatform(): Platform {
+    val JS_STRING = "JSCompiler"
+    val JVM = "JVMCompiler"
+    val NATIVE = "K2NativeCompilerPerformanceManager"
+    val METADATA = "MetadataCompiler"
+    val perf: String = this.get(CLIConfigurationKeys.PERF_MANAGER).toString() ?: ""
+
+    return when {
+        perf.contains(JS_STRING) -> Platform.JS
+        perf.contains(JVM) -> Platform.JVM
+        perf.contains(NATIVE) -> Platform.NATIVE
+        perf.contains(METADATA) -> Platform.METADATA
+        else -> Platform.UNKNOWN
+    }
+}

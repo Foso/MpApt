@@ -19,25 +19,20 @@ fun MessageCollector.warn(s: String) {
 
 
 /**
- * /TODO: Find more reliable way
- * I know there is a platform property at Descriptors, but it was always null
+ * In the Kotlin Native Compiler the configuration map has an entry with the name "target we compile for"
+ * the value is one of [de.jensklingenberg.mpapt.utils.KonanTargetValues]. I don't know how to get the value
+ * out of the configuration map other than parse the "toString()". This function will return an empty value
+ * when it's used on Kotlin JVM/JS Compiler because the CompilerConfiguration doesn't have that value.
  */
-fun CompilerConfiguration.guessingPlatform(): Platform {
-    val JS_STRING = "JSCompiler"
-    val JVM = "JVMCompiler"
-    val NATIVE = "K2NativeCompilerPerformanceManager"
-    val METADATA = "MetadataCompiler"
-    val perf: String = this.get(CLIConfigurationKeys.PERF_MANAGER).toString() ?: ""
-
-    return when {
-        perf.contains(JS_STRING) -> Platform.JS
-        perf.contains(JVM) -> Platform.JVM
-        perf.contains(NATIVE) -> Platform.NATIVE
-        perf.contains(METADATA) -> Platform.METADATA
-        else -> Platform.UNKNOWN
+fun CompilerConfiguration.nativeTargetPlatformName(): String {
+    val targetKeyword = "target we compile for="
+    val mapString = this.toString()
+    return if(!mapString.contains(targetKeyword)){
+        ""
+    }else{
+        this.toString().substringAfter(targetKeyword).substringBefore(",")
     }
 }
-
 
 fun MessageCollector.printMessage(diagnosticKind: DiagnosticKind, message: String) {
     when (diagnosticKind) {

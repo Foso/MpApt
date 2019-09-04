@@ -30,6 +30,10 @@ abstract class AbstractProcessor() : Processor {
 
     override fun isTargetPlatformSupported(): Boolean = isTargetPlatformSupported(activeTargetPlatform)
 
+    /**
+     * This method will check if your processor is enabled for the active target platform.
+     * By default it's enabled for every platform. You can override it and return true or false for the targets you want to support
+     */
     open fun isTargetPlatformSupported(platform: TargetPlatform) = true
 
 
