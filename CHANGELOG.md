@@ -2,9 +2,8 @@
 
 ========================================
 
-You can now distinguish between which  native target platforms you want support.
-Before processing the isTargetPlatformSupported(platform: TargetPlatform) will called and you return true if you want to enable your processor 
-for this target or false if you don't. By default this methods returns true
+You can now distinguish between which  native target platforms you want to support.
+Before processing the isTargetPlatformSupported(platform: TargetPlatform) will be called and you can return true if you want to enable your processor for this target or false if you don't. By default this methods returns true
 
 configuration.nativeTargetPlatformName() will get you the names of the Native Targets(macos_x64,linux_x64,etc) the values are defined in KonanTargetValues.
 It needs to be used only on Kotlin Native otherwise it will return an empty string
