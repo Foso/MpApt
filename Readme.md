@@ -4,7 +4,7 @@
 )](https://github.com/Foso/MpApt/blob/master/LICENSE)[![jCenter](https://img.shields.io/badge/Apache-2.0-green.svg)](https://github.com/Foso/MpApt/blob/master/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-range.svg?style=flat-square)](#contributors)
-  <a href="https://twitter.com/intent/tweet?text=Hey, check out MpApt https://github.com/Foso/MpApt via @jklingenberg_ #Android 
+  <a href="https://twitter.com/intent/tweet?text=Hey, check out #MpApt https://github.com/Foso/MpApt via @jklingenberg_ #Kotlin 
 "><img src="https://img.shields.io/twitter/url/https/github.com/angular-medellin/meetup.svg?style=social" alt="Tweet"></a>
 
 
@@ -29,7 +29,7 @@ It can detect annotations with following targets:
 
 
 ## Usage
-These are the instructions for v0.8.0, check [Changelog](https://github.com/Foso/MpApt/blob/master/CHANGELOG.md) for changes on the active development branch
+These are the instructions for v0.8.1, check [Changelog](https://github.com/Foso/MpApt/blob/master/CHANGELOG.md) for changes on the active development branch
 
 Inside your compiler plugin, add the dependency from MavenCentral 
 
@@ -39,13 +39,13 @@ repositories {
 }
 
 dependencies {
-   compile 'de.jensklingenberg:mpapt-runtime:0.8.0'
+   compile 'de.jensklingenberg:mpapt-runtime:0.8.1'
 }
 ```
 1) Create a class that extends de.jensklingenberg.mpapt.model.AbstractProcessor
 
 ```kotlin
-class MpAptTestProcessor(configuration: CompilerConfiguration) : AbstractProcessor(configuration) {
+class MpAptTestProcessor() : AbstractProcessor() {
 
 ```
 2) Add the names of your annotations that you want to detect:
@@ -73,14 +73,14 @@ roundEnvironment.getElementsAnnotatedWith(TestClass::class.java.name).forEach {
 }
 ```
 4)  Init MpApt inside your ComponentRegistrar:
-* Pass an instance of your processor into MpAptProject
+* Pass an instance of your processor and the CompilerConfiguration into MpAptProject
 * Then add an instance of MpAptProject to the following extension classes:
 
 Inside a Kotlin Native Compiler Plugin:
 ```kotlin
 override fun registerProjectComponents(project: MockProject, configuration: CompilerConfiguration) {
-        val generator = MpAptTestProcessor(configuration)
-        val mpapt = MpAptProject(generator)
+        val processor = MpAptTestProcessor()
+        val mpapt = MpAptProject(processor,configuration)
 
         StorageComponentContainerContributor.registerExtension(project,mpapt)
         SyntheticResolveExtension.registerExtension(project, mpapt)
@@ -94,8 +94,8 @@ Inside a Kotlin JVM/JS Compiler Plugin:
             project: MockProject,
             configuration: CompilerConfiguration
     ) {
-        val processor = MpAptTestProcessor(configuration)
-        val mpapt = MpAptProject(processor)
+        val processor = MpAptTestProcessor()
+        val mpapt = MpAptProject(processor,configuration)
         StorageComponentContainerContributor.registerExtension(project,mpapt)
         SyntheticResolveExtension.registerExtension(project, mpapt)
         ClassBuilderInterceptorExtension.registerExtension(project,mpapt)
@@ -103,6 +103,46 @@ Inside a Kotlin JVM/JS Compiler Plugin:
     }
 ```
 5) That's it
+
+### Choose supported target platforms 
+By default your processor is enabled for every target. 
+You can override 
+
+```kotlin
+isTargetPlatformSupported(platform: TargetPlatform): Boolean
+```
+and return "true" if you want to support the target or "false" you don't.
+
+```kotlin
+   override fun isTargetPlatformSupported(platform: TargetPlatform): Boolean {
+         val targetName = platform.first().platformName
+ 
+         return when (targetName) {
+             KotlinPlatformValues.JS -> true
+             KotlinPlatformValues.JVM -> true
+             KotlinPlatformValues.NATIVE -> {
+                 return when (configuration.nativeTargetPlatformName()) {
+                     KonanTargetValues.LINUX_X64, KonanTargetValues.MACOS_X64 -> {
+                         true
+                     }
+                     else -> {
+                         true
+                     }
+                 }
+             }
+             else -> {
+                 log(targetName)
+                 true
+             }
+         }
+ 
+     }
+```
+You can distinguish between the native target platforms you want to support.
+
+configuration.nativeTargetPlatformName() will get you the names of the Native Targets(macos_x64,linux_x64,etc). The values are defined in KonanTargetValues.
+It needs to be used only on Kotlin Native otherwise it will return an empty string
+
 
 ## ✍️ Feedback
 

@@ -3,21 +3,21 @@ package de.jensklingenberg
 
 import com.squareup.kotlinpoet.*
 import de.jensklingenberg.ktofitAnnotations.GET
-import de.jensklingenberg.mpapt.common.getFunctionParameters
-import de.jensklingenberg.mpapt.common.getReturnTypeImport
-import de.jensklingenberg.mpapt.common.guessingSourceSetFolder
-import de.jensklingenberg.mpapt.common.simpleName
+import de.jensklingenberg.mpapt.common.*
 import de.jensklingenberg.mpapt.model.AbstractProcessor
 import de.jensklingenberg.mpapt.model.Element
 import de.jensklingenberg.mpapt.model.RoundEnvironment
+import de.jensklingenberg.mpapt.utils.KonanTargetValues
+import de.jensklingenberg.mpapt.utils.KotlinPlatformValues
 import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.descriptors.ClassDescriptor
 import org.jetbrains.kotlin.descriptors.FunctionDescriptor
+import org.jetbrains.kotlin.platform.TargetPlatform
 import org.jetbrains.kotlin.resolve.annotations.argumentValue
 import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameSafe
 import java.io.File
 
-class MpAptTestProcessor(configuration: CompilerConfiguration) : AbstractProcessor(configuration) {
+class MpAptTestProcessor() : AbstractProcessor() {
     val TAG = "MyAnnotationProcessor"
 
     val get = GET::class.java.name
@@ -36,6 +36,29 @@ class MpAptTestProcessor(configuration: CompilerConfiguration) : AbstractProcess
 
     }
 
+    override fun isTargetPlatformSupported(platform: TargetPlatform): Boolean {
+        val targetName = platform.first().platformName
+
+        return when (targetName) {
+            KotlinPlatformValues.JS -> true
+            KotlinPlatformValues.JVM -> false
+            KotlinPlatformValues.NATIVE -> {
+                return when (configuration.nativeTargetPlatformName()) {
+                    KonanTargetValues.LINUX_X64,KonanTargetValues.MACOS_X64 -> {
+                        false
+                    }
+                    else->{
+                        false
+                    }
+                }
+            }
+            else -> {
+                log(targetName)
+                false
+            }
+        }
+
+    }
 
     override fun getSupportedAnnotationTypes(): Set<String> = setOf(get)
 

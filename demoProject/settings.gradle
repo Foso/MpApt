@@ -1,4 +1,4 @@
 include 'example'
-include ':kotlin-plugin'
+include ':ktorfit-compiler'
 include ':ktorfit-shared'
 include 'ktorfit-annotations'

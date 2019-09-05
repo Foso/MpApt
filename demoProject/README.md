@@ -1,6 +1,13 @@
 This is a (POC) demo project.
 It shows how to use MpApt with Kotlin Poet.
 
+How to build:
+Inside the project folder run:
+* <kbd>./gradlew :ktorfit-annotations:publishToMavenLocal</kbd>
+* <kbd>./gradlew :ktorfit-compiler:build</kbd>
+
+I haven't added the MacOS targets for the annotations module. You need to add the target in build.gradle if you want to build them.
+
 In jsMain is a Api interface
 ```kotlin
 interface Api {
