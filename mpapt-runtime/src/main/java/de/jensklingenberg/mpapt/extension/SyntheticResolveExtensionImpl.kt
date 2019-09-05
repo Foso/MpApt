@@ -24,7 +24,7 @@ internal class SyntheticResolveExtensionImpl(val abstractProcessor: Processor) :
         val roundEnvironment = RoundEnvironment()
         result.forEach {
             if (!it.isCompanionObject && name.identifier != "Companion") {
-                ClassParser.parse(it, abstractProcessor, roundEnvironment)
+                ClassParser.parseClass(it, abstractProcessor, roundEnvironment)
             }
         }
 

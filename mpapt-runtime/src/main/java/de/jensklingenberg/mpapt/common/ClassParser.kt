@@ -15,7 +15,7 @@ class ClassParser() {
 
     companion object {
 
-        fun parse(descriptor: ClassDescriptor, processor: Processor, roundEnvironment: RoundEnvironment) {
+        fun parseClass(descriptor: ClassDescriptor, processor: Processor, roundEnvironment: RoundEnvironment) {
 
             processor.getSupportedAnnotationTypes().forEach { annotation ->
                 if (descriptor.hasAnnotation(annotation)) {
@@ -32,8 +32,6 @@ class ClassParser() {
                 }
 
                 parseClassConstructor(descriptor, processor, roundEnvironment, annotation)
-
-
             }
 
         }
