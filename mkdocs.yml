@@ -1,6 +1,8 @@
 site_name: MpApt
 repo_name: MpApt
+
 repo_url: https://github.com/Foso/MpApt
+site_url: https://foso.github.io/MpApt
 theme:
   name: 'material'
   palette:
