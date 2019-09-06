@@ -148,7 +148,7 @@ It needs to be used only on Kotlin Native otherwise it will return an empty stri
 
 Feel free to send feedback on [Twitter](https://twitter.com/jklingenberg_) or [file an issue](https://github.com/foso/MpApt/issues/new). Feature requests are always welcome. If you wish to contribute, please take a quick look at [How to develop?](https://github.com/Foso/MpApt/wiki/How-to-develop%3F)
 
-### 👷 Development Project Structure
+## 👷 Development Project Structure
  	
 * <kbd>demoProject</kbd> - An example project that is using MpApt+KotlinPoet to generate code on KotlinJS
 * <kbd>annotations</kbd> - A Kotlin Multiplatform project which contains test annotations 
@@ -158,6 +158,8 @@ Feel free to send feedback on [Twitter](https://twitter.com/jklingenberg_) or [f
 * <kbd>kotlin-compiler-native-plugin</kbd> - This module contains the Kotlin Compiler Plugin for Native targets, it implements the <kbd>kotlin-plugin-shared</kbd>-module
 * <kbd>kotlin-plugin-shared</kbd> Contains an implementation of MpApt
 
+## Projects that use MpApt:
+* [Native Suspended Functions](https://github.com/feilfeilundfeil/kotlin-native-suspend-function-callback)
 
 # See also
 * [How to use a Kotlin Compiler Plugin from Gradle Plugin](https://github.com/Foso/MpApt/wiki/How-to-use-a-Kotlin-Compiler-Plugin-from-Gradle-Plugin)
