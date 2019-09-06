@@ -31,18 +31,18 @@
       
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
-      <link rel="shortcut icon" href="/assets/images/favicon.png">
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.2">
     
     
       
-        <title>MpApt</title>
+        <title>Changelog - MpApt</title>
       
     
     
-      <link rel="stylesheet" href="/assets/stylesheets/application.30686662.css">
+      <link rel="stylesheet" href="../assets/stylesheets/application.30686662.css">
       
-        <link rel="stylesheet" href="/assets/stylesheets/application-palette.a8b3c06d.css">
+        <link rel="stylesheet" href="../assets/stylesheets/application-palette.a8b3c06d.css">
       
       
         
@@ -51,7 +51,7 @@
       
     
     
-      <script src="/assets/javascripts/modernizr.74668098.js"></script>
+      <script src="../assets/javascripts/modernizr.74668098.js"></script>
     
     
       
@@ -60,7 +60,7 @@
         <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
       
     
-    <link rel="stylesheet" href="/assets/fonts/material-icons.css">
+    <link rel="stylesheet" href="../assets/fonts/material-icons.css">
     
     
     
@@ -90,7 +90,7 @@
   <nav class="md-header-nav md-grid">
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
-        <a href="/." title="MpApt" class="md-header-nav__button md-logo">
+        <a href=".." title="MpApt" class="md-header-nav__button md-logo">
           
             <i class="md-icon"></i>
           
@@ -107,7 +107,7 @@
             </span>
             <span class="md-header-nav__topic">
               
-                
+                Changelog
               
             </span>
           
@@ -182,7 +182,7 @@
         
   <li class="md-tabs__item">
     
-      <a href="/." class="md-tabs__link md-tabs__link--active">
+      <a href=".." class="md-tabs__link md-tabs__link--active">
         Overview
       </a>
     
@@ -204,7 +204,7 @@
                   <div class="md-sidebar__inner">
                     <nav class="md-nav md-nav--primary" data-md-level="0">
   <label class="md-nav__title md-nav__title--site" for="__drawer">
-    <a href="/." title="MpApt" class="md-nav__button md-logo">
+    <a href=".." title="MpApt" class="md-nav__button md-logo">
       
         <i class="md-icon"></i>
       
@@ -240,7 +240,7 @@
 
 
   <li class="md-nav__item">
-    <a href="/." title="Overview" class="md-nav__link">
+    <a href=".." title="Overview" class="md-nav__link">
       Overview
     </a>
   </li>
@@ -250,11 +250,18 @@
       
       
 
+  
 
-  <li class="md-nav__item">
-    <a href="/CHANGELOG/" title="Changelog" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+    
+    <a href="./" title="Changelog" class="md-nav__link md-nav__link--active">
       Changelog
     </a>
+    
   </li>
 
     
@@ -269,8 +276,55 @@
           <div class="md-content">
             <article class="md-content__inner md-typeset">
               
-  <h1>404 - Not found</h1>
+                
+                  <a href="https://github.com/Foso/MpApt/edit/master/docs/CHANGELOG.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                  <h1>Changelog</h1>
+                
+                <p>v0.8.1</p>
+<p>========================================</p>
+<p>You can now distinguish between which  native target platforms you want to support.
+Before processing the isTargetPlatformSupported(platform: TargetPlatform) will be called and you can return true if you want to enable your processor for this target or false if you don't. By default this methods returns true</p>
+<p>configuration.nativeTargetPlatformName() will get you the names of the Native Targets(macos_x64,linux_x64,etc) the values are defined in KonanTargetValues.
+It needs to be used only on Kotlin Native otherwise it will return an empty string</p>
+<p>Example:</p>
+<pre><code class="kotlin">override fun isTargetPlatformSupported(platform: TargetPlatform): Boolean {
+         val targetName = platform.first().platformName
 
+         return when (targetName) {
+             KotlinPlatformValues.JS -&gt; false
+             KotlinPlatformValues.JVM -&gt; true
+             KotlinPlatformValues.NATIVE -&gt; {
+                 return when (configuration.nativeTargetPlatformName()) {
+                     KonanTargetValues.LINUX_X64,KonanTargetValues.MACOS_X64 -&gt; {
+                         false
+                     }
+                     else-&gt;{
+                         false
+                     }
+                 }
+             }
+             else -&gt; {
+                 log(targetName)
+                 false
+             }
+         }
+
+     }
+
+</code></pre>
+
+<p>========================================   </p>
+<p>Changed the initialization of the library.</p>
+<p>Now you need to add the compiler configuration to the MpAptProject</p>
+<pre><code class="kotlin">val processor = MpAptTestProcessor()
+val mpapt = MpAptProject(processor,configuration)
+</code></pre>
+                
+                  
+                
+              
               
                 
 
@@ -283,6 +337,27 @@
       
         
 <footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href=".." title="Overview" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Overview
+              </span>
+            </div>
+          </a>
+        
+        
+      </nav>
+    </div>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
@@ -301,9 +376,9 @@
       
     </div>
     
-      <script src="/assets/javascripts/application.c648116f.js"></script>
+      <script src="../assets/javascripts/application.c648116f.js"></script>
       
-      <script>app.initialize({version:"1.0.4",url:{base:"/"}})</script>
+      <script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
       
     
   </body>

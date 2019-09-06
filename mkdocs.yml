@@ -1,3 +1,14 @@
-site_name: My Docs
+site_name: MpApt
+repo_name: MpApt
+repo_url: https://github.com/Foso/MpApt
 theme:
   name: 'material'
+  palette:
+    primary: 'deep-orange'
+    accent: 'deep-purple'
+  feature:
+    tabs: true
+
+nav:
+  - 'Overview': index.md
+  - 'Changelog': CHANGELOG.md
