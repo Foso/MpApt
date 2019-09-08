@@ -1,6 +1,7 @@
 package de.jensklingenberg.mpapt.common
 
 import org.jetbrains.kotlin.descriptors.*
+import org.jetbrains.kotlin.descriptors.annotations.Annotated
 import org.jetbrains.kotlin.descriptors.annotations.AnnotationDescriptor
 import org.jetbrains.kotlin.js.resolve.diagnostics.findPsi
 import org.jetbrains.kotlin.name.FqName
@@ -12,8 +13,8 @@ import org.jetbrains.kotlin.resolve.lazy.descriptors.LazyClassDescriptor
 import org.jetbrains.kotlin.resolve.source.PsiSourceFile
 
 
-fun ClassDescriptor.hasAnnotation(name: String): Boolean = this.annotations.hasAnnotation(FqName(name))
-fun ClassDescriptor.findAnnotation(name: String): AnnotationDescriptor? = this.annotations.findAnnotation(FqName(name))
+fun Annotated.hasAnnotation(name: String): Boolean = this.annotations.hasAnnotation(FqName(name))
+fun Annotated.findAnnotation(name: String): AnnotationDescriptor? = this.annotations.findAnnotation(FqName(name))
 
 //TODO:this doesnt work with Native
 fun ClassDescriptor.canonicalFilePath() =
@@ -51,8 +52,6 @@ fun ClassDescriptor.methods(kind: CallableMemberDescriptor.Kind): Collection<Cal
             .filter { it.kind.equals(kind) }
             .filterIsInstance<SimpleFunctionDescriptor>()
 }
-
-fun ClassConstructorDescriptor.hasAnnotation(name: String): Boolean = this.annotations.hasAnnotation(name)
 
 private fun KtProperty.hasAnnotation(name: String): Boolean {
     return this.annotationEntries.any { name.contains(it.shortName?.identifier ?: "") }

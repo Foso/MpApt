@@ -23,8 +23,8 @@ class Annotated @TestConstructor constructor() {
         }
 
     @TestFunction
-    fun firstFunction() {
-
+    fun firstFunction() :@TestType String {
+           @TestExpression return ""
     }
 
     @TestFunction
@@ -32,7 +32,7 @@ class Annotated @TestConstructor constructor() {
 
     }
 
-    fun thirdFunction(@TestValueParameter param: String, @TestValueParameter param2: String) {
+    fun thirdFunction(@TestValueParameter param: @TestType String, @TestValueParameter param2: String) {
 
     }
 

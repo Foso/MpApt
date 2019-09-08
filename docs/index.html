@@ -1,0 +1,531 @@
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+        <link rel="canonical" href="https://foso.github.io/MpApt/">
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.2">
+    
+    
+      
+        <title>MpApt</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/application.30686662.css">
+      
+        <link rel="stylesheet" href="assets/stylesheets/application-palette.a8b3c06d.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#ff7043">
+      
+    
+    
+      <script src="assets/javascripts/modernizr.74668098.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="deep-orange" data-md-color-accent="deep-purple">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+          <svg xmlns="http://www.w3.org/2000/svg" width="416" height="448" viewBox="0 0 416 448" id="__github"><path fill="currentColor" d="M160 304q0 10-3.125 20.5t-10.75 19T128 352t-18.125-8.5-10.75-19T96 304t3.125-20.5 10.75-19T128 256t18.125 8.5 10.75 19T160 304zm160 0q0 10-3.125 20.5t-10.75 19T288 352t-18.125-8.5-10.75-19T256 304t3.125-20.5 10.75-19T288 256t18.125 8.5 10.75 19T320 304zm40 0q0-30-17.25-51T296 232q-10.25 0-48.75 5.25Q229.5 240 208 240t-39.25-2.75Q130.75 232 120 232q-29.5 0-46.75 21T56 304q0 22 8 38.375t20.25 25.75 30.5 15 35 7.375 37.25 1.75h42q20.5 0 37.25-1.75t35-7.375 30.5-15 20.25-25.75T360 304zm56-44q0 51.75-15.25 82.75-9.5 19.25-26.375 33.25t-35.25 21.5-42.5 11.875-42.875 5.5T212 416q-19.5 0-35.5-.75t-36.875-3.125-38.125-7.5-34.25-12.875T37 371.5t-21.5-28.75Q0 312 0 260q0-59.25 34-99-6.75-20.5-6.75-42.5 0-29 12.75-54.5 27 0 47.5 9.875t47.25 30.875Q171.5 96 212 96q37 0 70 8 26.25-20.5 46.75-30.25T376 64q12.75 25.5 12.75 54.5 0 21.75-6.75 42 34 40 34 99.5z"/></svg>
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#introduction" tabindex="1" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="https://foso.github.io/MpApt" title="MpApt" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              MpApt
+            </span>
+            <span class="md-header-nav__topic">
+              
+                Overview
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+        <div class="md-flex__cell md-flex__cell--shrink">
+          <div class="md-header-nav__source">
+            
+
+
+  
+
+<a href="https://github.com/Foso/MpApt/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    MpApt
+  </div>
+</a>
+          </div>
+        </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+        
+
+<nav class="md-tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  <li class="md-tabs__item">
+    
+      <a href="." class="md-tabs__link md-tabs__link--active">
+        Overview
+      </a>
+    
+  </li>
+
+      
+        
+      
+    </ul>
+  </div>
+</nav>
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="https://foso.github.io/MpApt" title="MpApt" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    MpApt
+  </label>
+  
+    <div class="md-nav__source">
+      
+
+
+  
+
+<a href="https://github.com/Foso/MpApt/" title="Go to repository" class="md-source" data-md-source="github">
+  
+    <div class="md-source__icon">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <use xlink:href="#__github" width="24" height="24"></use>
+      </svg>
+    </div>
+  
+  <div class="md-source__repository">
+    MpApt
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+    <a href="." title="Overview" class="md-nav__link md-nav__link--active">
+      Overview
+    </a>
+    
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="CHANGELOG/" title="Changelog" class="md-nav__link">
+      Changelog
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/Foso/MpApt/edit/master/docs/index.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                
+                
+                <h1 align="center">MpApt - Kotlin (Native/JS/JVM) Annotation Processor library</h1>
+
+<p><a href="https://github.com/Foso/MpApt/blob/master/LICENSE"><img alt="jCenter" src="https://img.shields.io/badge/Kotlin-1.3.50-green.svg" /></a><a href="https://github.com/Foso/MpApt/blob/master/LICENSE"><img alt="jCenter" src="https://img.shields.io/badge/Apache-2.0-green.svg" /></a>
+<a href="http://makeapullrequest.com"><img alt="PRs Welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" /></a>
+<a href="#contributors"><img alt="All Contributors" src="https://img.shields.io/badge/all_contributors-1-range.svg?style=flat-square" /></a>
+  <a href="https://twitter.com/intent/tweet?text=Hey, check out #MpApt https://github.com/Foso/MpApt via @jklingenberg_ #Kotlin 
+"><img src="https://img.shields.io/twitter/url/https/github.com/angular-medellin/meetup.svg?style=social" alt="Tweet"></a></p>
+<h2 id="introduction">Introduction 🙋‍♂️ 🙋‍</h2>
+<p>I wrote an annotation processing libary that can detect annotations in Kotlin Native/JS and Jvm projects, because Kapt is only working with KotlinJvm. The library can be used in Kotlin Compiler plugins. Tested with Kotlin 1.3.41 and 1.3.50</p>
+<p>It can detect annotations with following targets: </p>
+<pre><code class="groovy">(CLASS,FUNCTION,PROPERTY,VALUE_PARAMETER,PROPERTY_GETTER,PROPERTY_GETTER,CONSTRUCTOR)
+</code></pre>
+
+<p align="left">
+  Example output of my example plugin on Kotlin Native:
+  <img src ="https://raw.githubusercontent.com/Foso/MpApt/master/docs/images/logNative.png"  />
+</p>
+
+<p><a href="https://github.com/Foso/MpApt"><img alt="GitHub stars" src="https://img.shields.io/github/stars/Foso/MpApt.svg?style=social&amp;label=Star" /></a> <a href="https://github.com/Foso/MpApt/fork"><img alt="GitHub forks" src="https://img.shields.io/github/forks/Foso/MpApt.svg?style=social&amp;label=Fork" /></a> <a href="https://github.com/Foso/MpApt"><img alt="GitHub watchers" src="https://img.shields.io/github/watchers/Foso/MpApt.svg?style=social&amp;label=Watch" /></a> <a href="https://twitter.com/jklingenberg_"><img alt="Twitter Follow" src="https://img.shields.io/twitter/follow/jklingenberg_.svg?style=social" /></a></p>
+<h2 id="usage">Usage</h2>
+<p>These are the instructions for v0.8.1, check <a href="https://github.com/Foso/MpApt/blob/master/CHANGELOG.md">Changelog</a> for changes on the active development branch</p>
+<p>Inside your compiler plugin, add the dependency from MavenCentral </p>
+<pre><code class="groovy">repositories {
+    mavenCentral()
+}
+
+dependencies {
+   compile 'de.jensklingenberg:mpapt-runtime:0.8.1'
+}
+</code></pre>
+
+<p>1) Create a class that extends de.jensklingenberg.mpapt.model.AbstractProcessor</p>
+<pre><code class="kotlin">class MpAptTestProcessor() : AbstractProcessor() {
+
+</code></pre>
+
+<p>2) Add the names of your annotations that you want to detect:</p>
+<pre><code class="kotlin">override fun getSupportedAnnotationTypes(): Set&lt;String&gt; = setOf(TestClass::class.java.name, TestFunction::class.java.name)
+</code></pre>
+
+<p>3) Do something with detected annotations:</p>
+<pre><code class="kotlin">override fun process(roundEnvironment: RoundEnvironment) {
+roundEnvironment.getElementsAnnotatedWith(TestClass::class.java.name).forEach {
+            when (it) {
+                is Element.ClassElement -&gt; {
+                    log(&quot;Found Class: &quot; + it.classDescriptor.name + &quot; Module: &quot; + it.classDescriptor.module.simpleName() + &quot; platform   &quot; + activeTargetPlatform.first().platformName)
+                }
+            }
+        }
+
+        roundEnvironment.getElementsAnnotatedWith(TestFunction::class.java.name).forEach {
+            when (it) {
+                is Element.FunctionElement -&gt; {
+                    log(&quot;Found Function: &quot; + it.func.name + &quot; Module: &quot; + it.func.module.simpleName() + &quot; platform   &quot; + activeTargetPlatform.first().platformName)
+                }
+            }
+        }
+}
+</code></pre>
+
+<p>4)  Init MpApt inside your ComponentRegistrar:
+<em> Pass an instance of your processor and the CompilerConfiguration into MpAptProject
+</em> Then add an instance of MpAptProject to the following extension classes:</p>
+<p>Inside a Kotlin Native Compiler Plugin:</p>
+<pre><code class="kotlin">override fun registerProjectComponents(project: MockProject, configuration: CompilerConfiguration) {
+        val processor = MpAptTestProcessor()
+        val mpapt = MpAptProject(processor,configuration)
+
+        StorageComponentContainerContributor.registerExtension(project,mpapt)
+        SyntheticResolveExtension.registerExtension(project, mpapt)
+        IrGenerationExtension.registerExtension(project,mpapt)
+    }
+</code></pre>
+
+<p>Inside a Kotlin JVM/JS Compiler Plugin:</p>
+<pre><code class="kotlin"> override fun registerProjectComponents(
+            project: MockProject,
+            configuration: CompilerConfiguration
+    ) {
+        val processor = MpAptTestProcessor()
+        val mpapt = MpAptProject(processor,configuration)
+        StorageComponentContainerContributor.registerExtension(project,mpapt)
+        SyntheticResolveExtension.registerExtension(project, mpapt)
+        ClassBuilderInterceptorExtension.registerExtension(project,mpapt)
+        JsSyntheticTranslateExtension.registerExtension(project,mpapt)
+    }
+</code></pre>
+
+<p>5) That's it</p>
+<h3 id="choose-supported-target-platforms">Choose supported target platforms</h3>
+<p>By default your processor is enabled for every target. 
+You can override </p>
+<pre><code class="kotlin">isTargetPlatformSupported(platform: TargetPlatform): Boolean
+</code></pre>
+
+<p>and return "true" if you want to support the target or "false" you don't.</p>
+<pre><code class="kotlin">   override fun isTargetPlatformSupported(platform: TargetPlatform): Boolean {
+         val targetName = platform.first().platformName
+
+         return when (targetName) {
+             KotlinPlatformValues.JS -&gt; true
+             KotlinPlatformValues.JVM -&gt; true
+             KotlinPlatformValues.NATIVE -&gt; {
+                 return when (configuration.nativeTargetPlatformName()) {
+                     KonanTargetValues.LINUX_X64, KonanTargetValues.MACOS_X64 -&gt; {
+                         true
+                     }
+                     else -&gt; {
+                         true
+                     }
+                 }
+             }
+             else -&gt; {
+                 log(targetName)
+                 true
+             }
+         }
+
+     }
+</code></pre>
+
+<p>You can distinguish between the native target platforms you want to support.</p>
+<p>configuration.nativeTargetPlatformName() will get you the names of the Native Targets(macos_x64,linux_x64,etc). The values are defined in KonanTargetValues.
+It needs to be used only on Kotlin Native otherwise it will return an empty string</p>
+<h2 id="feedback">✍️ Feedback</h2>
+<p>Feel free to send feedback on <a href="https://twitter.com/jklingenberg_">Twitter</a> or <a href="https://github.com/foso/MpApt/issues/new">file an issue</a>. Feature requests are always welcome. If you wish to contribute, please take a quick look at <a href="https://github.com/Foso/MpApt/wiki/How-to-develop%3F">How to develop?</a></p>
+<h2 id="development-project-structure">👷 Development Project Structure</h2>
+<ul>
+<li><kbd>demoProject</kbd> - An example project that is using MpApt+KotlinPoet to generate code on KotlinJS</li>
+<li><kbd>annotations</kbd> - A Kotlin Multiplatform project which contains test annotations </li>
+<li><kbd>example</kbd> - A Kotlin Multiplatform project which applies a gradle plugin(de.jensklingenberg.mpapt) whichs triggers the compiler plugin.</li>
+<li><kbd>buildSrc</kbd> - This module contains the gradle plugin which trigger the compiler plugin</li>
+<li><kbd>kotlin-plugin</kbd> - This module contains the Kotlin Compiler Plugin for JVM/JS targets, it implements the <kbd>kotlin-plugin-shared</kbd>-module</li>
+<li><kbd>kotlin-compiler-native-plugin</kbd> - This module contains the Kotlin Compiler Plugin for Native targets, it implements the <kbd>kotlin-plugin-shared</kbd>-module</li>
+<li><kbd>kotlin-plugin-shared</kbd> Contains an implementation of MpApt</li>
+</ul>
+<h2 id="projects-that-use-mpapt">Projects that use MpApt:</h2>
+<ul>
+<li><a href="https://github.com/feilfeilundfeil/kotlin-native-suspend-function-callback">Native Suspended Functions</a></li>
+</ul>
+<h1 id="see-also">See also</h1>
+<ul>
+<li><a href="https://github.com/Foso/MpApt/wiki/How-to-use-a-Kotlin-Compiler-Plugin-from-Gradle-Plugin">How to use a Kotlin Compiler Plugin from Gradle Plugin</a></li>
+<li><a href="https://github.com/Foso/MpApt/wiki/How-to-write-a-Kotlin-Compiler-Plugin">How to write a Kotlin Compiler Plugin</a></li>
+<li><a href="https://github.com/Foso/MpApt/wiki/How-to-debug-Kotlin-Compiler-Plugin">How to debug Kotlin Compiler Plugin</a></li>
+<li><a href="https://github.com/Foso/MpApt/wiki/How-to-develop%3F">How to develop?</a></li>
+</ul>
+<h2 id="license">📜 License</h2>
+<p>This project is licensed under the Apache License, Version 2.0 - see the <a href="https://github.com/Foso/MpApt/blob/master/LICENSE">LICENSE.md</a> file for details</p>
+<hr />
+<pre><code>Copyright 2019 Jens Klingenberg
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+</code></pre>
+                
+                  
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+        
+          <a href="CHANGELOG/" title="Changelog" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Changelog
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/">
+          Material for MkDocs</a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="assets/javascripts/application.c648116f.js"></script>
+      
+      <script>app.initialize({version:"1.0.4",url:{base:"."}})</script>
+      
+    
+  </body>
+</html>

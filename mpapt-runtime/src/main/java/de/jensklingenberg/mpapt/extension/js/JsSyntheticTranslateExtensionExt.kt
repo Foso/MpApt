@@ -20,7 +20,7 @@ internal class JsSyntheticTranslateExtensionExt(val processor: Processor) : JsSy
             context: TranslationContext
     ) {
         if(processor.isTargetPlatformSupported()){
-            processor.processingOver()
+            processor.onProcessingOver()
         }
     }
 }

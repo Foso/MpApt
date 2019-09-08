@@ -24,6 +24,11 @@ class MpAptTestProcessor : AbstractProcessor() {
     val testLocalVariable = TestLocalVariable::class.java.name
     val redacted = Redacted::class.java.name
 
+    override fun initProcessor() {
+        log("$TAG***Processor started on ***")
+
+    }
+
     override fun isTargetPlatformSupported(platform: TargetPlatform): Boolean {
         val targetName = platform.first().platformName
 
