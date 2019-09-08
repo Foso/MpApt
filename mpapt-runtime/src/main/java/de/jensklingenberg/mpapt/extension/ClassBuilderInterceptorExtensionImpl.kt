@@ -18,7 +18,7 @@ class ClassBuilderInterceptorExtensionImpl(val processor: Processor) : ClassBuil
 
         override fun newClassBuilder(origin: JvmDeclarationOrigin): DelegatingClassBuilderImpl {
             if(processor.isTargetPlatformSupported()){
-                processor.processingOver()
+                processor.onProcessingOver()
             }
 
             return DelegatingClassBuilderImpl(interceptedFactory.newClassBuilder(origin))

@@ -13,5 +13,6 @@ class StorageComponentContainerContributorImpl(val processor: AbstractProcessor)
      */
     override fun registerModuleComponents(container: StorageComponentContainer, platform: TargetPlatform, moduleDescriptor: ModuleDescriptor) {
         processor.activeTargetPlatform = platform
+
     }
 }

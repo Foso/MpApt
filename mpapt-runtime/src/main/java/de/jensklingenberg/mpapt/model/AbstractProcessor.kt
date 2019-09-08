@@ -8,14 +8,21 @@ import org.jetbrains.kotlin.platform.SimplePlatform
 import org.jetbrains.kotlin.platform.TargetPlatform
 
 abstract class AbstractProcessor() : Processor {
-    var configuration: CompilerConfiguration = CompilerConfiguration()
 
+    var configuration: CompilerConfiguration = CompilerConfiguration()
+    override var isRunning: Boolean = false
     private fun messageCollector() = configuration.get(CLIConfigurationKeys.MESSAGE_COLLECTOR_KEY, MessageCollector.NONE)
 
     var activeTargetPlatform: TargetPlatform = UnknownTarget()
     val processingEnv = ProcessingEnvironment(messageCollector())
 
-    override fun initProcessor() {}
+
+    override fun onProcessingStarted() {
+        isRunning = true
+        initProcessor()
+    }
+
+    open fun initProcessor() {}
 
     fun log(message: String) {
         messageCollector().report(
@@ -24,7 +31,16 @@ abstract class AbstractProcessor() : Processor {
         )
     }
 
-    override fun processingOver() {}
+    override fun onProcessingOver() {
+        if (isRunning) {
+            processingOver()
+        }
+        isRunning = false
+
+
+    }
+
+    open fun processingOver() {}
 
     override fun getSupportedSourceVersion(): SourceVersion = SourceVersion.latest()
 

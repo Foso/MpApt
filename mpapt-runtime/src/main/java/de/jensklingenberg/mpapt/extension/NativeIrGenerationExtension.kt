@@ -13,7 +13,7 @@ class NativeIrGenerationExtension(val processor: Processor) : IrGenerationExtens
 
     override fun generate(file: IrFile, backendContext: BackendContext, bindingContext: BindingContext) {
         if(processor.isTargetPlatformSupported()){
-            processor.processingOver()
+            processor.onProcessingOver()
         }
     }
 }

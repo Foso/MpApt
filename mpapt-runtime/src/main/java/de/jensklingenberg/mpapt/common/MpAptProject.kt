@@ -11,7 +11,7 @@ import org.jetbrains.kotlin.extensions.StorageComponentContainerContributor
 import org.jetbrains.kotlin.js.translate.extensions.JsSyntheticTranslateExtension
 import org.jetbrains.kotlin.resolve.extensions.SyntheticResolveExtension
 
-class MpAptProject(abstractProcessor: AbstractProcessor,configuration: CompilerConfiguration) : SyntheticResolveExtension by SyntheticResolveExtensionImpl(abstractProcessor),
+class MpAptProject(abstractProcessor: AbstractProcessor,configuration: CompilerConfiguration) : SyntheticResolveExtension by SyntheticResolveExtensionImpl(abstractProcessor,ClassParser(abstractProcessor)),
         IrGenerationExtension by NativeIrGenerationExtension(abstractProcessor),
         JsSyntheticTranslateExtension by JsSyntheticTranslateExtensionExt(abstractProcessor),
         ClassBuilderInterceptorExtension by ClassBuilderInterceptorExtensionImpl(abstractProcessor),
@@ -23,5 +23,7 @@ class MpAptProject(abstractProcessor: AbstractProcessor,configuration: CompilerC
 {
     init {
         abstractProcessor.configuration=(configuration)
+        abstractProcessor.onProcessingStarted()
+
     }
 }
