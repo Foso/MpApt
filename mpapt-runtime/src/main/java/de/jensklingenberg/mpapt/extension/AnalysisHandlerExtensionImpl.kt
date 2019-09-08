@@ -1,4 +1,4 @@
-package de.jensklingenberg.mpapt.extension.unused
+package de.jensklingenberg.mpapt.extension
 
 import de.jensklingenberg.mpapt.model.AbstractProcessor
 import org.jetbrains.kotlin.analyzer.AnalysisResult

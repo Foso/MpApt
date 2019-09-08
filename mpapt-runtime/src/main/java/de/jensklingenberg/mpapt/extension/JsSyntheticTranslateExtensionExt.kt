@@ -1,4 +1,4 @@
-package de.jensklingenberg.mpapt.extension.js
+package de.jensklingenberg.mpapt.extension
 
 import de.jensklingenberg.mpapt.model.AbstractProcessor
 import de.jensklingenberg.mpapt.model.Processor

@@ -10,6 +10,12 @@ import org.jetbrains.kotlin.platform.TargetPlatform
 
 class StorageComponentContainerContributorImpl(val processor: AbstractProcessor) : StorageComponentContainerContributor {
 
+    private val DEFAULT_DECLARATION_CHECKERS = listOf(
+            DeclarationCheckerImpl()
+    )
+
+
+
     /**
      * Here we get the targetplatform of the module
      */
@@ -20,5 +26,8 @@ class StorageComponentContainerContributorImpl(val processor: AbstractProcessor)
         if(platformName.equals( KotlinPlatformValues.JVM )){
             container.useInstance(JVMCallChecker(processor))
         }
+
+        DEFAULT_DECLARATION_CHECKERS.forEach { container.useInstance(it) }
+
     }
 }
