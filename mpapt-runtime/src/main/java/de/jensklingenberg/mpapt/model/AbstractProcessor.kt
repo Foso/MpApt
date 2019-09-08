@@ -23,7 +23,7 @@ abstract class AbstractProcessor() : Processor {
     fun log(message: String) {
         messageCollector().report(
                 CompilerMessageSeverity.WARNING,
-                "*** AbstractProcessor: $message"
+                message
         )
     }
 
