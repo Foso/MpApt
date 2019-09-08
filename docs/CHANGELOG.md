@@ -1,4 +1,4 @@
-v0.8.2
+v0.8.2(not yet released)
 ========================================
 fixed that processingOver was called to often
 
