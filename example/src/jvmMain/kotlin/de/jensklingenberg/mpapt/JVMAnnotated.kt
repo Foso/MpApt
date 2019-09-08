@@ -23,13 +23,13 @@ class Annotated @TestConstructor constructor() {
         }
 
     @TestFunction
-    fun firstFunction() :@TestType String {
-           @TestExpression return ""
+    fun firstFunction(): @TestType String {
+        @TestExpression return ""
     }
 
     @TestFunction
     fun secondFunction() {
-
+        @TestLocalVariable val localHallo: String
     }
 
     fun thirdFunction(@TestValueParameter param: @TestType String, @TestValueParameter param2: String) {

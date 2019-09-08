@@ -6,3 +6,5 @@ import de.jensklingenberg.testAnnotations.TestClass
 class Generated {
 
 }
+
+data class MyDataClass(val name:String)

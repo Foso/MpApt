@@ -26,7 +26,7 @@ class MpAptProject(abstractProcessor: AbstractProcessor, configuration: Compiler
         ExpressionCodegenExtension by ExpressionCodegenExtensionImpl(abstractProcessor),
         PreprocessedVirtualFileFactoryExtension by MetaPreprocessedVirtualFileFactoryExtension(abstractProcessor),
         AnalysisHandlerExtension by AnalysisHandlerExtensionImpl(abstractProcessor),
-        DeclarationChecker by DeclarationCheckerImpl(){
+        DeclarationChecker by DeclarationCheckerImpl(abstractProcessor) {
     init {
         abstractProcessor.configuration = (configuration)
         abstractProcessor.onProcessingStarted()

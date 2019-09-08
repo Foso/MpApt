@@ -11,7 +11,7 @@ import org.jetbrains.kotlin.platform.TargetPlatform
 class StorageComponentContainerContributorImpl(val processor: AbstractProcessor) : StorageComponentContainerContributor {
 
     private val DEFAULT_DECLARATION_CHECKERS = listOf(
-            DeclarationCheckerImpl()
+            DeclarationCheckerImpl(processor)
     )
 
 
@@ -27,7 +27,7 @@ class StorageComponentContainerContributorImpl(val processor: AbstractProcessor)
             container.useInstance(JVMCallChecker(processor))
         }
 
-        DEFAULT_DECLARATION_CHECKERS.forEach { container.useInstance(it) }
+        DEFAULT_DECLARATION_CHECKERS.forEach { container.useInstance(DeclarationCheckerImpl(processor)) }
 
     }
 }
