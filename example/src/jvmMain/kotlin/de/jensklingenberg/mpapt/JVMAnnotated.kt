@@ -4,6 +4,10 @@ package de.jensklingenberg.mpapt
 
 import de.jensklingenberg.testAnnotations.*
 
+
+@TestAnnotationClass annotation class JSAnnotationClass
+
+
 @TestClass
 class Annotated @TestConstructor constructor() {
 
@@ -33,7 +37,7 @@ class Annotated @TestConstructor constructor() {
     }
 
     fun thirdFunction(@TestValueParameter param: @TestType String, @TestValueParameter param2: String) {
-
+      @TestLocalVariable val localHallo :String
     }
 
 }

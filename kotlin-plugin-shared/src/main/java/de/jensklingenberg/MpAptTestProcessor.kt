@@ -22,6 +22,8 @@ class MpAptTestProcessor : AbstractProcessor() {
     val testPropertySetter = TestPropertySetter::class.java.name
     val testConstructor = TestConstructor::class.java.name
     val testLocalVariable = TestLocalVariable::class.java.name
+    val testTypeAlias = TestTypeAlias::class.java.name
+    val testAnnotationClass = TestAnnotationClass::class.java.name
 
     override fun initProcessor() {
         log("$TAG***Processor started on ***")
@@ -109,12 +111,24 @@ class MpAptTestProcessor : AbstractProcessor() {
                 }
             }
         }
-
-
+        roundEnvironment.getElementsAnnotatedWith(testLocalVariable).forEach {
+            when (it) {
+                is Element.LocalVariableElement -> {
+                    log("Found LocalVariableElement: " + it.localVariableDescriptor.name + " " + it.localVariableDescriptor + " Module: " + it.localVariableDescriptor.module.simpleName() + " platform   " + activeTargetPlatform.first().platformName)
+                }
+            }
+        }
+        roundEnvironment.getElementsAnnotatedWith(testTypeAlias).forEach {
+            when (it) {
+                is Element.TypeAliasElement -> {
+                    log("Found TypeAliasElement: " + it.typeAliasDescriptor.name + " " + it.typeAliasDescriptor + " Module: " + it.typeAliasDescriptor.module.simpleName() + " platform   " + activeTargetPlatform.first().platformName)
+                }
+            }
+        }
     }
 
 
-    override fun getSupportedAnnotationTypes(): Set<String> = setOf(TestClass::class.java.name, testFunction, testProperty, testValueParameter, testPropertyGetter, testPropertySetter, testConstructor, testLocalVariable)
+    override fun getSupportedAnnotationTypes(): Set<String> = setOf(TestClass::class.java.name,testAnnotationClass,testTypeAlias, testFunction, testProperty, testValueParameter, testPropertyGetter, testPropertySetter, testConstructor, testLocalVariable)
 
     override fun processingOver() {
         log("$TAG***Processor over ***")

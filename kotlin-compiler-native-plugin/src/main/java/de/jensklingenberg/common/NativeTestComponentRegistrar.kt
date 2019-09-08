@@ -22,7 +22,7 @@ class NativeTestComponentRegistrar : ComponentRegistrar {
         val mpapt = MpAptProject(generator,configuration)
 
         StorageComponentContainerContributor.registerExtension(project,mpapt)
-        SyntheticResolveExtension.registerExtension(project, mpapt)
+       // SyntheticResolveExtension.registerExtension(project, mpapt)
         IrGenerationExtension.registerExtension(project,mpapt)
     }
 }

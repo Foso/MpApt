@@ -2,6 +2,7 @@ package de.jensklingenberg.mpapt.model
 
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.descriptors.annotations.AnnotationDescriptor
+import org.jetbrains.kotlin.descriptors.impl.LocalVariableDescriptor
 import org.jetbrains.kotlin.psi.KtProperty
 
 sealed class Element constructor(
@@ -75,6 +76,22 @@ sealed class Element constructor(
                                        override val elementKind: ElementKind = ElementKind.CONSTRUCTOR
     ) : Element()
 
+    /**
+     * Elements annotated with [AnnotationTarget.LOCAL_VARIABLE]
+     */
+    data class LocalVariableElement(val localVariableDescriptor: LocalVariableDescriptor,
+                                    override val annotation: AnnotationDescriptor? = null,
+                                    override val elementKind: ElementKind = ElementKind.LOCAL_VARIABLE
+    ) : Element()
+
+    /**
+     * Elements annotated with [AnnotationTarget.TYPEALIAS]
+     */
+    data class TypeAliasElement(val typeAliasDescriptor: TypeAliasDescriptor,
+                                override val annotation: AnnotationDescriptor? = null,
+                                override val elementKind: ElementKind = ElementKind.ALIAS
+    ) : Element()
+
 
 }
 
@@ -109,5 +126,7 @@ enum class ElementKind {
     /** File */
     FILE,
     /** Type alias */
-    OTHER
+    OTHER,
+    /** Type alias */
+    ALIAS
 }

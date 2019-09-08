@@ -1,5 +1,6 @@
 import de.jensklingenberg.testAnnotations.*
 
+@TestTypeAlias typealias WORD = String
 
 @TestClass
 class Annotated @TestConstructor constructor() {
