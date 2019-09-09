@@ -28,7 +28,7 @@ internal class SyntheticResolveExtensionImpl(val processor: Processor, private v
         val roundEnvironment = RoundEnvironment()
         result.forEach {
             if (!it.isCompanionObject && name.identifier != "Companion") {
-                annotationDetector.parseClass(it, roundEnvironment)
+                //  annotationDetector.parseClass(it, roundEnvironment)
             }
         }
 
@@ -45,7 +45,7 @@ internal class SyntheticResolveExtensionImpl(val processor: Processor, private v
             return
         }
         result.forEach { function ->
-            annotationDetector.parseMethod(thisDescriptor, function, RoundEnvironment())
+            //  annotationDetector.parseMethod(thisDescriptor, function, RoundEnvironment())
         }
     }
 
@@ -54,7 +54,7 @@ internal class SyntheticResolveExtensionImpl(val processor: Processor, private v
             return
         }
         result.forEach {
-            annotationDetector.parseProperty(it, RoundEnvironment())
+            // annotationDetector.parseProperty(it, RoundEnvironment())
         }
 
     }

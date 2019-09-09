@@ -1,6 +1,6 @@
-@file:TestFile
+@file:TestFile("LinuxMyTestValue")
 
-package de.jensklingenberg.mpapt
+package sample
 
 import de.jensklingenberg.testAnnotations.*
 

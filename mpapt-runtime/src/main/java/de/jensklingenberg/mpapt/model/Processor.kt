@@ -2,15 +2,13 @@ package de.jensklingenberg.mpapt.model
 
 interface Processor {
 
-    var isRunning:Boolean
-
+    var isRunning: Boolean
 
 
     /**
      * This gets triggered when a new module(jvmMain,jsMain,..) is getting parsed by the processor
      */
     fun onProcessingStarted()
-
 
 
     /**
@@ -34,7 +32,7 @@ interface Processor {
      * */
     fun process(roundEnvironment: RoundEnvironment)
 
-    fun isTargetPlatformSupported() : Boolean
+    fun isTargetPlatformSupported(): Boolean
 
 }
 

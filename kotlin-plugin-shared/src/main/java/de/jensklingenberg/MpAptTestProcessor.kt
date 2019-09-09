@@ -9,6 +9,7 @@ import de.jensklingenberg.mpapt.model.RoundEnvironment
 import de.jensklingenberg.mpapt.utils.KonanTargetValues
 import de.jensklingenberg.mpapt.utils.KotlinPlatformValues
 import de.jensklingenberg.testAnnotations.*
+import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.platform.TargetPlatform
 import org.jetbrains.kotlin.resolve.descriptorUtil.module
 
@@ -22,6 +23,11 @@ class MpAptTestProcessor : AbstractProcessor() {
     val testPropertySetter = TestPropertySetter::class.java.name
     val testConstructor = TestConstructor::class.java.name
     val testLocalVariable = TestLocalVariable::class.java.name
+    val testTypeAlias = TestTypeAlias::class.java.name
+    val testAnnotationClass = TestAnnotationClass::class.java.name
+    val testTestTypeParameter = TestTypeParameter::class.java.name
+    val testField = TestField::class.java.name
+    val testFile = TestFile::class.java.name
 
     override fun initProcessor() {
         log("$TAG***Processor started on ***")
@@ -81,7 +87,7 @@ class MpAptTestProcessor : AbstractProcessor() {
         roundEnvironment.getElementsAnnotatedWith(testValueParameter).forEach {
             when (it) {
                 is Element.ValueParameterElement -> {
-                    log("Found ValueParameter: " + it.valueParameterDescriptor.name + "in : " + it.valueParameterDescriptor.containingDeclaration.name + " Module: " + it.valueParameterDescriptor.module.simpleName() + " platform   " + activeTargetPlatform.first().platformName)
+                    log("Found ValueParameter: " + it.valueParameterDescriptor.name + " in : " + it.valueParameterDescriptor.containingDeclaration.name + " Module: " + it.valueParameterDescriptor.module.simpleName() + " platform   " + activeTargetPlatform.first().platformName)
                 }
             }
         }
@@ -109,12 +115,56 @@ class MpAptTestProcessor : AbstractProcessor() {
                 }
             }
         }
+        roundEnvironment.getElementsAnnotatedWith(testLocalVariable).forEach {
+            when (it) {
+                is Element.LocalVariableElement -> {
+                    log("Found LocalVariableElement: " + it.localVariableDescriptor.name + " " + it.localVariableDescriptor + " Module: " + it.localVariableDescriptor.module.simpleName() + " platform   " + activeTargetPlatform.first().platformName)
+                }
+            }
+        }
+        roundEnvironment.getElementsAnnotatedWith(testTypeAlias).forEach {
+            when (it) {
+                is Element.TypeAliasElement -> {
+                    log("Found TypeAliasElement: " + it.descriptor.name + " " + it.descriptor + " Module: " + it.descriptor.module.simpleName() + " platform   " + activeTargetPlatform.first().platformName)
+                }
+            }
+        }
 
+        roundEnvironment.getElementsAnnotatedWith(testAnnotationClass).forEach {
+            when (it) {
+                is Element.AnnotationClassElement -> {
+                    log("Found AnnotationClassElement: " + it.classDescriptor.name + " Module: " + it.classDescriptor.module.simpleName() + " platform   " + activeTargetPlatform.first().platformName)
+                }
+            }
+        }
 
+        roundEnvironment.getElementsAnnotatedWith(testTestTypeParameter).forEach {
+            when (it) {
+                is Element.TypeParameterElement -> {
+                    log("Found TypeParameter: " + it.typeParameterDescriptor.name + " in : " + it.typeParameterDescriptor.containingDeclaration.name + " Module: " + it.typeParameterDescriptor.module.simpleName() + " platform   " + activeTargetPlatform.first().platformName)
+                }
+            }
+        }
+
+        roundEnvironment.getElementsAnnotatedWith(testField).forEach {
+            when (it) {
+                is Element.FieldElement -> {
+                    log("Found FieldElement: " + it.descriptor.correspondingProperty.name + " in : " + it.descriptor.correspondingProperty.containingDeclaration.name + " Module: " + it.descriptor.correspondingProperty.module.simpleName() + " platform   " + activeTargetPlatform.first().platformName)
+                }
+            }
+        }
+
+        roundEnvironment.getElementsAnnotatedWith(testFile).forEach {
+            when (it) {
+                is Element.FileElement -> {
+                    log("Found File Annotation: " + it.annotation.simpleName() + " with value file:"+ it.annotation?.allValueArguments?.get(Name.identifier("file")) +" platform   " + activeTargetPlatform.first().platformName)
+                }
+            }
+        }
     }
 
 
-    override fun getSupportedAnnotationTypes(): Set<String> = setOf(TestClass::class.java.name, testFunction, testProperty, testValueParameter, testPropertyGetter, testPropertySetter, testConstructor, testLocalVariable)
+    override fun getSupportedAnnotationTypes(): Set<String> = setOf(TestClass::class.java.name,testFile,testField,testTestTypeParameter,testAnnotationClass,testTypeAlias, testFunction, testProperty, testValueParameter, testPropertyGetter, testPropertySetter, testConstructor, testLocalVariable)
 
     override fun processingOver() {
         log("$TAG***Processor over ***")

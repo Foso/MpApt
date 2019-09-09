@@ -99,7 +99,7 @@ class ClassParser(val processor: Processor) : AnnotationDetector {
                     )
                 }
 
-                processor.process(roundEnvironment)
+                //processor.process(roundEnvironment)
 
             }
 

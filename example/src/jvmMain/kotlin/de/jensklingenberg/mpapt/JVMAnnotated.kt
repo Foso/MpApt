@@ -1,8 +1,11 @@
-@file:TestFile
+@file:TestFile("JVMMyTestValue")
 
 package de.jensklingenberg.mpapt
 
 import de.jensklingenberg.testAnnotations.*
+
+
+
 
 @TestClass
 class Annotated @TestConstructor constructor() {
@@ -33,7 +36,7 @@ class Annotated @TestConstructor constructor() {
     }
 
     fun thirdFunction(@TestValueParameter param: @TestType String, @TestValueParameter param2: String) {
-
+      @TestLocalVariable val localHallo :String
     }
 
 }
