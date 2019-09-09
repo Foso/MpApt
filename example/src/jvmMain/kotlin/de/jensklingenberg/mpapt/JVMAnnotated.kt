@@ -1,11 +1,10 @@
-@file:TestFile
+@file:TestFile("JVMMyTestValue")
 
 package de.jensklingenberg.mpapt
 
 import de.jensklingenberg.testAnnotations.*
 
 
-@TestAnnotationClass annotation class JSAnnotationClass
 
 
 @TestClass

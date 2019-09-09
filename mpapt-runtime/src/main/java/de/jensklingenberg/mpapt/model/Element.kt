@@ -3,7 +3,6 @@ package de.jensklingenberg.mpapt.model
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.descriptors.annotations.AnnotationDescriptor
 import org.jetbrains.kotlin.descriptors.impl.LocalVariableDescriptor
-import org.jetbrains.kotlin.psi.KtProperty
 
 sealed class Element constructor(
         open val simpleName: String = "",
@@ -16,6 +15,18 @@ sealed class Element constructor(
      * Elements annotated with [AnnotationTarget.CLASS]
      */
     data class ClassElement(
+            override val simpleName: String = "",
+            override val path: String = "",
+            override val elementKind: ElementKind = ElementKind.CLASS,
+            override val annotation: AnnotationDescriptor? = null,
+            override val pack: String = "",
+            val classDescriptor: ClassDescriptor
+    ) : Element()
+
+    /**
+     * Elements annotated with [AnnotationTarget.ANNOTATION_CLASS]
+     */
+    data class AnnotationClassElement(
             override val simpleName: String = "",
             override val path: String = "",
             override val elementKind: ElementKind = ElementKind.CLASS,
@@ -49,6 +60,14 @@ sealed class Element constructor(
     data class ValueParameterElement(val valueParameterDescriptor: ValueParameterDescriptor,
                                      override val annotation: AnnotationDescriptor? = null,
                                      override val elementKind: ElementKind = ElementKind.VALUE_PARAMETER
+    ) : Element()
+
+    /**
+     * Elements annotated with [AnnotationTarget.TYPE_PARAMETER]
+     */
+    data class TypeParameterElement(val typeParameterDescriptor: TypeParameterDescriptor,
+                                    override val annotation: AnnotationDescriptor? = null,
+                                    override val elementKind: ElementKind = ElementKind.TYPE_PARAMETER
     ) : Element()
 
     /**
@@ -87,9 +106,24 @@ sealed class Element constructor(
     /**
      * Elements annotated with [AnnotationTarget.TYPEALIAS]
      */
-    data class TypeAliasElement(val typeAliasDescriptor: TypeAliasDescriptor,
+    data class TypeAliasElement(val descriptor: TypeAliasDescriptor,
                                 override val annotation: AnnotationDescriptor? = null,
                                 override val elementKind: ElementKind = ElementKind.ALIAS
+    ) : Element()
+
+    /**
+     * Elements annotated with [AnnotationTarget.FIELD]
+     */
+    data class FieldElement(val descriptor: FieldDescriptor,
+                            override val annotation: AnnotationDescriptor? = null,
+                            override val elementKind: ElementKind = ElementKind.FIELD
+    ) : Element()
+
+    /**
+     * Elements annotated with [AnnotationTarget.FILE]
+     */
+    data class FileElement(override val annotation: AnnotationDescriptor? = null,
+                           override val elementKind: ElementKind = ElementKind.FILE
     ) : Element()
 
 

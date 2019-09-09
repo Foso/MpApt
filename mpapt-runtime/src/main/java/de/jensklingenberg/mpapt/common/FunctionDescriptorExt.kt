@@ -1,12 +1,12 @@
 package de.jensklingenberg.mpapt.common
 
 import de.jensklingenberg.mpapt.model.FunctionParameter
+import de.jensklingenberg.mpapt.model.Package
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.descriptors.FunctionDescriptor
 import org.jetbrains.kotlin.descriptors.SourceElement
 import org.jetbrains.kotlin.resolve.source.KotlinSourceElement
 import org.jetbrains.kotlin.resolve.source.getPsi
-import de.jensklingenberg.mpapt.model.Package
 
 
 /**
@@ -22,15 +22,15 @@ fun FunctionDescriptor.getFunctionParameters(): List<FunctionParameter> {
             // Typedefs:
             //value-parameter id: de.jensklingenberg.mpapt.Datum /* = kotlin.ranges.CharProgression */ defined in de.jensklingenberg.mpapt.CommonAnnotated.firstFunction2[ValueParameterDescriptorImpl@692444bb]
             val fullPackage = parameter.toString().substringAfter(": ")
-                .substringBefore(" defined")
-                .substringBefore(" /* =")
+                    .substringBefore(" defined")
+                    .substringBefore(" /* =")
             FunctionParameter(
-                parameter.name.asString(),
-                parameter.type.toString().endsWith("?"),
-                Package(
-                    fullPackage.split(".").last().replace("?", ""),
-                    fullPackage.split(".").dropLast(1).joinToString(".")
-                )
+                    parameter.name.asString(),
+                    parameter.type.toString().endsWith("?"),
+                    Package(
+                            fullPackage.split(".").last().replace("?", ""),
+                            fullPackage.split(".").dropLast(1).joinToString(".")
+                    )
             )
         }.toList()
     } else {

@@ -6,31 +6,47 @@ import de.jensklingenberg.mpapt.model.Element
 import de.jensklingenberg.mpapt.model.RoundEnvironment
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.descriptors.impl.LocalVariableDescriptor
-import org.jetbrains.kotlin.name.FqName
+import org.jetbrains.kotlin.js.translate.utils.AnnotationsUtils
 import org.jetbrains.kotlin.psi.KtDeclaration
 import org.jetbrains.kotlin.resolve.checkers.DeclarationChecker
 import org.jetbrains.kotlin.resolve.checkers.DeclarationCheckerContext
 import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameSafe
 import org.jetbrains.kotlin.resolve.descriptorUtil.module
+import org.jetbrains.kotlin.resolve.lazy.descriptors.LazyClassDescriptor
 
 class DeclarationCheckerImpl(val processor: AbstractProcessor) : DeclarationChecker {
     override fun check(declaration: KtDeclaration, descriptor: DeclarationDescriptor, context: DeclarationCheckerContext) {
         if (!processor.isTargetPlatformSupported()) {
             return
         }
-        processor.getSupportedAnnotationTypes().forEach { annoationName ->
 
+        processor.getSupportedAnnotationTypes().forEach { annotationName ->
 
             val roundEnvironment = RoundEnvironment()
 
+            AnnotationsUtils.getContainingFileAnnotations(context.trace.bindingContext, descriptor).forEach { descriptor ->
+                if (descriptor.fqName?.asString().equals(annotationName)) {
+                    roundEnvironment.elements.add(
+                            Element.FileElement(
+                                    annotation = descriptor
+                            )
+                    )
+                    processor.process(roundEnvironment)
+
+                }
+            }
+
+
+
             when (descriptor) {
-                is TypeAliasDescriptor->{
-                    descriptor.annotations.findAnnotation(annoationName)?.let { annotation ->
+
+                is TypeAliasDescriptor -> {
+                    descriptor.annotations.findAnnotation(annotationName)?.let { annotation ->
                         roundEnvironment.module = descriptor.module
                         roundEnvironment.elements.add(
                                 Element.TypeAliasElement(
                                         annotation = annotation,
-                                        typeAliasDescriptor = descriptor
+                                        descriptor = descriptor
                                 )
                         )
                         processor.process(roundEnvironment)
@@ -38,7 +54,7 @@ class DeclarationCheckerImpl(val processor: AbstractProcessor) : DeclarationChec
                     }
                 }
                 is SimpleFunctionDescriptor -> {
-                    descriptor.annotations.findAnnotation(annoationName)?.let { annotation ->
+                    descriptor.annotations.findAnnotation(annotationName)?.let { annotation ->
 
                         roundEnvironment.apply {
                             module = descriptor.module
@@ -56,11 +72,13 @@ class DeclarationCheckerImpl(val processor: AbstractProcessor) : DeclarationChec
 
                     }
 
-                    checkValueParameters(descriptor, annoationName, roundEnvironment)
+                    checkValueParameters(descriptor, annotationName, roundEnvironment)
+                    checkTypeParameters(descriptor, annotationName, roundEnvironment)
+
 
                 }
                 is ClassConstructorDescriptor -> {
-                    descriptor.annotations.findAnnotation(annoationName)?.let { annotation ->
+                    descriptor.annotations.findAnnotation(annotationName)?.let { annotation ->
                         roundEnvironment.module = descriptor.module
                         roundEnvironment.elements.add(
                                 Element.ClassConstructorElement(
@@ -73,8 +91,38 @@ class DeclarationCheckerImpl(val processor: AbstractProcessor) : DeclarationChec
                     }
 
                 }
+                is LazyClassDescriptor -> {
+                    descriptor.annotations.findAnnotation(annotationName)?.let { annotation ->
+
+                        if (descriptor.kind == ClassKind.ANNOTATION_CLASS) {
+                            roundEnvironment.module = descriptor.module
+                            roundEnvironment.elements.add(
+                                    Element.AnnotationClassElement(
+                                            descriptor.name.asString(),
+                                            annotation = annotation,
+                                            classDescriptor = descriptor,
+                                            pack = descriptor.original.containingDeclaration.fqNameSafe.asString()
+                                    )
+                            )
+                            processor.process(roundEnvironment)
+                        } else {
+                            roundEnvironment.module = descriptor.module
+                            roundEnvironment.elements.add(
+                                    Element.ClassElement(
+                                            descriptor.name.asString(),
+                                            annotation = annotation,
+                                            classDescriptor = descriptor,
+                                            pack = descriptor.original.containingDeclaration.fqNameSafe.asString()
+                                    )
+                            )
+                            processor.process(roundEnvironment)
+                        }
+
+
+                    }
+                }
                 is ClassDescriptor -> {
-                    descriptor.annotations.findAnnotation(annoationName)?.let { annotation ->
+                    descriptor.annotations.findAnnotation(annotationName)?.let { annotation ->
                         roundEnvironment.module = descriptor.module
                         roundEnvironment.elements.add(
                                 Element.ClassElement(
@@ -89,7 +137,7 @@ class DeclarationCheckerImpl(val processor: AbstractProcessor) : DeclarationChec
                     }
                 }
                 is PropertyDescriptor -> {
-                    descriptor.annotations.findAnnotation(annoationName)?.let { annotation ->
+                    descriptor.annotations.findAnnotation(annotationName)?.let { annotation ->
                         roundEnvironment.apply {
                             module = descriptor.module
                             elements.add(
@@ -102,10 +150,10 @@ class DeclarationCheckerImpl(val processor: AbstractProcessor) : DeclarationChec
                         processor.process(roundEnvironment)
 
                     }
-
+                    checkField(descriptor, annotationName, roundEnvironment)
                 }
                 is PropertyGetterDescriptor -> {
-                    descriptor.annotations.findAnnotation(annoationName)?.let { annotation ->
+                    descriptor.annotations.findAnnotation(annotationName)?.let { annotation ->
                         roundEnvironment.apply {
                             module = descriptor.module
                             elements.add(
@@ -120,7 +168,7 @@ class DeclarationCheckerImpl(val processor: AbstractProcessor) : DeclarationChec
                     }
                 }
                 is PropertySetterDescriptor -> {
-                    descriptor.annotations.findAnnotation(annoationName)?.let { annotation ->
+                    descriptor.annotations.findAnnotation(annotationName)?.let { annotation ->
                         roundEnvironment.apply {
                             module = descriptor.module
                             elements.add(
@@ -136,7 +184,7 @@ class DeclarationCheckerImpl(val processor: AbstractProcessor) : DeclarationChec
                 }
 
                 is LocalVariableDescriptor -> {
-                    descriptor.annotations.findAnnotation(annoationName)?.let { annotation ->
+                    descriptor.annotations.findAnnotation(annotationName)?.let { annotation ->
                         roundEnvironment.apply {
                             module = descriptor.module
                             elements.add(
@@ -160,11 +208,50 @@ class DeclarationCheckerImpl(val processor: AbstractProcessor) : DeclarationChec
 
     }
 
+    private fun checkField(descriptor: PropertyDescriptor, annoationName: String, roundEnvironment: RoundEnvironment) {
+        descriptor.backingField?.let { fieldDescriptor ->
+            fieldDescriptor.findAnnotation(annoationName)?.let { fieldAnnotation ->
+                roundEnvironment.apply {
+                    module = descriptor.module
+                    elements.add(
+                            Element.FieldElement(
+                                    annotation = fieldAnnotation,
+                                    descriptor = fieldDescriptor
+                            )
+                    )
+                }
+                processor.process(roundEnvironment)
+            }
+
+        }
+
+
+    }
+
+    private fun checkTypeParameters(descriptor: SimpleFunctionDescriptor, annoationName: String, roundEnvironment: RoundEnvironment) {
+        descriptor.typeParameters.forEach { parameterDescriptor ->
+            parameterDescriptor.annotations.findAnnotation(annoationName)?.let { parameterAnnotation ->
+
+                roundEnvironment.apply {
+                    module = descriptor.module
+                    elements.add(
+                            Element.TypeParameterElement(
+                                    annotation = parameterAnnotation
+                                    , typeParameterDescriptor = parameterDescriptor
+
+                            )
+                    )
+                }
+                processor.process(roundEnvironment)
+
+            }
+        }
+
+    }
+
     private fun checkValueParameters(descriptor: SimpleFunctionDescriptor, annoationName: String, roundEnvironment: RoundEnvironment) {
         descriptor.valueParameters.forEach { parameterDescriptor ->
-            if (parameterDescriptor.annotations.hasAnnotation(FqName(annoationName))) {
-                val parameterAnnotation = parameterDescriptor.annotations.findAnnotation(FqName(annoationName))
-
+            parameterDescriptor.annotations.findAnnotation(annoationName)?.let { parameterAnnotation ->
                 roundEnvironment.apply {
                     module = descriptor.module
                     elements.add(

@@ -1,16 +1,13 @@
 package de.jensklingenberg.mpapt
 
-import de.jensklingenberg.testAnnotations.TestClass
-import de.jensklingenberg.testAnnotations.TestFunction
-import de.jensklingenberg.testAnnotations.TestProperty
-import de.jensklingenberg.testAnnotations.TestValueParameter
+import de.jensklingenberg.testAnnotations.*
 
 
 @TestClass
 class JsSecondAnnotated {
 
     @TestProperty
-    val name: String? = null
+    val name:  String? = null
 
     @TestFunction
     fun what() {
@@ -20,5 +17,7 @@ class JsSecondAnnotated {
     fun elses(@TestValueParameter param: String) {
 
     }
+
+
 
 }

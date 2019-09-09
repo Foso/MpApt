@@ -1,9 +1,6 @@
 package de.jensklingenberg.mpapt.common
 
-import de.jensklingenberg.mpapt.model.Platform
 import de.jensklingenberg.mpapt.utils.printMessage
-import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
-import org.jetbrains.kotlin.cli.common.messages.CompilerMessageLocation
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.config.CompilerConfiguration
@@ -28,15 +25,16 @@ fun MessageCollector.warn(s: String) {
 fun CompilerConfiguration.nativeTargetPlatformName(): String {
     val targetKeyword = "target we compile for="
     val mapString = this.toString()
-    return if(!mapString.contains(targetKeyword)){
+    return if (!mapString.contains(targetKeyword)) {
         ""
-    }else{
+    } else {
         this.toString().substringAfter(targetKeyword).substringBefore(",")
     }
 }
-@Deprecated("Moved to different package", ReplaceWith("printMessage","de.jensklingenberg.mpapt.utils"))
+
+@Deprecated("Moved to different package", ReplaceWith("printMessage", "de.jensklingenberg.mpapt.utils"))
 fun MessageCollector.printMessage(diagnosticKind: DiagnosticKind, message: String) {
-    this.printMessage(diagnosticKind,message)
+    this.printMessage(diagnosticKind, message)
 
 }
 

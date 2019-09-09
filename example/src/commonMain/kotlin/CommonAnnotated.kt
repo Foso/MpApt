@@ -1,4 +1,3 @@
-@file:TestFile
 
 package de.jensklingenberg.mpapt
 

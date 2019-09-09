@@ -12,7 +12,7 @@ import org.jetbrains.kotlin.resolve.BindingContext
 class NativeIrGenerationExtension(val processor: Processor) : IrGenerationExtension {
 
     override fun generate(file: IrFile, backendContext: BackendContext, bindingContext: BindingContext) {
-        if(processor.isTargetPlatformSupported()){
+        if (processor.isTargetPlatformSupported()) {
             processor.onProcessingOver()
         }
     }

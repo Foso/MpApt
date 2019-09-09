@@ -1,6 +1,5 @@
 package de.jensklingenberg.mpapt.extension.js
 
-import de.jensklingenberg.mpapt.model.AbstractProcessor
 import de.jensklingenberg.mpapt.model.Processor
 import org.jetbrains.kotlin.descriptors.ClassDescriptor
 import org.jetbrains.kotlin.js.translate.context.TranslationContext
@@ -19,7 +18,7 @@ internal class JsSyntheticTranslateExtensionExt(val processor: Processor) : JsSy
             translator: DeclarationBodyVisitor,
             context: TranslationContext
     ) {
-        if(processor.isTargetPlatformSupported()){
+        if (processor.isTargetPlatformSupported()) {
             processor.onProcessingOver()
         }
     }

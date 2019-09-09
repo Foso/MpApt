@@ -1,6 +1,5 @@
 package de.jensklingenberg.mpapt.extension
 
-import de.jensklingenberg.mpapt.model.AbstractProcessor
 import org.jetbrains.kotlin.codegen.ClassBuilder
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.resolve.jvm.diagnostics.JvmDeclarationOrigin

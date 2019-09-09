@@ -13,8 +13,12 @@ annotation class TestProperty()
 @Target(AnnotationTarget.VALUE_PARAMETER)
 annotation class TestValueParameter()
 
+@Target(AnnotationTarget.TYPE_PARAMETER)
+annotation class TestTypeParameter()
+
 @Target(AnnotationTarget.TYPEALIAS)
 annotation class TestTypeAlias()
+
 
 @Target(AnnotationTarget.PROPERTY_GETTER)
 annotation class TestPropertyGetter
@@ -26,7 +30,7 @@ annotation class TestPropertySetter()
 annotation class TestType()
 
 @Target(AnnotationTarget.FILE)
-annotation class TestFile()
+annotation class TestFile(val file:String="HELLO")
 
 @Retention(AnnotationRetention.SOURCE)
 @Target(AnnotationTarget.EXPRESSION)
