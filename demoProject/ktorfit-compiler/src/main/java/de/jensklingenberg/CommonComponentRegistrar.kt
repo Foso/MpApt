@@ -23,7 +23,6 @@ open class CommonComponentRegistrar : ComponentRegistrar {
         val processor = MpAptTestProcessor()
         val mpapt = MpAptProject(processor,configuration)
         StorageComponentContainerContributor.registerExtension(project,mpapt)
-        SyntheticResolveExtension.registerExtension(project, mpapt)
         ClassBuilderInterceptorExtension.registerExtension(project,mpapt)
         JsSyntheticTranslateExtension.registerExtension(project,mpapt)
     }
