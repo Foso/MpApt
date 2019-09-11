@@ -40,7 +40,7 @@ repositories {
 }
 
 dependencies {
-   compile 'de.jensklingenberg:mpapt-runtime:0.8.1'
+   compile 'de.jensklingenberg:mpapt-runtime:0.8.2'
 }
 ```
 1) Create a class that extends de.jensklingenberg.mpapt.model.AbstractProcessor
