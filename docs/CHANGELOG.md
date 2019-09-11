@@ -1,7 +1,7 @@
-v0.8.2(not yet released)
+v0.8.2
 ========================================
 fixed that processingOver was called to often
-You can now detect annotation with Target (ANNOTATION_CLASS,TYPE_PARAMETER,FIELD,FILE)
+You can now detect annotation with Target (ANNOTATION_CLASS,TYPE_PARAMETER,FIELD,FILE,LocalVariable)
 
 v0.8.1
 

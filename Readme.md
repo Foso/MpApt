@@ -15,7 +15,7 @@ I wrote an annotation processing libary that can detect annotations in Kotlin Na
 
 It can detect annotations with following targets: 
 ```groovy
-(CLASS,FUNCTION,PROPERTY,VALUE_PARAMETER,PROPERTY_GETTER,PROPERTY_GETTER,CONSTRUCTOR)
+(CLASS,FUNCTION,PROPERTY,VALUE_PARAMETER,PROPERTY_GETTER,PROPERTY_GETTER,CONSTRUCTOR,ANNOTATION_CLASS,TYPE_PARAMETER,FIELD,FILE,LocalVariable)
 ```
 
 <p align="left">
@@ -30,7 +30,7 @@ It can detect annotations with following targets:
 
 
 ## Usage
-These are the instructions for v0.8.1, check [Changelog](https://github.com/Foso/MpApt/blob/master/docs/CHANGELOG.md) for changes on the active development branch
+These are the instructions for v0.8.2, check [Changelog](https://github.com/Foso/MpApt/blob/master/docs/CHANGELOG.md) for changes on the active development branch
 
 Inside your compiler plugin, add the dependency from MavenCentral 
 
@@ -84,7 +84,6 @@ override fun registerProjectComponents(project: MockProject, configuration: Comp
         val mpapt = MpAptProject(processor,configuration)
 
         StorageComponentContainerContributor.registerExtension(project,mpapt)
-        SyntheticResolveExtension.registerExtension(project, mpapt)
         IrGenerationExtension.registerExtension(project,mpapt)
     }
 ```
@@ -98,7 +97,6 @@ Inside a Kotlin JVM/JS Compiler Plugin:
         val processor = MpAptTestProcessor()
         val mpapt = MpAptProject(processor,configuration)
         StorageComponentContainerContributor.registerExtension(project,mpapt)
-        SyntheticResolveExtension.registerExtension(project, mpapt)
         ClassBuilderInterceptorExtension.registerExtension(project,mpapt)
         JsSyntheticTranslateExtension.registerExtension(project,mpapt)
     }
