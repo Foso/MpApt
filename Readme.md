@@ -15,7 +15,8 @@ I wrote an annotation processing libary that can detect annotations in Kotlin Na
 
 It can detect annotations with following targets: 
 ```groovy
-(CLASS,FUNCTION,PROPERTY,VALUE_PARAMETER,PROPERTY_GETTER,PROPERTY_GETTER,CONSTRUCTOR,ANNOTATION_CLASS,TYPE_PARAMETER,FIELD,FILE,LocalVariable)
+(CLASS,FUNCTION,PROPERTY,VALUE_PARAMETER,PROPERTY_GETTER,PROPERTY_GETTER,CONSTRUCTOR)
+(ANNOTATION_CLASS,TYPE_PARAMETER,FIELD,FILE,LocalVariable)
 ```
 
 <p align="left">
