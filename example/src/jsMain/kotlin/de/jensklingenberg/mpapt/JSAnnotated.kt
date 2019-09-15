@@ -20,8 +20,8 @@ class Annotated @TestConstructor constructor() {
         }
 
     @TestFunction
-    fun firstFunction() {
-
+    fun firstFunction(): @TestType String {
+        @TestExpression return ""
     }
 
     @TestFunction

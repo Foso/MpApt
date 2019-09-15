@@ -1,0 +1,1 @@
+/home/jens/Code/2019/MpApt/demoProject/ktorfit-compiler/build/classes/kotlin/main/de/jensklingenberg/CommonComponentRegistrar.class

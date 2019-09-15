@@ -2,3 +2,7 @@
 /example/build/
 /buildSrc/.gradle/
 /.idea/
+/buildSrc/build/
+/ktorfit-compiler/build/
+/.gradle/
+/ktorfit-annotations/build/

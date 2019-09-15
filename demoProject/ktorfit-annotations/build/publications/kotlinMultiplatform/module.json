@@ -1,0 +1,98 @@
+{
+  "formatVersion": "1.0",
+  "component": {
+    "group": "de.jensklingenberg.ktorfit",
+    "module": "ktorfit-annotations",
+    "version": "0.0.1",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "5.5.1",
+      "buildId": "5wc3wu3xsbd6lb3xwmxosvvxlq"
+    }
+  },
+  "variants": [
+    {
+      "name": "js-api",
+      "attributes": {
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "available-at": {
+        "url": "../../ktorfit-annotations-js/0.0.1/ktorfit-annotations-js-0.0.1.module",
+        "group": "de.jensklingenberg.ktorfit",
+        "module": "ktorfit-annotations-js",
+        "version": "0.0.1"
+      }
+    },
+    {
+      "name": "js-runtime",
+      "attributes": {
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.platform.type": "js"
+      },
+      "available-at": {
+        "url": "../../ktorfit-annotations-js/0.0.1/ktorfit-annotations-js-0.0.1.module",
+        "group": "de.jensklingenberg.ktorfit",
+        "module": "ktorfit-annotations-js",
+        "version": "0.0.1"
+      }
+    },
+    {
+      "name": "jvm-api",
+      "attributes": {
+        "org.gradle.usage": "java-api-jars",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "available-at": {
+        "url": "../../ktorfit-annotations-jvm/0.0.1/ktorfit-annotations-jvm-0.0.1.module",
+        "group": "de.jensklingenberg.ktorfit",
+        "module": "ktorfit-annotations-jvm",
+        "version": "0.0.1"
+      }
+    },
+    {
+      "name": "jvm-runtime",
+      "attributes": {
+        "org.gradle.usage": "java-runtime-jars",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "available-at": {
+        "url": "../../ktorfit-annotations-jvm/0.0.1/ktorfit-annotations-jvm-0.0.1.module",
+        "group": "de.jensklingenberg.ktorfit",
+        "module": "ktorfit-annotations-jvm",
+        "version": "0.0.1"
+      }
+    },
+    {
+      "name": "linux-api",
+      "attributes": {
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "linux_x64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../ktorfit-annotations-linux/0.0.1/ktorfit-annotations-linux-0.0.1.module",
+        "group": "de.jensklingenberg.ktorfit",
+        "module": "ktorfit-annotations-linux",
+        "version": "0.0.1"
+      }
+    },
+    {
+      "name": "metadata-api",
+      "attributes": {
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.platform.type": "common"
+      },
+      "available-at": {
+        "url": "../../ktorfit-annotations-metadata/0.0.1/ktorfit-annotations-metadata-0.0.1.module",
+        "group": "de.jensklingenberg.ktorfit",
+        "module": "ktorfit-annotations-metadata",
+        "version": "0.0.1"
+      }
+    }
+  ]
+}

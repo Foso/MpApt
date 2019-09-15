@@ -15,7 +15,7 @@ import org.jetbrains.kotlin.resolve.extensions.SyntheticResolveExtension
 import org.jetbrains.kotlin.resolve.jvm.extensions.AnalysisHandlerExtension
 
 class MpAptProject(abstractProcessor: AbstractProcessor, configuration: CompilerConfiguration) :
-        SyntheticResolveExtension by SyntheticResolveExtensionImpl(abstractProcessor, ClassParser(abstractProcessor)),
+       // SyntheticResolveExtension by SyntheticResolveExtensionImpl(abstractProcessor, ClassParser(abstractProcessor)),
         IrGenerationExtension by NativeIrGenerationExtension(abstractProcessor),
         JsSyntheticTranslateExtension by JsSyntheticTranslateExtensionExt(abstractProcessor),
         ClassBuilderInterceptorExtension by ClassBuilderInterceptorExtensionImpl(abstractProcessor),

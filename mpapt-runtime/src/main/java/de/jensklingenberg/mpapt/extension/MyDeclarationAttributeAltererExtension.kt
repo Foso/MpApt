@@ -34,5 +34,7 @@ class MyDeclarationAttributeAltererExtension(generator: AbstractProcessor) : Dec
 
         return null
     }
+
+
 }
 
