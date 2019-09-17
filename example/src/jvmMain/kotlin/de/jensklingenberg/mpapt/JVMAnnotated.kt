@@ -19,7 +19,7 @@ class Annotated @TestConstructor constructor() {
 
     var jens: String
         @TestPropertyGetter get() {
-            return "Hello"
+           @TestExpression return "Hello"
         }
         @TestPropertySetter set(value) {
 

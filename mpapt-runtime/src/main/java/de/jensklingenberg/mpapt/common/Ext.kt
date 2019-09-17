@@ -32,22 +32,7 @@ fun CompilerConfiguration.nativeTargetPlatformName(): String {
     }
 }
 
-@Deprecated("Moved to different package", ReplaceWith("printMessage", "de.jensklingenberg.mpapt.utils"))
-fun MessageCollector.printMessage(diagnosticKind: DiagnosticKind, message: String) {
-    this.printMessage(diagnosticKind, message)
-
-}
-
 
 fun KClassValue.getVariableNames(moduleDescriptor: ModuleDescriptor): List<Name> =
         this.getArgumentType(moduleDescriptor).memberScope.getVariableNames().toList()
 
-
-enum class DiagnosticKind {
-    ERROR,
-    WARNING,
-    MANDATORY_WARNING,
-    NOTE,
-    LOG,
-    OTHER;
-}

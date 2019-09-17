@@ -1,6 +1,20 @@
 develop
 ========================================
-You can now detect annotated expressions in functions
+* You can now detect annotated expressions in functions
+
+* Added util method "printMessage()"
+Added an extension function to the MessageCollector that can be used to print text or raise compiler errors.
+
+Inside your processor, you can use it like that: 
+```kotlin
+configuration.messager().printMessage(DiagnosticKind.ERROR,"My error message", CompilerMessageLocation.Companion.create("/home/jens/Code/2019/MpApt/kotlin-plugin-shared/src/main/java/de/jensklingenberg/MpAptTestProcessor.kt",42,106))
+```
+
+This will print the message to the log and stop the compiler:
+```kotlin
+e: /home/jens/Code/2019/MpApt/kotlin-plugin-shared/src/main/java/de/jensklingenberg/MpAptTestProcessor.kt: (42, 106): My error message
+
+```
 
 v0.8.2
 ========================================

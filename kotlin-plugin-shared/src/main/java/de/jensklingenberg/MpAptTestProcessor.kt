@@ -33,7 +33,6 @@ class MpAptTestProcessor : AbstractProcessor() {
 
     override fun initProcessor() {
         log("$TAG***Processor started on ***")
-
     }
 
     override fun isTargetPlatformSupported(platform: TargetPlatform): Boolean {
