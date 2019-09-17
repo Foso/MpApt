@@ -28,6 +28,8 @@ class MpAptTestProcessor : AbstractProcessor() {
     val testTestTypeParameter = TestTypeParameter::class.java.name
     val testField = TestField::class.java.name
     val testFile = TestFile::class.java.name
+    val testExpression = TestExpression::class.java.name
+
 
     override fun initProcessor() {
         log("$TAG***Processor started on ***")
@@ -157,14 +159,24 @@ class MpAptTestProcessor : AbstractProcessor() {
         roundEnvironment.getElementsAnnotatedWith(testFile).forEach {
             when (it) {
                 is Element.FileElement -> {
-                    log("Found File Annotation: " + it.annotation.simpleName() + " with value file:"+ it.annotation?.allValueArguments?.get(Name.identifier("file")) +" platform   " + activeTargetPlatform.first().platformName)
+                    log("Found File Annotation: " + it.annotation.simpleName() + " with value file:" + it.annotation?.allValueArguments?.get(Name.identifier("file")) + " platform   " + activeTargetPlatform.first().platformName)
                 }
             }
         }
+
+        roundEnvironment.getElementsAnnotatedWith(testExpression).forEach {
+            when (it) {
+                is Element.ExpressionElement -> {
+                    log("Found Expression Annotation: " + it.annotation.simpleName() + " in function:" + it.parentDescriptor.name + " platform   " + activeTargetPlatform.first().platformName)
+                }
+            }
+        }
+
+
     }
 
 
-    override fun getSupportedAnnotationTypes(): Set<String> = setOf(TestClass::class.java.name,testFile,testField,testTestTypeParameter,testAnnotationClass,testTypeAlias, testFunction, testProperty, testValueParameter, testPropertyGetter, testPropertySetter, testConstructor, testLocalVariable)
+    override fun getSupportedAnnotationTypes(): Set<String> = setOf(TestClass::class.java.name, testExpression, testFile, testField, testTestTypeParameter, testAnnotationClass, testTypeAlias, testFunction, testProperty, testValueParameter, testPropertyGetter, testPropertySetter, testConstructor, testLocalVariable)
 
     override fun processingOver() {
         log("$TAG***Processor over ***")

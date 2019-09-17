@@ -3,6 +3,7 @@ package de.jensklingenberg.mpapt.model
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.descriptors.annotations.AnnotationDescriptor
 import org.jetbrains.kotlin.descriptors.impl.LocalVariableDescriptor
+import org.jetbrains.kotlin.psi.KtExpression
 
 sealed class Element constructor(
         open val simpleName: String = "",
@@ -126,6 +127,14 @@ sealed class Element constructor(
                            override val elementKind: ElementKind = ElementKind.FILE
     ) : Element()
 
+    /**
+     * Elements annotated with [AnnotationTarget.EXPRESSION]
+     */
+    data class ExpressionElement(val ktExpression: KtExpression,
+                                 override val annotation: AnnotationDescriptor? = null,
+                                 val parentDescriptor: DeclarationDescriptor,
+                                 override val elementKind: ElementKind = ElementKind.EXPRESSION
+    ) : Element()
 
 }
 

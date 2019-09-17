@@ -30,11 +30,11 @@ annotation class TestPropertySetter()
 annotation class TestType()
 
 @Target(AnnotationTarget.FILE)
-annotation class TestFile(val file:String="HELLO")
+annotation class TestFile(val file: String = "HELLO")
 
 @Retention(AnnotationRetention.SOURCE)
 @Target(AnnotationTarget.EXPRESSION)
-annotation class TestExpression
+annotation class TestExpression(val value: String = "")
 
 @Target(AnnotationTarget.ANNOTATION_CLASS)
 annotation class TestAnnotationClass

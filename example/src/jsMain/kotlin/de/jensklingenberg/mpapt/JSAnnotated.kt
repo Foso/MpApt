@@ -1,12 +1,14 @@
 import de.jensklingenberg.testAnnotations.*
 
-@TestTypeAlias typealias WORD = String
+@TestTypeAlias
+typealias WORD = String
 
-@TestAnnotationClass annotation class JSAnnotationClass
+@TestAnnotationClass
+annotation class JSAnnotationClass
 
 
 @TestClass
-class Annotated @TestConstructor constructor() {
+class JSAnnotated @TestConstructor constructor() {
 
     @TestConstructor
     constructor(name: String) : this()
@@ -16,7 +18,10 @@ class Annotated @TestConstructor constructor() {
     lateinit var myProperty: @TestType String
 
     var jens: String
-        @TestPropertyGetter  get() {
+        /**
+         * HERE IS A TEXT
+         */
+        @TestPropertyGetter get() {
             @TestExpression return "Hello"
         }
         @TestPropertySetter set(value) {
@@ -32,19 +37,17 @@ class Annotated @TestConstructor constructor() {
     fun secondFunction() {
 
         val i = 1
-      @TestExpression  when(i){
-            1->{
+        @TestExpression("Hello") when (i) {
+            1 -> {
 
             }
-            else->{
+            else -> {
 
             }
         }
 
     }
 
-    fun thirdFunction(@TestValueParameter  param: String, @TestValueParameter param2: String) {
-
-    }
+    fun thirdFunction(@TestValueParameter param: String, @TestValueParameter param2: String) = Unit
 
 }

@@ -4,10 +4,15 @@ import de.jensklingenberg.mpapt.common.findAnnotation
 import de.jensklingenberg.mpapt.model.AbstractProcessor
 import de.jensklingenberg.mpapt.model.Element
 import de.jensklingenberg.mpapt.model.RoundEnvironment
+import de.jensklingenberg.mpapt.utils.KotlinPlatformValues
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.descriptors.impl.LocalVariableDescriptor
 import org.jetbrains.kotlin.js.translate.utils.AnnotationsUtils
+import org.jetbrains.kotlin.psi.KtAnnotatedExpression
+import org.jetbrains.kotlin.psi.KtBlockExpression
 import org.jetbrains.kotlin.psi.KtDeclaration
+import org.jetbrains.kotlin.psi.KtNamedFunction
+import org.jetbrains.kotlin.resolve.BindingTraceContext
 import org.jetbrains.kotlin.resolve.checkers.DeclarationChecker
 import org.jetbrains.kotlin.resolve.checkers.DeclarationCheckerContext
 import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameSafe
@@ -72,6 +77,8 @@ class DeclarationCheckerImpl(val processor: AbstractProcessor) : DeclarationChec
 
                     }
 
+
+                    checkAnnotatedExpression(declaration, context, annotationName, roundEnvironment, descriptor)
                     checkValueParameters(descriptor, annotationName, roundEnvironment)
                     checkTypeParameters(descriptor, annotationName, roundEnvironment)
 
@@ -208,9 +215,45 @@ class DeclarationCheckerImpl(val processor: AbstractProcessor) : DeclarationChec
 
     }
 
-    private fun checkField(descriptor: PropertyDescriptor, annoationName: String, roundEnvironment: RoundEnvironment) {
+    private fun checkAnnotatedExpression(declaration: KtDeclaration, context: DeclarationCheckerContext, annotationName: String, roundEnvironment: RoundEnvironment, descriptor: SimpleFunctionDescriptor) {
+
+        /**
+         * We need to distinguish here between native and other platforms because the native compiler
+         * was always crashing when "...bodyExpression?.children?" was called.
+         * TODO: Check if versions >1.3.41 are still crashing
+         */
+
+        val annotatedExpressions = when (processor.activeTargetPlatform.first().platformName) {
+            KotlinPlatformValues.NATIVE -> {
+                ((declaration as KtNamedFunction).bodyExpression as KtBlockExpression).statements.filterIsInstance<KtAnnotatedExpression>()
+            }
+            else -> {
+                (declaration as KtNamedFunction).bodyExpression?.children?.filterIsInstance<KtAnnotatedExpression>()
+            }
+        }
+
+        annotatedExpressions?.forEach { ktannotedexp ->
+            ktannotedexp.findAnnotation(context.trace as BindingTraceContext, annotationName)?.let {
+                roundEnvironment.apply {
+                    //  module = descriptor.module
+                    elements.add(
+                            Element.ExpressionElement(
+                                    ktannotedexp, it, descriptor
+                            )
+                    )
+                }
+
+                processor.process(roundEnvironment)
+            }
+
+        }
+
+
+    }
+
+    private fun checkField(descriptor: PropertyDescriptor, annotationName: String, roundEnvironment: RoundEnvironment) {
         descriptor.backingField?.let { fieldDescriptor ->
-            fieldDescriptor.findAnnotation(annoationName)?.let { fieldAnnotation ->
+            fieldDescriptor.findAnnotation(annotationName)?.let { fieldAnnotation ->
                 roundEnvironment.apply {
                     module = descriptor.module
                     elements.add(

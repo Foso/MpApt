@@ -4,6 +4,10 @@ import org.jetbrains.kotlin.descriptors.annotations.AnnotationDescriptor
 import org.jetbrains.kotlin.descriptors.annotations.Annotations
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
+import org.jetbrains.kotlin.psi.KtAnnotatedExpression
+import org.jetbrains.kotlin.psi.KtAnnotationEntry
+import org.jetbrains.kotlin.resolve.BindingContext
+import org.jetbrains.kotlin.resolve.BindingTraceContext
 import org.jetbrains.kotlin.resolve.constants.ConstantValue
 import org.jetbrains.kotlin.resolve.constants.KClassValue
 import kotlin.reflect.KClass
@@ -20,3 +24,14 @@ fun Annotations.hasAnnotation(fqName: String): Boolean = this.hasAnnotation(FqNa
 fun Annotations.findAnnotation(fqName: String): AnnotationDescriptor? = this.findAnnotation(FqName(fqName))
 
 fun KClass<*>.propertyNames(): List<String> = this.members.filterIsInstance<KProperty<*>>().map { it.name }
+
+fun KtAnnotatedExpression.findAnnotation(bindingTraceContext: BindingTraceContext, annotationName: String): AnnotationDescriptor? {
+    return this.annotationEntries.mapNotNull { bindingTraceContext.get(BindingContext.ANNOTATION, it) }.firstOrNull() {
+        it.fqName?.toString().equals(annotationName)
+    }
+
+}
+
+fun KtAnnotationEntry.toAnnotationDescriptor(bindingTraceContext: BindingTraceContext): AnnotationDescriptor? {
+    return bindingTraceContext.get(BindingContext.ANNOTATION, this)
+}

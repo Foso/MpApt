@@ -31,7 +31,18 @@ class LinuxAnnotated @TestConstructor constructor() {
     @TestFunction
     fun secondFunction() {
 
+        val i = 1
+        @TestExpression("Hello") when (i) {
+            1 -> {
+
+            }
+            else -> {
+
+            }
+        }
+
     }
+
 
     fun thirdFunction(@TestValueParameter param: String, @TestValueParameter param2: String) {
 

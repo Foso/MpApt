@@ -1,4 +1,3 @@
-
 package de.jensklingenberg.mpapt
 
 import de.jensklingenberg.testAnnotations.*
@@ -28,10 +27,6 @@ class CommonAnnotated @TestConstructor constructor() {
 
     }
 
-    @TestFunction
-    fun secondFunction() {
-
-    }
 
     fun thirdFunction(@TestValueParameter param: String, @TestValueParameter param2: String) {
 
