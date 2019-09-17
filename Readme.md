@@ -15,7 +15,8 @@ I wrote an annotation processing libary that can detect annotations in Kotlin Na
 
 It can detect annotations with following targets: 
 ```groovy
-(CLASS,FUNCTION,PROPERTY,VALUE_PARAMETER,PROPERTY_GETTER,PROPERTY_GETTER,CONSTRUCTOR,ANNOTATION_CLASS,TYPE_PARAMETER,FIELD,FILE,LocalVariable)
+(CLASS,FUNCTION,PROPERTY,VALUE_PARAMETER,PROPERTY_GETTER,PROPERTY_GETTER,CONSTRUCTOR)
+(ANNOTATION_CLASS,TYPE_PARAMETER,FIELD,FILE,LocalVariable)
 ```
 
 <p align="left">
@@ -40,7 +41,7 @@ repositories {
 }
 
 dependencies {
-   compile 'de.jensklingenberg:mpapt-runtime:0.8.1'
+   compile 'de.jensklingenberg:mpapt-runtime:0.8.2'
 }
 ```
 1) Create a class that extends de.jensklingenberg.mpapt.model.AbstractProcessor
