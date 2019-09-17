@@ -1,6 +1,6 @@
 develop
 ========================================
-You can now detect Expression in functions
+You can now detect annotated expressions in functions
 
 v0.8.2
 ========================================
