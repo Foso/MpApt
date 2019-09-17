@@ -1,3 +1,7 @@
+develop
+========================================
+You can now detect Expression in functions
+
 v0.8.2
 ========================================
 fixed that processingOver was called to often
