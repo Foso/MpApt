@@ -56,7 +56,7 @@ allprojects {
 
 kotlin {
     jvm()
-    js()
+
     linuxX64("linux") {
         configure([compilations.main]) {
             tasks.getByName(compileKotlinTaskName).kotlinOptions {
