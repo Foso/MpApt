@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package de.jensklingenberg
+package de.jensklingenberg.mpapt.common
 
-import de.jensklingenberg.testAnnotations.TestClass
-import org.jetbrains.kotlin.analyzer.AnalysisResult
+import de.jensklingenberg.mpapt.extension.AbortAnalysisHandlerExtension
 import org.jetbrains.kotlin.base.kapt3.AptMode
 import org.jetbrains.kotlin.base.kapt3.KaptFlag
 import org.jetbrains.kotlin.base.kapt3.KaptOptions
@@ -28,79 +27,26 @@ import org.jetbrains.kotlin.cli.common.messages.PrintingMessageCollector
 import org.jetbrains.kotlin.cli.jvm.config.JavaSourceRoot
 import org.jetbrains.kotlin.cli.jvm.config.JvmClasspathRoot
 import org.jetbrains.kotlin.com.intellij.mock.MockProject
-import org.jetbrains.kotlin.com.intellij.openapi.project.Project
 import org.jetbrains.kotlin.compiler.plugin.ComponentRegistrar
 import org.jetbrains.kotlin.config.CommonConfigurationKeys
 import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.config.CompilerConfigurationKey
 import org.jetbrains.kotlin.config.JVMConfigurationKeys
-import org.jetbrains.kotlin.container.ComponentProvider
-import org.jetbrains.kotlin.context.ProjectContext
-import org.jetbrains.kotlin.descriptors.ModuleDescriptor
-import org.jetbrains.kotlin.extensions.StorageComponentContainerContributor
-import org.jetbrains.kotlin.kapt3.AbstractKapt3Extension
-import org.jetbrains.kotlin.kapt3.Kapt3ComponentRegistrar
 import org.jetbrains.kotlin.kapt3.base.Kapt
-import org.jetbrains.kotlin.kapt3.base.LoadedProcessors
 import org.jetbrains.kotlin.kapt3.base.incremental.DeclaredProcType
 import org.jetbrains.kotlin.kapt3.base.incremental.IncrementalProcessor
 import org.jetbrains.kotlin.kapt3.base.util.KaptLogger
 import org.jetbrains.kotlin.kapt3.util.MessageCollectorBackedKaptLogger
-import org.jetbrains.kotlin.psi.KtFile
-import org.jetbrains.kotlin.resolve.BindingTrace
 import org.jetbrains.kotlin.resolve.jvm.extensions.AnalysisHandlerExtension
 import java.io.File
-import javax.annotation.processing.AbstractProcessor
 import javax.annotation.processing.Processor
-import javax.annotation.processing.RoundEnvironment
-import javax.lang.model.SourceVersion
-import javax.lang.model.element.TypeElement
 
-class Process : AbstractProcessor() {
-
-    companion object {
-        private const val KAPT_KOTLIN_GENERATED_OPTION_NAME = "kapt.kotlin.generated"
-        private const val GENERATE_KOTLIN_CODE_OPTION = "generate.kotlin.value"
-        private const val GENERATE_ERRORS_OPTION = "generate.error"
-        private const val FILE_SUFFIX_OPTION = "suffix"
-        const val ON_INIT_MSG = "kotlin processor init"
-        const val GENERATED_PACKAGE = "com.tschuchort.compiletesting"
-        const val GENERATED_JAVA_CLASS_NAME = "KotlinGeneratedJavaClass"
-        const val GENERATED_KOTLIN_CLASS_NAME = "KotlinGeneratedKotlinClass"
-    }
-
-
-    override fun process(p0: MutableSet<out TypeElement>?, p1: RoundEnvironment?): Boolean {
-        p1?.getElementsAnnotatedWith(TestClass::class.java)?.forEach {
-            println("init")
-
-        }
-        return false
-    }
-
-    override fun getSupportedAnnotationTypes(): MutableSet<String> {
-        return mutableSetOf(TestClass::class.java.canonicalName)
-    }
-
-    override fun getSupportedSourceVersion(): SourceVersion {
-        return SourceVersion.latestSupported()
-    }
-
-    override fun getSupportedOptions() = setOf(
-            KAPT_KOTLIN_GENERATED_OPTION_NAME,
-            GENERATE_KOTLIN_CODE_OPTION,
-            GENERATE_ERRORS_OPTION
-    )
-
-
-
-}
 private val KAPT_OPTIONS = CompilerConfigurationKey.create<KaptOptions.Builder>("Kapt options")
 
 
-class KaptComponentRegistrar : ComponentRegistrar {
+class KaptComponentRegistrar  {
 
-    override fun registerProjectComponents(project: MockProject, configuration: CompilerConfiguration) {
+    fun registerProjectComponents(project: MockProject, configuration: CompilerConfiguration,annotationProcessors: List<KaptProcessor>) {
 
         val contentRoots = configuration[CLIConfigurationKeys.CONTENT_ROOTS] ?: emptyList()
 
@@ -126,6 +72,7 @@ class KaptComponentRegistrar : ComponentRegistrar {
             return
         }
 
+
         val options = optionsBuilder.build()
 
         options.sourcesOutputDir.mkdirs()
@@ -133,26 +80,11 @@ class KaptComponentRegistrar : ComponentRegistrar {
         if (options[KaptFlag.VERBOSE]) {
             logger.info(options.logString())
         }
-        var annotationProcessors: List<Processor> = listOf(Process())
 
-        KaptComponentRegistrar.threadLocalParameters.set(
-                KaptComponentRegistrar.Parameters(
-                        annotationProcessors.map { IncrementalProcessor(it, DeclaredProcType.INCREMENTAL_BUT_OTHER_APS_ARE_NOT) },
-                        optionsBuilder
-                )
-        )
+        val processors = annotationProcessors.map { IncrementalProcessor(it, DeclaredProcType.INCREMENTAL_BUT_OTHER_APS_ARE_NOT) }
 
-        val kapt3AnalysisCompletedHandlerExtension =
-                object : AbstractKapt3Extension(options, logger, configuration) {
-
-                    override fun loadProcessors() = LoadedProcessors(
-                            processors = threadLocalParameters.get().processors,
-                            classLoader = this::class.java.classLoader
-                    )
-                }
-
-        AnalysisHandlerExtension.registerExtension(project, kapt3AnalysisCompletedHandlerExtension)
-        StorageComponentContainerContributor.registerExtension(project, Kapt3ComponentRegistrar.KaptComponentContributor())
+        AnalysisHandlerExtension.registerExtension(project, AbstractKapt3Extension1(processors, options, logger, configuration))
+        // StorageComponentContainerContributor.registerExtension(project, Kapt3ComponentRegistrar.KaptComponentContributor())
     }
 
 
@@ -166,7 +98,8 @@ class KaptComponentRegistrar : ComponentRegistrar {
                 classesOutputDir = File("/home/jens/Code/2019/MpApt/example/src/jvmMain/kotlin/de/jensklingenberg/mpapt/build/")
                 return true
             } else {
-                classesOutputDir = configuration.get(JVMConfigurationKeys.OUTPUT_DIRECTORY)?: File("/home/jens/Code/2019/MpApt/example/src/jvmMain/kotlin/de/jensklingenberg/build/")
+                classesOutputDir = configuration.get(JVMConfigurationKeys.OUTPUT_DIRECTORY)
+                        ?: File("/home/jens/Code/2019/MpApt/example/src/jvmMain/kotlin/de/jensklingenberg/build/")
             }
         }
 
@@ -201,31 +134,6 @@ class KaptComponentRegistrar : ComponentRegistrar {
         return true
     }
 
-
-    /* This extension simply disables both code analysis and code generation.
-     * When aptOnly is true, and any of required kapt options was not passed, we just abort compilation by providing this extension.
-     * */
-    private class AbortAnalysisHandlerExtension : AnalysisHandlerExtension {
-        override fun doAnalysis(
-                project: Project,
-                module: ModuleDescriptor,
-                projectContext: ProjectContext,
-                files: Collection<KtFile>,
-                bindingTrace: BindingTrace,
-                componentProvider: ComponentProvider
-        ): AnalysisResult? {
-            return AnalysisResult.success(bindingTrace.bindingContext, module, shouldGenerateCode = false)
-        }
-
-        override fun analysisCompleted(
-                project: Project,
-                module: ModuleDescriptor,
-                bindingTrace: BindingTrace,
-                files: Collection<KtFile>
-        ): AnalysisResult? {
-            return AnalysisResult.success(bindingTrace.bindingContext, module, shouldGenerateCode = false)
-        }
-    }
 
     companion object {
         /** This kapt compiler plugin is instantiated by K2JVMCompiler using

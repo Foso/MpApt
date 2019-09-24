@@ -9,11 +9,13 @@ import org.jetbrains.kotlin.platform.TargetPlatform
 
 class StorageComponentContainerContributorImpl(val processor: AbstractProcessor) : StorageComponentContainerContributor {
 
+
     /**
      * Here we get the targetplatform of the module
      */
     override fun registerModuleComponents(container: StorageComponentContainer, platform: TargetPlatform, moduleDescriptor: ModuleDescriptor) {
         processor.activeTargetPlatform = platform
         container.useInstance(DeclarationCheckerImpl(processor))
+
     }
 }

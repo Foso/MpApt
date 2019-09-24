@@ -31,6 +31,7 @@ allprojects {
         mavenLocal()
         mavenCentral()
         google()
+        jcenter()
 
         maven { url "https://maven.google.com" }
         maven { url "https://plugins.gradle.org/m2/" }
@@ -96,6 +97,7 @@ kotlin {
         jvmMain {
             dependencies {
                 implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+                implementation 'org.kodein.di:kodein-di-generic-jvm:6.4.0'
             }
         }
         jvmTest {

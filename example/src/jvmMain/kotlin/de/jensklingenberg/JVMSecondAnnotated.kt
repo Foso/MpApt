@@ -21,3 +21,13 @@ class JVMSecondAnnotated {
     }
 
 }
+
+fun main() {
+
+}
+
+class KodeinApplication: Application(), KodeinAware {
+    override val kodein = Kodein.lazy {
+
+    }
+}
