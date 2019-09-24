@@ -1,4 +1,4 @@
-develop
+v0.8.3
 ========================================
 * You can now detect annotated expressions in functions
 

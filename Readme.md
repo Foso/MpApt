@@ -31,7 +31,7 @@ It can detect annotations with following targets:
 
 
 ## Usage
-These are the instructions for v0.8.2, check [Changelog](https://github.com/Foso/MpApt/blob/master/docs/CHANGELOG.md) for changes on the active development branch
+These are the instructions for v0.8.3, check [Changelog](https://github.com/Foso/MpApt/blob/master/docs/CHANGELOG.md) for changes on the active development branch
 
 Inside your compiler plugin, add the dependency from MavenCentral 
 
@@ -41,7 +41,7 @@ repositories {
 }
 
 dependencies {
-   compile 'de.jensklingenberg:mpapt-runtime:0.8.2'
+   compile 'de.jensklingenberg:mpapt-runtime:0.8.3'
 }
 ```
 1) Create a class that extends de.jensklingenberg.mpapt.model.AbstractProcessor
