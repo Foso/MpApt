@@ -7,7 +7,7 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-2-range.svg?style=flat-square)](#contributors)
   <a href="https://twitter.com/intent/tweet?text=Hey, check out MpApt https://github.com/Foso/MpApt via @jklingenberg_ #Kotlin 
 "><img src="https://img.shields.io/twitter/url/https/github.com/angular-medellin/meetup.svg?style=social" alt="Tweet"></a>
-
+[![Kotlinlang slack](https://img.shields.io/static/v1?label=kotlinlang&message=MpApt&color=brightgreen&logo=slack&style=flat-square)](https://app.slack.com/client/T09229ZC6/CNDF01UPR)
 
 
 ## Introduction 🙋‍♂️ 🙋‍
@@ -146,7 +146,7 @@ It needs to be used only on Kotlin Native otherwise it will return an empty stri
 
 ## ✍️ Feedback
 
-Feel free to send feedback on [Twitter](https://twitter.com/jklingenberg_) or [file an issue](https://github.com/foso/MpApt/issues/new) or join the [Kotlin Slack](https://slack.kotlinlang.org) and the #mpapt channel. Feature requests are always welcome. If you wish to contribute, please take a quick look at [How to develop?](https://github.com/Foso/MpApt/wiki/How-to-develop%3F)
+Feel free to send feedback on [Twitter](https://twitter.com/jklingenberg_) or [file an issue](https://github.com/foso/MpApt/issues/new) or join the [Kotlin Slack](https://slack.kotlinlang.org) and the [![Kotlinlang slack](https://img.shields.io/static/v1?label=kotlinlang&message=MpApt&color=brightgreen&logo=slack&style=flat-square)](https://app.slack.com/client/T09229ZC6/CNDF01UPR) channel. Feature requests are always welcome. If you wish to contribute, please take a quick look at [How to develop?](https://github.com/Foso/MpApt/wiki/How-to-develop%3F)
 
 ## 👷 Development Project Structure
  	
