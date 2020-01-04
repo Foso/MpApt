@@ -160,6 +160,8 @@ Feel free to send feedback on [Twitter](https://twitter.com/jklingenberg_) or [f
 
 ## Projects that use MpApt:
 * [Native Suspended Functions](https://github.com/feilfeilundfeil/kotlin-native-suspend-function-callback)
+* [Kvision](https://github.com/rjaros/kvision)
+* Your project?
 
 # See also
 * [How to use a Kotlin Compiler Plugin from Gradle Plugin](https://github.com/Foso/MpApt/wiki/How-to-use-a-Kotlin-Compiler-Plugin-from-Gradle-Plugin)
