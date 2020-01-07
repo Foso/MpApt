@@ -158,6 +158,9 @@ Feel free to send feedback on [Twitter](https://twitter.com/jklingenberg_) or [f
 * <kbd>kotlin-compiler-native-plugin</kbd> - This module contains the Kotlin Compiler Plugin for Native targets, it implements the <kbd>kotlin-plugin-shared</kbd>-module
 * <kbd>kotlin-plugin-shared</kbd> Contains an implementation of MpApt
 
+## Testing 
+The [CompileTest](https://github.com/Foso/MpApt/blob/master/kotlin-plugin-shared/src/test/kotlin/de/jensklingenberg/CompileTest.kt) shows you, how you can use [Kotlin Compile Testing](https://github.com/tschuchortdev/kotlin-compile-testing) to test your Processor/Compiler Plugin
+
 ## Projects that use MpApt:
 * [Native Suspended Functions](https://github.com/feilfeilundfeil/kotlin-native-suspend-function-callback)
 * [Kvision](https://github.com/rjaros/kvision)
