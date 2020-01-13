@@ -1,6 +1,6 @@
 <h1 align="center">MpApt - Kotlin (Native/JS/JVM) Annotation Processor library</h1>
 
-[![jCenter](https://img.shields.io/badge/Kotlin-1.3.50-green.svg
+[![jCenter](https://img.shields.io/badge/Kotlin-1.3.61-green.svg
 )](https://github.com/Foso/MpApt/blob/master/LICENSE)[![jCenter](https://img.shields.io/badge/Apache-2.0-green.svg)](https://github.com/Foso/MpApt/blob/master/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 [![All Contributors](https://img.shields.io/badge/all_contributors-1-range.svg?style=flat-square)](#contributors)
@@ -10,7 +10,7 @@
 
 
 ## Introduction 🙋‍♂️ 🙋‍
-I wrote an annotation processing libary that can detect annotations in Kotlin Native/JS and Jvm projects, because Kapt is only working with KotlinJvm. The library can be used in Kotlin Compiler plugins. Tested with Kotlin 1.3.41 and 1.3.50
+I wrote an annotation processing libary that can detect annotations in Kotlin Native/JS and Jvm projects, because Kapt is only working with KotlinJvm. The library can be used in Kotlin Compiler plugins. Tested with Kotlin 1.3.41 and 1.3.61
 
 It can detect annotations with following targets: 
 ```groovy

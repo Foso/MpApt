@@ -26,7 +26,6 @@ class NativeTestComponentRegistrar : ComponentRegistrar {
         AnalysisHandlerExtension.registerExtension(project,mpapt)
 
         StorageComponentContainerContributor.registerExtension(project,mpapt)
-        SyntheticResolveExtension.registerExtension(project, mpapt)
         IrGenerationExtension.registerExtension(project,mpapt)
         DeclarationAttributeAltererExtension.registerExtension(project,mpapt)
         PreprocessedVirtualFileFactoryExtension.registerExtension(project,mpapt)

@@ -29,6 +29,6 @@ class StorageComponentContainerContributorImpl(val processor: AbstractProcessor)
         }
 
         DEFAULT_DECLARATION_CHECKERS.forEach { container.useInstance(DeclarationCheckerImpl(processor)) }
-        container.useImpl<AdditionalAnnotationCheckerImpl>()
+        container.useImpl<ComposableAnnotationChecker>()
     }
 }

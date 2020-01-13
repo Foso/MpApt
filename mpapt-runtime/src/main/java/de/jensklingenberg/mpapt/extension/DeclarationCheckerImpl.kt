@@ -15,6 +15,7 @@ import org.jetbrains.kotlin.resolve.descriptorUtil.module
 import org.jetbrains.kotlin.resolve.lazy.descriptors.LazyClassDescriptor
 
 class DeclarationCheckerImpl(val processor: AbstractProcessor) : DeclarationChecker {
+
     override fun check(declaration: KtDeclaration, descriptor: DeclarationDescriptor, context: DeclarationCheckerContext) {
         if (!processor.isTargetPlatformSupported()) {
             return

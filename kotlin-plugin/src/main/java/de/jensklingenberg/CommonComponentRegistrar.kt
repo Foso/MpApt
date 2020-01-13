@@ -31,7 +31,6 @@ open class CommonComponentRegistrar : ComponentRegistrar {
         AnalysisHandlerExtension.registerExtension(project,mpapt)
         StorageComponentContainerContributor.registerExtension(project,mpapt)
         ExpressionCodegenExtension.registerExtension(project,mpapt)
-        SyntheticResolveExtension.registerExtension(project, mpapt)
         ClassBuilderInterceptorExtension.registerExtension(project,mpapt)
         JsSyntheticTranslateExtension.registerExtension(project,mpapt)
         DeclarationAttributeAltererExtension.registerExtension(project,mpapt)
