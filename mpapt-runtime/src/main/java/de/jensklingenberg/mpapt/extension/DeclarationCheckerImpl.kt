@@ -223,7 +223,6 @@ class DeclarationCheckerImpl(val processor: AbstractProcessor) : DeclarationChec
                         .bodyExpression
                         ?.blockExpressionsOrSingle()
                         ?.filterIsInstance<KtAnnotatedExpression>()
-                        ?.filterIsInstance<KtAnnotatedExpression>()
                         ?.toList()
 
         annotatedExpressions?.forEach { ktannotedexp ->
