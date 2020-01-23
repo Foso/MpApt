@@ -8,9 +8,9 @@ import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.psi.KtBlockExpression
 import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameSafe
-import org.jetbrains.kotlin.resolve.descriptorUtil.module
 import org.jetbrains.kotlin.resolve.lazy.descriptors.LazyClassDescriptor
 import org.jetbrains.kotlin.resolve.source.PsiSourceFile
+import java.io.File
 
 
 fun Annotated.hasAnnotation(name: String): Boolean = this.annotations.hasAnnotation(FqName(name))
@@ -20,11 +20,24 @@ fun Annotated.findAnnotation(name: String): AnnotationDescriptor? = this.annotat
 fun ClassDescriptor.canonicalFilePath() =
         (this.source.containingFile as PsiSourceFile).psiFile.virtualFile.canonicalPath
 
+/**
+ * This will guess the build folder from filepath
+ * A better way is to get the build folder from gradle plugin and pass it to the compiler plugin
+ */
 fun ClassDescriptor.guessingProjectFolder(): String {
-    //Remove <> from module name
-    val cleanedModuleName = this.module.simpleName()
-    val projectPath = this.canonicalFilePath()?.replaceAfter("$cleanedModuleName/", "")
-    return projectPath ?: "Project folder not found"
+
+    tailrec fun findBuildFolder(path: String): String {
+        val preSrcDir = path.substringBeforeLast("/src")
+        return if (path == preSrcDir || File(preSrcDir, "build").isDirectory) {
+            "$preSrcDir/build"
+        } else {
+            findBuildFolder(preSrcDir)
+        }
+    }
+    val buildFolder = this.canonicalFilePath()?.let { path -> findBuildFolder(path) }
+
+    return buildFolder ?: "Build folder not found"
+
 }
 
 fun ClassDescriptor.guessingSourceSetFolder(): String =
