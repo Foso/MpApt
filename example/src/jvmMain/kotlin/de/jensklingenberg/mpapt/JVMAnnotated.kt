@@ -25,6 +25,9 @@ class Annotated @TestConstructor constructor() {
 
         }
 
+    @TestFunction fun functionWithExpressionBody() = 1 + 1
+
+
     @TestFunction
     fun firstFunction() :@TestType String {
            @TestExpression return ""

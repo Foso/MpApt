@@ -26,6 +26,7 @@ class CommonAnnotated @TestConstructor constructor() {
     fun firstFunction() {
 
     }
+    @TestFunction fun functionWithExpressionBody2() = 1 + 1
 
 
     fun thirdFunction(@TestValueParameter param: String, @TestValueParameter param2: String) {

@@ -28,6 +28,9 @@ class JSAnnotated @TestConstructor constructor() {
 
         }
 
+    @TestFunction fun functionWithExpressionBody() = 1 + 1
+
+
     @TestFunction
     fun firstFunction() {
 
