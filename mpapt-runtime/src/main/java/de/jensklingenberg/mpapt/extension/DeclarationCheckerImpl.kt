@@ -12,6 +12,7 @@ import org.jetbrains.kotlin.psi.KtAnnotatedExpression
 import org.jetbrains.kotlin.psi.KtBlockExpression
 import org.jetbrains.kotlin.psi.KtDeclaration
 import org.jetbrains.kotlin.psi.KtNamedFunction
+import org.jetbrains.kotlin.psi.psiUtil.blockExpressionsOrSingle
 import org.jetbrains.kotlin.resolve.BindingTraceContext
 import org.jetbrains.kotlin.resolve.checkers.DeclarationChecker
 import org.jetbrains.kotlin.resolve.checkers.DeclarationCheckerContext
@@ -217,20 +218,12 @@ class DeclarationCheckerImpl(val processor: AbstractProcessor) : DeclarationChec
 
     private fun checkAnnotatedExpression(declaration: KtDeclaration, context: DeclarationCheckerContext, annotationName: String, roundEnvironment: RoundEnvironment, descriptor: SimpleFunctionDescriptor) {
 
-        /**
-         * We need to distinguish here between native and other platforms because the native compiler
-         * was always crashing when "...bodyExpression?.children?" was called.
-         * TODO: Check if versions >1.3.41 are still crashing
-         */
-
-        val annotatedExpressions = when (processor.activeTargetPlatform.first().platformName) {
-            KotlinPlatformValues.NATIVE -> {
-                ((declaration as KtNamedFunction).bodyExpression as KtBlockExpression).statements.filterIsInstance<KtAnnotatedExpression>()
-            }
-            else -> {
-                (declaration as KtNamedFunction).bodyExpression?.children?.filterIsInstance<KtAnnotatedExpression>()
-            }
-        }
+        val annotatedExpressions =
+                (declaration as KtNamedFunction)
+                        .bodyExpression
+                        ?.blockExpressionsOrSingle()
+                        ?.filterIsInstance<KtAnnotatedExpression>()
+                        ?.toList()
 
         annotatedExpressions?.forEach { ktannotedexp ->
             ktannotedexp.findAnnotation(context.trace as BindingTraceContext, annotationName)?.let {
