@@ -55,15 +55,25 @@ allprojects {
 
 
 kotlin {
-    jvm()
-    js()
-    linuxX64("linux") {
+    jvm() {
         configure([compilations.main]) {
             tasks.getByName(compileKotlinTaskName).kotlinOptions {
+                freeCompilerArgs = ["-Xuse-fir=true"]
 
             }
         }
     }
+    js()
+    linuxX64("linux") {
+        configure([compilations.main]) {
+            tasks.getByName(compileKotlinTaskName).kotlinOptions {
+               // freeCompilerArgs = ["-Xplugin=${project.rootDir}/create-plugin/build/libs/create-plugin-all.jar"]
+
+            }
+        }
+    }
+
+
 
     sourceSets {
         commonMain {

@@ -10,6 +10,10 @@ import org.jetbrains.kotlin.resolve.jvm.diagnostics.JvmDeclarationOrigin
 
 class ClassBuilderInterceptorExtensionImpl(val processor: Processor) : ClassBuilderInterceptorExtension {
 
+    init {
+        val i = 1
+    }
+
     override fun interceptClassBuilderFactory(
             interceptedFactory: ClassBuilderFactory,
             bindingContext: BindingContext,

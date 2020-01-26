@@ -22,6 +22,9 @@ class ExpressionCodegenExtensionImpl(
         private val abstractProcessor: AbstractProcessor
 ) : ExpressionCodegenExtension {
 
+    init {
+        val i = 1
+    }
 
     override fun applyFunction(
             receiver: StackValue,

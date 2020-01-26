@@ -37,64 +37,13 @@ val AnnotationDescriptor.isComposableAnnotation: Boolean get() = fqName == Compo
 fun Annotated.hasComposableAnnotation(): Boolean =
         annotations.findAnnotation(ComposeFqNames.Composable) != null
 
-open class ComposableAnnotationChecker :
-        AdditionalTypeChecker, AdditionalAnnotationChecker {
+open class ComposableAnnotationChecker : AdditionalAnnotationChecker,AdditionalTypeChecker {
     companion object {
 
     }
     enum class Composability { NOT_COMPOSABLE, INFERRED, MARKED }
 
 
-    fun analyze(trace: BindingTrace, descriptor: FunctionDescriptor): Composability {
-        val unwrappedDescriptor = when (descriptor) {
-          //  is ComposableFunctionDescriptor -> descriptor.underlyingDescriptor
-            else -> descriptor
-        }
-       // val psi = unwrappedDescriptor.findPsi() as? KtElement
-      //  psi?.let { trace.bindingContext.get(COMPOSABLE_ANALYSIS, it)?.let { return it } }
-       /* if (unwrappedDescriptor.name == Name.identifier("compose") &&
-                unwrappedDescriptor.containingDeclaration is ClassDescriptor &&
-                ComposeUtils.isComposeComponent(unwrappedDescriptor.containingDeclaration)
-        ) return Composability.MARKED
-
-               */
-
-                var composability = Composability.NOT_COMPOSABLE
-
-        if (false) {
-            composability = Composability.MARKED
-        } else {
-            when (unwrappedDescriptor) {
-                is VariableDescriptor ->
-                    if (unwrappedDescriptor.hasComposableAnnotation() ||
-                            unwrappedDescriptor.type.hasComposableAnnotation()
-                    )
-                        composability =
-                                Composability.MARKED
-                is ConstructorDescriptor ->
-                    if (unwrappedDescriptor.hasComposableAnnotation()) composability =
-                            Composability.MARKED
-                is JavaMethodDescriptor ->
-                    if (unwrappedDescriptor.hasComposableAnnotation()) composability =
-                            Composability.MARKED
-                is AnonymousFunctionDescriptor -> {
-                    if (unwrappedDescriptor.hasComposableAnnotation()) composability =
-                            Composability.MARKED
-
-
-                }
-                is PropertyGetterDescriptor ->
-                    if (unwrappedDescriptor.correspondingProperty.hasComposableAnnotation())
-                        composability = Composability.MARKED
-                else -> if (unwrappedDescriptor.hasComposableAnnotation()) composability =
-                        Composability.MARKED
-            }
-        }
-
-
-       // psi?.let { trace.record(COMPOSABLE_ANALYSIS, it, composability) }
-        return composability
-    }
     private fun analyzeFunctionContents(
             trace: BindingTrace,
             element: KtElement,
@@ -180,131 +129,11 @@ open class ComposableAnnotationChecker :
                     Composability.INFERRED
         return composability
     }
-    /**
-     * Analyze a KtElement
-     *  - Determine if it is @Composable (eg. the element or inferred type has an @Composable annotation)
-     *  - Update the binding context to cache analysis results
-     *  - Report errors (eg. invocations of an @Composable, etc)
-     *  - Return true if element is @Composable, else false
-     */
-    fun analyze(trace: BindingTrace, element: KtElement, type: KotlinType?): Composability {
-       // trace.bindingContext.get(BasicWritableSlice(RewritePolicy.DO_NOTHING), element)?.let { return it }
-        var composability =
-                Composability.NOT_COMPOSABLE
-        if (element is KtClass) {
-            val descriptor = trace.bindingContext.get(BindingContext.CLASS, element)
-                    ?: error("Element class context not found")
-            val annotationEntry = element.annotationEntries.singleOrNull {
-                trace.bindingContext.get(BindingContext.ANNOTATION, it)?.isComposableAnnotation
-                        ?: false
-            }
-            if (annotationEntry != null) {
-                trace.report(
-                        Errors.WRONG_ANNOTATION_TARGET.on(
-                                annotationEntry,
-                                "class which does not extend androidx.compose.Component"
-                        )
-                )
-            }
-
-
-        }
-        if (element is KtParameter) {
-            val composableAnnotation = element
-                    .typeReference
-                    ?.annotationEntries
-                    ?.mapNotNull { trace.bindingContext.get(BindingContext.ANNOTATION, it) }
-                    ?.singleOrNull { it.isComposableAnnotation }
-            if (composableAnnotation != null) {
-                composability += Composability.MARKED
-            }
-        }
-        if (element is KtParameter) {
-            val composableAnnotation = element
-                    .typeReference
-                    ?.annotationEntries
-                    ?.mapNotNull { trace.bindingContext.get(BindingContext.ANNOTATION, it) }
-                    ?.singleOrNull { it.isComposableAnnotation }
-            if (composableAnnotation != null) {
-                composability += Composability.MARKED
-            }
-        }
-        // if (candidateDescriptor.type.arguments.size != 1 || !candidateDescriptor.type.arguments[0].type.isUnit()) return false
-        if (
-                type != null &&
-                type !== TypeUtils.NO_EXPECTED_TYPE &&
-                type.hasComposableAnnotation()
-        ) {
-            composability += Composability.MARKED
-        }
-        val parent = element.parent
-        val annotations = when {
-            element is KtNamedFunction -> element.annotationEntries
-            parent is KtAnnotatedExpression -> parent.annotationEntries
-            element is KtProperty -> element.annotationEntries
-            element is KtParameter -> element.typeReference?.annotationEntries ?: emptyList()
-            else -> emptyList()
-        }
-        for (entry in annotations) {
-            val descriptor = trace.bindingContext.get(BindingContext.ANNOTATION, entry) ?: continue
-            if (descriptor.isComposableAnnotation) {
-                composability += Composability.MARKED
-            }
-        }
-        if (element is KtLambdaExpression || element is KtFunction) {
-
-
-        }
-        //trace.record(COMPOSABLE_ANALYSIS, element, composability)
-        return composability
-    }
 
 
 
 
-    override fun checkType(
-            expression: KtExpression,
-            expressionType: KotlinType,
-            expressionTypeWithSmartCast: KotlinType,
-            c: ResolutionContext<*>
-    ) {
-        if (expression is KtLambdaExpression) {
-            val expectedType = c.expectedType
-            if (expectedType === TypeUtils.NO_EXPECTED_TYPE) return
-            val expectedComposable = expectedType.hasComposableAnnotation()
-            val composability = analyze(c.trace, expression, c.expectedType)
 
-            return
-        } else {
-            val expectedType = c.expectedType
-            if (expectedType === TypeUtils.NO_EXPECTED_TYPE) return
-            if (expectedType === TypeUtils.UNIT_EXPECTED_TYPE) return
-            val nullableAnyType = expectedType.builtIns.nullableAnyType
-            val anyType = expectedType.builtIns.anyType
-            if (anyType == expectedType.lowerIfFlexible() &&
-                    nullableAnyType == expectedType.upperIfFlexible()) return
-            val nullableNothingType = expectedType.builtIns.nullableNothingType
-            // Handle assigning null to a nullable composable type
-            if (expectedType.isMarkedNullable &&
-                    expressionTypeWithSmartCast == nullableNothingType) return
-            val expectedComposable = expectedType.hasComposableAnnotation()
-            val isComposable = expressionType.hasComposableAnnotation()
-            if (expectedComposable != isComposable) {
-                val reportOn =
-                        if (expression.parent is KtAnnotatedExpression)
-                            expression.parent as KtExpression
-                        else expression
-                c.trace.report(
-                        Errors.TYPE_MISMATCH.on(
-                                reportOn,
-                                expectedType,
-                                expressionTypeWithSmartCast
-                        )
-                )
-            }
-            return
-        }
-    }
     override fun checkEntries(
             entries: List<KtAnnotationEntry>,
             actualTargets: List<KotlinTarget>,
@@ -313,10 +142,20 @@ open class ComposableAnnotationChecker :
         val entry = entries.map {
             trace.bindingContext.get(BindingContext.ANNOTATION, it)
         }
-        entries.first().parent
+        val test = entry.firstOrNull()?.fqName
+       // entries.first().parent
     }
     operator fun Composability.plus(rhs: Composability): Composability =
             if (this > rhs) this else rhs
+
+    override fun checkType(expression: KtExpression, expressionType: KotlinType, expressionTypeWithSmartCast: KotlinType, c: ResolutionContext<*>) {
+
+        val e = expression
+
+        if(e is KtNamedFunction){
+            val i = 1
+        }
+    }
 }
 
 

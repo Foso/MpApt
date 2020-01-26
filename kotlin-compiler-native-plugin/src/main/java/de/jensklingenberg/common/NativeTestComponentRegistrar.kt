@@ -24,6 +24,7 @@ class NativeTestComponentRegistrar : ComponentRegistrar {
         val generator = MpAptTestProcessor()
         val mpapt = MpAptProject(generator,configuration)
         AnalysisHandlerExtension.registerExtension(project,mpapt)
+        SyntheticResolveExtension.registerExtension(project,mpapt)
 
         StorageComponentContainerContributor.registerExtension(project,mpapt)
         IrGenerationExtension.registerExtension(project,mpapt)
