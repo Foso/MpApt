@@ -39,7 +39,6 @@ class DeclarationCheckerImpl(private val processor: AbstractProcessor) : Declara
                             )
                     )
                     processor.process(roundEnvironment)
-
                 }
             }
 

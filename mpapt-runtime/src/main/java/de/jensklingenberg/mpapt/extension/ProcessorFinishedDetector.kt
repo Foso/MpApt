@@ -1,0 +1,7 @@
+package de.jensklingenberg.mpapt.extension
+
+import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
+import org.jetbrains.kotlin.codegen.extensions.ClassBuilderInterceptorExtension
+import org.jetbrains.kotlin.js.translate.extensions.JsSyntheticTranslateExtension
+
+interface ProcessorFinishedDetector : IrGenerationExtension, JsSyntheticTranslateExtension, ClassBuilderInterceptorExtension
