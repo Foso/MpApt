@@ -5,6 +5,9 @@ import de.jensklingenberg.mpapt.model.Package
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.descriptors.FunctionDescriptor
 import org.jetbrains.kotlin.descriptors.SourceElement
+import org.jetbrains.kotlin.js.resolve.diagnostics.findPsi
+import org.jetbrains.kotlin.psi.KtBlockExpression
+import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.kotlin.resolve.source.KotlinSourceElement
 import org.jetbrains.kotlin.resolve.source.getPsi
 
@@ -13,7 +16,6 @@ import org.jetbrains.kotlin.resolve.source.getPsi
  * TODO: i dont know how to get the packageName of a function parameter
  */
 fun FunctionDescriptor.getFunctionParameters(): List<FunctionParameter> {
-    //@de.ktorfit.POST public abstract suspend fun postPictures(helloWorld: sample.model.HelloWorld): kotlin.Unit defined in sample.data.Api[SimpleFunctionDescriptorImpl@470930f5]
 
     return if (valueParameters.isNotEmpty()) {
         this.valueParameters.map { parameter ->
@@ -60,3 +62,7 @@ fun SourceElement.safeAsPsi(): PsiElement? {
 }
 
 
+private fun FunctionDescriptor.ktproperties(): List<KtProperty> {
+    return this.findPsi()?.children?.filterIsInstance<KtBlockExpression>()?.flatMap { it.statements.filterIsInstance<KtProperty>() }
+            ?: emptyList()
+}

@@ -34,7 +34,7 @@ class Annotated @TestConstructor constructor() {
     }
 
     @TestFunction
-    fun secondFunction() {
+    fun <@TestTypeParameter T> secondFunction() {
 
     }
 

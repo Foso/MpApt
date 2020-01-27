@@ -68,12 +68,12 @@ annotation class  AnnotatedAnnotatedClass
         }
 
     @TestFunction
-    fun firstFunction() : String {
+    fun <@TestTypeParameter T> firstFunction() : String {
            @TestExpression return ""
     }
 
 
-    fun thirdFunction(@TestValueParameter param: @TestTypeParameter String) {
+    fun thirdFunction(@TestValueParameter param: String) {
       @TestLocalVariable val localHallo :String
     }
 
@@ -256,7 +256,7 @@ annotation class  AnnotatedAnnotatedClass
             inheritClassPath = true
             messageOutputStream = System.out // see diagnostics in real time
         }.compile()
-        Assert.assertEquals("param",actualFound)
+        Assert.assertEquals("T",actualFound)
     }
 
     @Test

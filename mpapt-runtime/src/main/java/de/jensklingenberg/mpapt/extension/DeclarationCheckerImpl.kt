@@ -4,12 +4,10 @@ import de.jensklingenberg.mpapt.common.findAnnotation
 import de.jensklingenberg.mpapt.model.AbstractProcessor
 import de.jensklingenberg.mpapt.model.Element
 import de.jensklingenberg.mpapt.model.RoundEnvironment
-import de.jensklingenberg.mpapt.utils.KotlinPlatformValues
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.descriptors.impl.LocalVariableDescriptor
 import org.jetbrains.kotlin.js.translate.utils.AnnotationsUtils
 import org.jetbrains.kotlin.psi.KtAnnotatedExpression
-import org.jetbrains.kotlin.psi.KtBlockExpression
 import org.jetbrains.kotlin.psi.KtDeclaration
 import org.jetbrains.kotlin.psi.KtNamedFunction
 import org.jetbrains.kotlin.psi.psiUtil.blockExpressionsOrSingle
@@ -20,7 +18,10 @@ import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameSafe
 import org.jetbrains.kotlin.resolve.descriptorUtil.module
 import org.jetbrains.kotlin.resolve.lazy.descriptors.LazyClassDescriptor
 
-class DeclarationCheckerImpl(val processor: AbstractProcessor) : DeclarationChecker {
+/**
+ * This class is used to detect the annotations
+ */
+class DeclarationCheckerImpl(private val processor: AbstractProcessor) : DeclarationChecker {
     override fun check(declaration: KtDeclaration, descriptor: DeclarationDescriptor, context: DeclarationCheckerContext) {
         if (!processor.isTargetPlatformSupported()) {
             return
@@ -41,8 +42,6 @@ class DeclarationCheckerImpl(val processor: AbstractProcessor) : DeclarationChec
 
                 }
             }
-
-
 
             when (descriptor) {
 
@@ -264,9 +263,9 @@ class DeclarationCheckerImpl(val processor: AbstractProcessor) : DeclarationChec
 
     }
 
-    private fun checkTypeParameters(descriptor: SimpleFunctionDescriptor, annoationName: String, roundEnvironment: RoundEnvironment) {
+    private fun checkTypeParameters(descriptor: SimpleFunctionDescriptor, annotationName: String, roundEnvironment: RoundEnvironment) {
         descriptor.typeParameters.forEach { parameterDescriptor ->
-            parameterDescriptor.annotations.findAnnotation(annoationName)?.let { parameterAnnotation ->
+            parameterDescriptor.annotations.findAnnotation(annotationName)?.let { parameterAnnotation ->
 
                 roundEnvironment.apply {
                     module = descriptor.module
@@ -285,9 +284,9 @@ class DeclarationCheckerImpl(val processor: AbstractProcessor) : DeclarationChec
 
     }
 
-    private fun checkValueParameters(descriptor: SimpleFunctionDescriptor, annoationName: String, roundEnvironment: RoundEnvironment) {
+    private fun checkValueParameters(descriptor: SimpleFunctionDescriptor, annotationName: String, roundEnvironment: RoundEnvironment) {
         descriptor.valueParameters.forEach { parameterDescriptor ->
-            parameterDescriptor.annotations.findAnnotation(annoationName)?.let { parameterAnnotation ->
+            parameterDescriptor.annotations.findAnnotation(annotationName)?.let { parameterAnnotation ->
                 roundEnvironment.apply {
                     module = descriptor.module
                     elements.add(

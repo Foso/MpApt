@@ -7,7 +7,7 @@ import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.platform.SimplePlatform
 import org.jetbrains.kotlin.platform.TargetPlatform
 
-abstract class AbstractProcessor() : Processor {
+abstract class AbstractProcessor : Processor {
 
     var configuration: CompilerConfiguration = CompilerConfiguration()
     override var isRunning: Boolean = false

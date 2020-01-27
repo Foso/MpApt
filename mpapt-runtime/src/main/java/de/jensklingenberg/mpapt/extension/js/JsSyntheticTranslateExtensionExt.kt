@@ -8,9 +8,9 @@ import org.jetbrains.kotlin.js.translate.extensions.JsSyntheticTranslateExtensio
 import org.jetbrains.kotlin.psi.KtPureClassOrObject
 
 /**
- * This class is executed after the [SyntheticResolveExtensionImpl]
+ * This class is used to detect that the [DeclarationCheckerImpl] is finished with processing on KotlinJS
  */
-internal class JsSyntheticTranslateExtensionExt(val processor: Processor) : JsSyntheticTranslateExtension {
+internal class JsSyntheticTranslateExtensionExt(private val processor: Processor) : JsSyntheticTranslateExtension {
 
     override fun generateClassSyntheticParts(
             declaration: KtPureClassOrObject,

@@ -1,5 +1,6 @@
 package de.jensklingenberg.mpapt.common
 
+import org.jetbrains.kotlin.descriptors.annotations.Annotated
 import org.jetbrains.kotlin.descriptors.annotations.AnnotationDescriptor
 import org.jetbrains.kotlin.descriptors.annotations.Annotations
 import org.jetbrains.kotlin.name.FqName
@@ -10,8 +11,6 @@ import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.resolve.BindingTraceContext
 import org.jetbrains.kotlin.resolve.constants.ConstantValue
 import org.jetbrains.kotlin.resolve.constants.KClassValue
-import kotlin.reflect.KClass
-import kotlin.reflect.KProperty
 
 fun AnnotationDescriptor.readArgument(key: String): ArrayList<KClassValue> {
     val keyvalue: ConstantValue<*> = this.allValueArguments[Name.identifier(key)]
@@ -23,10 +22,9 @@ fun AnnotationDescriptor?.simpleName(): String = this?.fqName?.shortName()?.asSt
 fun Annotations.hasAnnotation(fqName: String): Boolean = this.hasAnnotation(FqName(fqName))
 fun Annotations.findAnnotation(fqName: String): AnnotationDescriptor? = this.findAnnotation(FqName(fqName))
 
-fun KClass<*>.propertyNames(): List<String> = this.members.filterIsInstance<KProperty<*>>().map { it.name }
 
 fun KtAnnotatedExpression.findAnnotation(bindingTraceContext: BindingTraceContext, annotationName: String): AnnotationDescriptor? {
-    return this.annotationEntries.mapNotNull { bindingTraceContext.get(BindingContext.ANNOTATION, it) }.firstOrNull() {
+    return this.annotationEntries.mapNotNull { bindingTraceContext.get(BindingContext.ANNOTATION, it) }.firstOrNull {
         it.fqName?.toString().equals(annotationName)
     }
 
@@ -35,3 +33,7 @@ fun KtAnnotatedExpression.findAnnotation(bindingTraceContext: BindingTraceContex
 fun KtAnnotationEntry.toAnnotationDescriptor(bindingTraceContext: BindingTraceContext): AnnotationDescriptor? {
     return bindingTraceContext.get(BindingContext.ANNOTATION, this)
 }
+
+
+fun Annotated.hasAnnotation(name: String): Boolean = this.annotations.hasAnnotation(FqName(name))
+fun Annotated.findAnnotation(name: String): AnnotationDescriptor? = this.annotations.findAnnotation(FqName(name))

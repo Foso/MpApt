@@ -10,7 +10,6 @@ interface Processor {
      */
     fun onProcessingStarted()
 
-
     /**
      * This get triggered when the last class of a module was parsed.
      */

@@ -1,12 +1,14 @@
 package de.jensklingenberg.mpapt.common
 
-import de.jensklingenberg.mpapt.utils.printMessage
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.descriptors.ModuleDescriptor
 import org.jetbrains.kotlin.name.Name
+import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.kotlin.resolve.constants.KClassValue
+import kotlin.reflect.KClass
+import kotlin.reflect.KProperty
 
 
 fun MessageCollector.warn(s: String) {
@@ -32,7 +34,13 @@ fun CompilerConfiguration.nativeTargetPlatformName(): String {
     }
 }
 
+fun KClass<*>.propertyNames(): List<String> = this.members.filterIsInstance<KProperty<*>>().map { it.name }
 
 fun KClassValue.getVariableNames(moduleDescriptor: ModuleDescriptor): List<Name> =
         this.getArgumentType(moduleDescriptor).memberScope.getVariableNames().toList()
 
+
+private fun KtProperty.hasAnnotation(name: String): Boolean {
+    return this.annotationEntries.any { name.contains(it.shortName?.identifier ?: "") }
+
+}

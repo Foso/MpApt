@@ -7,7 +7,7 @@ import org.jetbrains.kotlin.ir.declarations.IrFile
 import org.jetbrains.kotlin.resolve.BindingContext
 
 /**
- * This is only used in Native
+ * This class is used to detect that the [DeclarationCheckerImpl] is finished with processing on Kotlin Native
  */
 class NativeIrGenerationExtension(val processor: Processor) : IrGenerationExtension {
 
