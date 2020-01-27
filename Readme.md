@@ -29,6 +29,10 @@ It can detect annotations with following targets:
 
 [![GitHub stars](https://img.shields.io/github/stars/Foso/MpApt.svg?style=social&label=Star)](https://github.com/Foso/MpApt) [![GitHub forks](https://img.shields.io/github/forks/Foso/MpApt.svg?style=social&label=Fork)](https://github.com/Foso/MpApt/fork) [![GitHub watchers](https://img.shields.io/github/watchers/Foso/MpApt.svg?style=social&label=Watch)](https://github.com/Foso/MpApt) [![Twitter Follow](https://img.shields.io/twitter/follow/jklingenberg_.svg?style=social)](https://twitter.com/jklingenberg_)
 
+## Projects that use MpApt:
+* [Native Suspended Functions](https://github.com/feilfeilundfeil/kotlin-native-suspend-function-callback)
+* [Kvision](https://github.com/rjaros/kvision)
+* Your project?
 
 ## Usage
 These are the instructions for v0.8.4, check [Changelog](https://github.com/Foso/MpApt/blob/master/docs/CHANGELOG.md) for changes on the active development branch
@@ -161,10 +165,6 @@ Feel free to send feedback on [Twitter](https://twitter.com/jklingenberg_) or [f
 ## Testing 
 The [CompileTest](https://github.com/Foso/MpApt/blob/master/kotlin-plugin-shared/src/test/kotlin/de/jensklingenberg/CompileTest.kt) shows you, how you can use [Kotlin Compile Testing](https://github.com/tschuchortdev/kotlin-compile-testing) to test your Processor/Compiler Plugin
 
-## Projects that use MpApt:
-* [Native Suspended Functions](https://github.com/feilfeilundfeil/kotlin-native-suspend-function-callback)
-* [Kvision](https://github.com/rjaros/kvision)
-* Your project?
 
 # See also
 * [How to use a Kotlin Compiler Plugin from Gradle Plugin](https://github.com/Foso/MpApt/wiki/How-to-use-a-Kotlin-Compiler-Plugin-from-Gradle-Plugin)
