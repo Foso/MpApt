@@ -164,6 +164,7 @@ The [CompileTest](https://github.com/Foso/MpApt/blob/master/kotlin-plugin-shared
 ## Projects that use MpApt:
 * [Native Suspended Functions](https://github.com/feilfeilundfeil/kotlin-native-suspend-function-callback)
 * [Kvision](https://github.com/rjaros/kvision)
+* [godot-kotlin](https://github.com/utopia-rise/godot-kotlin)
 * Your project?
 
 # See also
