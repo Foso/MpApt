@@ -32,6 +32,7 @@ It can detect annotations with following targets:
 ## Projects that use MpApt:
 * [Native Suspended Functions](https://github.com/feilfeilundfeil/kotlin-native-suspend-function-callback)
 * [Kvision](https://github.com/rjaros/kvision)
+* [Godot Kotlin](https://github.com/utopia-rise/godot-kotlin)
 * Your project?
 
 ## Usage
