@@ -33,6 +33,8 @@ It can detect annotations with following targets:
 * [Native Suspended Functions](https://github.com/feilfeilundfeil/kotlin-native-suspend-function-callback)
 * [Kvision](https://github.com/rjaros/kvision)
 * [Godot Kotlin](https://github.com/utopia-rise/godot-kotlin)
+* [fritz2-optics](https://github.com/jwstegemann/fritz2-optics)
+
 * Your project?
 
 ## Usage
