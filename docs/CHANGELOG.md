@@ -1,7 +1,12 @@
+v0.8.5
+========================================
+
+Fix method signature of overridden abstract method
+
 v0.8.4
 ========================================
 
-* Build with Kotlin 1.3.70
+* Build with Kotlin 1.3.71
 
 * Fixed bug that produced a crash when annotating functions with expression body like
  "fun functionWithExpressionBody() = 1 + 1" on Native (thx to @chippmann)
