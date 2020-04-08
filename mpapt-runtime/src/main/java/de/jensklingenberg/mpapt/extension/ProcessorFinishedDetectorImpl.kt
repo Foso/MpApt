@@ -1,12 +1,12 @@
 package de.jensklingenberg.mpapt.extension
 
 import de.jensklingenberg.mpapt.model.Processor
-import org.jetbrains.kotlin.backend.common.BackendContext
+import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.codegen.ClassBuilder
 import org.jetbrains.kotlin.codegen.ClassBuilderFactory
 import org.jetbrains.kotlin.descriptors.ClassDescriptor
 import org.jetbrains.kotlin.diagnostics.DiagnosticSink
-import org.jetbrains.kotlin.ir.declarations.IrFile
+import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 import org.jetbrains.kotlin.js.translate.context.TranslationContext
 import org.jetbrains.kotlin.js.translate.declaration.DeclarationBodyVisitor
 import org.jetbrains.kotlin.psi.KtPureClassOrObject
@@ -23,7 +23,7 @@ class ProcessorFinishedDetectorImpl(val processor: Processor) : ProcessorFinishe
     /**
      * This is used to detect that the [DeclarationCheckerImpl] is finished with processing on Kotlin Native
      */
-    override fun generate(file: IrFile, backendContext: BackendContext, bindingContext: BindingContext) {
+    override fun generate(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
         if (processor.isTargetPlatformSupported()) {
             processor.onProcessingOver()
         }
