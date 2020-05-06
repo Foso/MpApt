@@ -19,4 +19,6 @@ Then build the native compiler plugin:
 Build the example module:
 * <kbd>./gradlew :example:build</kbd>
 
+Now you should see the log in your terminal.
+
 I haven't added the MacOS targets for the annotations module. You need to add the target in build.gradle if you want to build them.
