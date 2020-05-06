@@ -22,4 +22,6 @@ Build the example module:
 
 Now your annotated classes should be printed to the terminal
 
-I haven't added the MacOS targets for the annotations module. You need to add the target in build.gradle if you want to build them.
+Please note: 
+- I haven't added the MacOS targets for the annotations module. You need to add the target in build.gradle if you want to build them.
+- When you run the build command a second time without changing any code, the plugin is not executed again. You need to make a change to see the log again.
