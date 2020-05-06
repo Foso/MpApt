@@ -1,0 +1,114 @@
+buildscript {
+    ext.kotlin_version = '1.3.72'
+
+
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.github.jengelman.gradle.plugins:shadow:5.0.0'
+
+    }
+
+    allprojects {
+        repositories {
+            mavenLocal()
+            jcenter()
+        }
+    }
+}
+
+apply plugin: "org.jetbrains.kotlin.jvm"
+apply plugin: "kotlin-kapt"
+apply plugin: "maven"
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'maven-publish'
+
+group = "de.jensklingenberg"
+archivesBaseName = "native-plugin"
+version = "0.0.1"
+
+
+repositories {
+    mavenLocal()
+}
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    compileOnly "org.jetbrains.kotlin:kotlin-compiler"
+    compile 'de.jensklingenberg:mpapt-runtime:0.8.5'
+    compileOnly "com.google.auto.service:auto-service:1.0-rc6"
+    kapt "com.google.auto.service:auto-service:1.0-rc6"
+    compile "de.jensklingenberg.nativedemo:nativedemo-annotations-jvm:0.0.1"
+
+}
+
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: uri("${System.getProperty('user.home')}/.m2/repository"))
+        }
+    }
+}
+
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Jar File Example',
+                'Implementation-Version': version,
+                'Main-Class': 'de.jensklingenberg.common.NativeComponentRegistrar'
+    }
+    baseName = "nativedemo-compiler"
+    version = "0.0.1"
+
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+
+shadowJar {
+    manifest {
+        inheritFrom project.tasks.fatJar.manifest
+    }
+    baseName = "nativedemo-compiler"
+    version = "0.0.1"
+    classifier = null
+}
+
+
+
+publishing {
+    publications {
+        shadow(MavenPublication) { publication ->
+            project.shadow.component(publication)
+        }
+    }
+    repositories {
+        maven {
+            url = uri("${System.getProperty('user.home')}/.m2/repository")
+        }
+    }
+}
+
+
+kapt {
+    includeCompileClasspath = true
+}
+
+install{
+    dependsOn(shadowJar)
+
+}
+
+build{
+   // dependsOn ':nativedemo-shared:install'
+
+    dependsOn(shadowJar)
+
+
+    finalizedBy(publishToMavenLocal)
+}

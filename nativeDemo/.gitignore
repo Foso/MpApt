@@ -1,0 +1,10 @@
+/ktorfit-shared/build/
+/example/build/
+/buildSrc/.gradle/
+/.idea/
+/buildSrc/build/
+/native-plugin/build/
+/.gradle/
+/ktorfit-annotations/build/
+/nativedemo-annotations/build/
+/build/
