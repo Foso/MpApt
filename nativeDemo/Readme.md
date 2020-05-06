@@ -4,7 +4,7 @@ It shows how to use MpApt with Kotlin Native.
 Annotate a class with @PrintName("myvalue") and it will print at build phase: 
 
 <p>
-    <img src ="https://raw.githubusercontent.com/Foso/JK_KotlinCompilerPluginHelloWorld/master/docs/screenshot.png" />
+    <img src ="https://raw.githubusercontent.com/Foso/MpApt/master/nativeDemo/nativedemo.png" />
 </p>
 
 How to build:
