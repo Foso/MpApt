@@ -1,5 +1,6 @@
 This is a (POC) demo project.
 It shows how to use MpApt with Kotlin Native.
+You can find the processor code [HERE](https://github.com/Foso/MpApt/blob/master/nativeDemo/native-plugin/src/main/java/de/jensklingenberg/MpAptTestProcessor.kt)
 
 Annotate a class with @PrintName("myvalue") and it will print at build phase: 
 
