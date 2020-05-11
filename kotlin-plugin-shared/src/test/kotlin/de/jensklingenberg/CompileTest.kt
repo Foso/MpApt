@@ -42,7 +42,11 @@ class CompilerPluginsTest {
 
 
     val kotlinSource2 = SourceFile.kotlin("KClass.kt", """
+        @file:TestFile
         package de.jensklingenberg.testAnnotations
+
+@TestFunction
+fun highOrder() = "hi"
 
 @TestTypeAlias
 typealias Word = String
@@ -125,7 +129,7 @@ annotation class  AnnotatedAnnotatedClass
     @Test
     fun `find function Annotation`() {
 
-        var actualFoundName = ""
+        val actualFound = mutableListOf<String>()
 
         val annotationProcessor = object : AbstractProcessor() {
             override fun getSupportedAnnotationTypes(): Set<String> = setOf(TestFunction::class.java.name)
@@ -134,16 +138,12 @@ annotation class  AnnotatedAnnotatedClass
                 roundEnvironment.getElementsAnnotatedWith(TestFunction::class.java.name).forEach {
                     when (it) {
                         is Element.FunctionElement -> {
-                            actualFoundName = it.func.simpleName()
+                            actualFound.add(it.func.simpleName())
                         }
                     }
                 }
-
-
             }
         }
-
-
 
         val result = KotlinCompilation().apply {
             sources = listOf(kotlinSource2)
@@ -155,7 +155,7 @@ annotation class  AnnotatedAnnotatedClass
             inheritClassPath = true
             messageOutputStream = System.out // see diagnostics in real time
         }.compile()
-        Assert.assertEquals("firstFunction", actualFoundName)
+        Assert.assertEquals(listOf("firstFunction", "highOrder").sorted(), actualFound.sorted())
     }
 
     @Test
@@ -355,19 +355,19 @@ annotation class  AnnotatedAnnotatedClass
         Assert.assertEquals("<set-jens>",actualFound)
     }
 
-    @Test
-    fun `find type Annotation`() {
-
-      //TODO:
-        Assert.assertTrue(false)
-    }
-
-    @Test
-    fun `find testfile Annotation`() {
-
-        //TODO:
-        Assert.assertTrue(false)
-    }
+//    @Test
+//    fun `find type Annotation`() {
+//
+//      //TODO:
+//        Assert.assertTrue(false)
+//    }
+//
+//    @Test
+//    fun `find testfile Annotation`() {
+//
+//        //TODO:
+//        Assert.assertTrue(false)
+//    }
 
     @Test
     fun `find expression Annotation`() {

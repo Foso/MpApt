@@ -43,7 +43,7 @@ sealed class Element constructor(
             override val simpleName: String,
             override val elementKind: ElementKind = ElementKind.FUNCTION,
             override val annotation: AnnotationDescriptor? = null,
-            val descriptor: ClassDescriptor,
+            val descriptor: ClassOrPackageFragmentDescriptor,
             val func: FunctionDescriptor
     ) : Element()
 
