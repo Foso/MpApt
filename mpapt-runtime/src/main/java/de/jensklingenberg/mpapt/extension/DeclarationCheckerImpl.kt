@@ -1,16 +1,17 @@
 package de.jensklingenberg.mpapt.extension
 
-import de.jensklingenberg.mpapt.common.findAnnotation
 import de.jensklingenberg.mpapt.model.AbstractProcessor
 import de.jensklingenberg.mpapt.model.Element
 import de.jensklingenberg.mpapt.model.RoundEnvironment
 import org.jetbrains.kotlin.descriptors.*
+import org.jetbrains.kotlin.descriptors.annotations.AnnotationDescriptor
 import org.jetbrains.kotlin.descriptors.impl.LocalVariableDescriptor
 import org.jetbrains.kotlin.js.translate.utils.AnnotationsUtils
 import org.jetbrains.kotlin.psi.KtAnnotatedExpression
 import org.jetbrains.kotlin.psi.KtDeclaration
 import org.jetbrains.kotlin.psi.KtNamedFunction
 import org.jetbrains.kotlin.psi.psiUtil.blockExpressionsOrSingle
+import org.jetbrains.kotlin.resolve.BindingContext
 import org.jetbrains.kotlin.resolve.BindingTraceContext
 import org.jetbrains.kotlin.resolve.checkers.DeclarationChecker
 import org.jetbrains.kotlin.resolve.checkers.DeclarationCheckerContext
@@ -22,285 +23,113 @@ import org.jetbrains.kotlin.resolve.lazy.descriptors.LazyClassDescriptor
  * This class is used to detect the annotations
  */
 class DeclarationCheckerImpl(private val processor: AbstractProcessor) : DeclarationChecker {
+    private val filesProcessed = mutableSetOf<String>()
+
     override fun check(declaration: KtDeclaration, descriptor: DeclarationDescriptor, context: DeclarationCheckerContext) {
         if (!processor.isTargetPlatformSupported()) {
             return
         }
 
-        processor.getSupportedAnnotationTypes().forEach { annotationName ->
+        val roundEnvironment = RoundEnvironment()
+        roundEnvironment.module = descriptor.module
 
-            val roundEnvironment = RoundEnvironment()
+        val supportedAnnotations = processor.getSupportedAnnotationTypes()
 
-            AnnotationsUtils.getContainingFileAnnotations(context.trace.bindingContext, descriptor).forEach { descriptor ->
-                if (descriptor.fqName?.asString().equals(annotationName)) {
-                    roundEnvironment.elements.add(
-                            Element.FileElement(
-                                    annotation = descriptor
-                            )
-                    )
-                    processor.process(roundEnvironment)
-                }
-            }
-
-            when (descriptor) {
-
-                is TypeAliasDescriptor -> {
-                    descriptor.annotations.findAnnotation(annotationName)?.let { annotation ->
-                        roundEnvironment.module = descriptor.module
-                        roundEnvironment.elements.add(
-                                Element.TypeAliasElement(
-                                        annotation = annotation,
-                                        descriptor = descriptor
-                                )
-                        )
-                        processor.process(roundEnvironment)
-
+        if(!filesProcessed.contains(declaration.containingKtFile.virtualFilePath)) {
+            AnnotationsUtils.getContainingFileAnnotations(context.trace.bindingContext, descriptor)
+                .forEach {
+                    if (it.fqName?.asString() in supportedAnnotations) {
+                        roundEnvironment.elements.add(Element.FileElement(annotation = it))
                     }
                 }
-                is SimpleFunctionDescriptor -> {
-                    descriptor.annotations.findAnnotation(annotationName)?.let { annotation ->
-
-                        roundEnvironment.apply {
-                            module = descriptor.module
-                            elements.add(
-                                    Element.FunctionElement(
-                                            simpleName = descriptor.name.asString(),
-                                            annotation = annotation,
-                                            descriptor = descriptor.containingDeclaration as ClassDescriptor,
-                                            func = descriptor
-                                    )
-                            )
-                        }
-
-                        processor.process(roundEnvironment)
-
-                    }
-
-
-                    checkAnnotatedExpression(declaration, context, annotationName, roundEnvironment, descriptor)
-                    checkValueParameters(descriptor, annotationName, roundEnvironment)
-                    checkTypeParameters(descriptor, annotationName, roundEnvironment)
-
-
-                }
-                is ClassConstructorDescriptor -> {
-                    descriptor.annotations.findAnnotation(annotationName)?.let { annotation ->
-                        roundEnvironment.module = descriptor.module
-                        roundEnvironment.elements.add(
-                                Element.ClassConstructorElement(
-                                        annotation = annotation,
-                                        classConstructorDescriptor = descriptor
-                                )
-                        )
-                        processor.process(roundEnvironment)
-
-                    }
-
-                }
-                is LazyClassDescriptor -> {
-                    descriptor.annotations.findAnnotation(annotationName)?.let { annotation ->
-
-                        if (descriptor.kind == ClassKind.ANNOTATION_CLASS) {
-                            roundEnvironment.module = descriptor.module
-                            roundEnvironment.elements.add(
-                                    Element.AnnotationClassElement(
-                                            descriptor.name.asString(),
-                                            annotation = annotation,
-                                            classDescriptor = descriptor,
-                                            pack = descriptor.original.containingDeclaration.fqNameSafe.asString()
-                                    )
-                            )
-                            processor.process(roundEnvironment)
-                        } else {
-                            roundEnvironment.module = descriptor.module
-                            roundEnvironment.elements.add(
-                                    Element.ClassElement(
-                                            descriptor.name.asString(),
-                                            annotation = annotation,
-                                            classDescriptor = descriptor,
-                                            pack = descriptor.original.containingDeclaration.fqNameSafe.asString()
-                                    )
-                            )
-                            processor.process(roundEnvironment)
-                        }
-
-
-                    }
-                }
-                is ClassDescriptor -> {
-                    descriptor.annotations.findAnnotation(annotationName)?.let { annotation ->
-                        roundEnvironment.module = descriptor.module
-                        roundEnvironment.elements.add(
-                                Element.ClassElement(
-                                        descriptor.name.asString(),
-                                        annotation = annotation,
-                                        classDescriptor = descriptor,
-                                        pack = descriptor.original.containingDeclaration.fqNameSafe.asString()
-                                )
-                        )
-                        processor.process(roundEnvironment)
-
-                    }
-                }
-                is PropertyDescriptor -> {
-                    descriptor.annotations.findAnnotation(annotationName)?.let { annotation ->
-                        roundEnvironment.apply {
-                            module = descriptor.module
-                            elements.add(
-                                    Element.PropertyElement(
-                                            descriptor, annotation
-                                    )
-                            )
-                        }
-
-                        processor.process(roundEnvironment)
-
-                    }
-                    checkField(descriptor, annotationName, roundEnvironment)
-                }
-                is PropertyGetterDescriptor -> {
-                    descriptor.annotations.findAnnotation(annotationName)?.let { annotation ->
-                        roundEnvironment.apply {
-                            module = descriptor.module
-                            elements.add(
-                                    Element.PropertyGetterElement(
-                                            descriptor, annotation
-                                    )
-                            )
-                        }
-
-                        processor.process(roundEnvironment)
-
-                    }
-                }
-                is PropertySetterDescriptor -> {
-                    descriptor.annotations.findAnnotation(annotationName)?.let { annotation ->
-                        roundEnvironment.apply {
-                            module = descriptor.module
-                            elements.add(
-                                    Element.PropertySetterElement(
-                                            descriptor, annotation
-                                    )
-                            )
-                        }
-
-                        processor.process(roundEnvironment)
-
-                    }
-                }
-
-                is LocalVariableDescriptor -> {
-                    descriptor.annotations.findAnnotation(annotationName)?.let { annotation ->
-                        roundEnvironment.apply {
-                            module = descriptor.module
-                            elements.add(
-                                    Element.LocalVariableElement(
-                                            descriptor, annotation
-                                    )
-                            )
-                        }
-
-                        processor.process(roundEnvironment)
-
-                    }
-
-                }
-
-            }
-
-
+            filesProcessed.add(declaration.containingKtFile.virtualFilePath)
         }
 
+        descriptor.annotations
+            .filter { it.fqName.toString() in supportedAnnotations }
+            .mapNotNull { baseElementsProducer(descriptor, it) }
+            .forEach { roundEnvironment.elements.add(it) }
 
-    }
-
-    private fun checkAnnotatedExpression(declaration: KtDeclaration, context: DeclarationCheckerContext, annotationName: String, roundEnvironment: RoundEnvironment, descriptor: SimpleFunctionDescriptor) {
-
-        val annotatedExpressions =
-                (declaration as KtNamedFunction)
-                        .bodyExpression
-                        ?.blockExpressionsOrSingle()
-                        ?.filterIsInstance<KtAnnotatedExpression>()
-                        ?.toList()
-
-        annotatedExpressions?.forEach { ktannotedexp ->
-            ktannotedexp.findAnnotation(context.trace as BindingTraceContext, annotationName)?.let {
-                roundEnvironment.apply {
-                    //  module = descriptor.module
-                    elements.add(
-                            Element.ExpressionElement(
-                                    ktannotedexp, it, descriptor
-                            )
-                    )
+        when (descriptor) {
+            is PropertyDescriptor       -> (descriptor.backingField?.annotations?.toList() ?: listOf())
+                .filter { it.fqName.toString() in supportedAnnotations }
+                .map { Element.FieldElement(descriptor.backingField!!, it) }
+                .forEach { roundEnvironment.elements.add(it) }
+            is SimpleFunctionDescriptor -> {
+                descriptor.typeParameters.forEach { parameterDescriptor ->
+                    parameterDescriptor.annotations
+                        .filter { it.fqName.toString() in supportedAnnotations }
+                        .map { Element.TypeParameterElement(parameterDescriptor, it) }
+                        .forEach { roundEnvironment.elements.add(it) }
                 }
-
-                processor.process(roundEnvironment)
-            }
-
-        }
-
-
-    }
-
-    private fun checkField(descriptor: PropertyDescriptor, annotationName: String, roundEnvironment: RoundEnvironment) {
-        descriptor.backingField?.let { fieldDescriptor ->
-            fieldDescriptor.findAnnotation(annotationName)?.let { fieldAnnotation ->
-                roundEnvironment.apply {
-                    module = descriptor.module
-                    elements.add(
-                            Element.FieldElement(
-                                    annotation = fieldAnnotation,
-                                    descriptor = fieldDescriptor
-                            )
-                    )
+                descriptor.valueParameters.forEach { valueDescription ->
+                    valueDescription.annotations
+                        .filter { it.fqName.toString() in supportedAnnotations }
+                        .map { Element.ValueParameterElement(valueDescription, it) }
+                        .forEach { roundEnvironment.elements.add(it) }
                 }
-                processor.process(roundEnvironment)
-            }
-
-        }
-
-
-    }
-
-    private fun checkTypeParameters(descriptor: SimpleFunctionDescriptor, annotationName: String, roundEnvironment: RoundEnvironment) {
-        descriptor.typeParameters.forEach { parameterDescriptor ->
-            parameterDescriptor.annotations.findAnnotation(annotationName)?.let { parameterAnnotation ->
-
-                roundEnvironment.apply {
-                    module = descriptor.module
-                    elements.add(
-                            Element.TypeParameterElement(
-                                    annotation = parameterAnnotation
-                                    , typeParameterDescriptor = parameterDescriptor
-
-                            )
-                    )
+                getAnnotatedExpressions(declaration).forEach { annotatedExpression ->
+                    annotatedExpression.annotationEntries
+                        .mapNotNull { (context.trace as BindingTraceContext).get(BindingContext.ANNOTATION, it) }
+                        .filter { it.fqName.toString() in supportedAnnotations }
+                        .map { Element.ExpressionElement(annotatedExpression, it, descriptor) }
+                        .forEach { roundEnvironment.elements.add(it) }
                 }
-                processor.process(roundEnvironment)
-
             }
         }
-
-    }
-
-    private fun checkValueParameters(descriptor: SimpleFunctionDescriptor, annotationName: String, roundEnvironment: RoundEnvironment) {
-        descriptor.valueParameters.forEach { parameterDescriptor ->
-            parameterDescriptor.annotations.findAnnotation(annotationName)?.let { parameterAnnotation ->
-                roundEnvironment.apply {
-                    module = descriptor.module
-                    elements.add(
-                            Element.ValueParameterElement(
-                                    annotation = parameterAnnotation
-                                    , valueParameterDescriptor = parameterDescriptor
-
-                            )
-                    )
-                }
-                processor.process(roundEnvironment)
-
-            }
+        if(roundEnvironment.elements.isNotEmpty()) {
+            processor.process(roundEnvironment)
         }
     }
 
+    private fun getAnnotatedExpressions(declaration: KtDeclaration): List<KtAnnotatedExpression> {
+        return (declaration as KtNamedFunction).bodyExpression
+                   ?.blockExpressionsOrSingle()
+                   ?.filterIsInstance<KtAnnotatedExpression>()
+                   ?.toList() ?: listOf()
+    }
 
+    private fun baseElementsProducer(
+        descriptor: DeclarationDescriptor,
+        annotation: AnnotationDescriptor
+    ): Element? = when (descriptor) {
+        is TypeAliasDescriptor        -> Element.TypeAliasElement(descriptor, annotation)
+        is SimpleFunctionDescriptor   -> Element.FunctionElement(
+            simpleName = descriptor.name.asString(),
+            annotation = annotation,
+            descriptor = descriptor.containingDeclaration as ClassOrPackageFragmentDescriptor,
+            func = descriptor
+        )
+        is ClassConstructorDescriptor -> Element.ClassConstructorElement(descriptor, annotation)
+        is LazyClassDescriptor        -> makeFromLazyClassDescriptor(descriptor, annotation)
+        is ClassDescriptor            -> Element.ClassElement(
+            descriptor.name.asString(),
+            annotation = annotation,
+            classDescriptor = descriptor,
+            pack = descriptor.original.containingDeclaration.fqNameSafe.asString()
+        )
+        is PropertyDescriptor         -> Element.PropertyElement(descriptor, annotation)
+        is PropertyGetterDescriptor   -> Element.PropertyGetterElement(descriptor, annotation)
+        is PropertySetterDescriptor   -> Element.PropertySetterElement(descriptor, annotation)
+        is LocalVariableDescriptor    -> Element.LocalVariableElement(descriptor, annotation)
+        else                          -> null
+    }
+
+    private fun makeFromLazyClassDescriptor(
+        descriptor: LazyClassDescriptor,
+        annotation: AnnotationDescriptor
+    ): Element = when (descriptor.kind) {
+        ClassKind.ANNOTATION_CLASS -> Element.AnnotationClassElement(
+            descriptor.name.asString(),
+            annotation = annotation,
+            classDescriptor = descriptor,
+            pack = descriptor.original.containingDeclaration.fqNameSafe.asString()
+        )
+        else                       -> Element.ClassElement(
+            descriptor.name.asString(),
+            annotation = annotation,
+            classDescriptor = descriptor,
+            pack = descriptor.original.containingDeclaration.fqNameSafe.asString()
+        )
+    }
 }
