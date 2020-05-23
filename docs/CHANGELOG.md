@@ -1,3 +1,7 @@
+v0.8.6
+========================================
+* Fixed that processing of file annotation on native targets was called too often 
+
 v0.8.5
 ========================================
 
