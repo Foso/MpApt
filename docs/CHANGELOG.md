@@ -1,3 +1,7 @@
+v0.8.7
+========================================
+Update to Kotlin 1.4.0, same api as 0.8.6
+
 v0.8.6
 ========================================
 * Fixed that processing of file annotation on native targets was called too often 

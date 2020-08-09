@@ -11,7 +11,7 @@
 
 
 ## Introduction 🙋‍♂️ 🙋‍
-I wrote an annotation processing libary that can detect annotations in Kotlin Native/JS and Jvm projects, because Kapt is only working with KotlinJvm. The library can be used in Kotlin Compiler plugins. Tested with Kotlin 1.3.41, 1.3.50, 1.3.71
+I wrote an annotation processing libary that can detect annotations in Kotlin Native/JS and Jvm projects, because Kapt is only working with KotlinJvm. The library can be used in Kotlin Compiler plugins. Tested with Kotlin 1.3.71,1.4.0
 
 It can detect annotations with following targets: 
 ```groovy
@@ -38,7 +38,7 @@ It can detect annotations with following targets:
 * Your project?
 
 ## Usage
-These are the instructions for v0.8.6, check [Changelog](https://github.com/Foso/MpApt/blob/master/docs/CHANGELOG.md) for changes on the active development branch
+These are the instructions for v0.8.7, check [Changelog](https://github.com/Foso/MpApt/blob/master/docs/CHANGELOG.md) for changes on the active development branch
 
 Inside your compiler plugin, add the dependency from MavenCentral 
 
@@ -48,7 +48,7 @@ repositories {
 }
 
 dependencies {
-   compile 'de.jensklingenberg:mpapt-runtime:0.8.6'
+   compile 'de.jensklingenberg:mpapt-runtime:0.8.7'
 }
 ```
 1) Create a class that extends de.jensklingenberg.mpapt.model.AbstractProcessor
