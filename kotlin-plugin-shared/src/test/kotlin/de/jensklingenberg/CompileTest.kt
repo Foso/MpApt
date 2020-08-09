@@ -1,5 +1,6 @@
 package de.jensklingenberg
 
+
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.SourceFile
 import de.jensklingenberg.mpapt.common.MpAptProject
@@ -9,14 +10,11 @@ import de.jensklingenberg.mpapt.model.Element
 import de.jensklingenberg.mpapt.model.RoundEnvironment
 import de.jensklingenberg.testAnnotations.*
 import org.jetbrains.kotlin.codegen.extensions.ClassBuilderInterceptorExtension
-
-
 import org.jetbrains.kotlin.com.intellij.mock.MockProject
 import org.jetbrains.kotlin.compiler.plugin.ComponentRegistrar
 import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.extensions.StorageComponentContainerContributor
 import org.jetbrains.kotlin.js.translate.extensions.JsSyntheticTranslateExtension
-import org.jetbrains.kotlin.resolve.descriptorUtil.fqNameSafe
 import org.junit.Assert
 import org.junit.Test
 
@@ -34,8 +32,8 @@ open class TestCommonComponentRegistrar(val mpAptTestProcessor: AbstractProcesso
 
     }
 }
-annotation class TestAnnotation()
 
+annotation class TestAnnotation()
 
 
 class CompilerPluginsTest {
@@ -85,9 +83,6 @@ annotation class  AnnotatedAnnotatedClass
     """)
 
 
-
-
-
     @Test
     fun `find class Annotation`() {
 
@@ -99,31 +94,16 @@ annotation class  AnnotatedAnnotatedClass
 
             override fun process(roundEnvironment: RoundEnvironment) {
                 roundEnvironment.getElementsAnnotatedWith(TestClass::class.java.name).forEach {
-                    when (it) {
-                        is Element.ClassElement -> {
-                            actualFoundName = it.simpleName
-                        }
+                    if (it is Element.ClassElement) {
+                        actualFoundName = it.simpleName
                     }
                 }
             }
         }
 
-
-
-        val result = KotlinCompilation().apply {
-            sources = listOf(kotlinSource2)
-
-
-            // pass your own instance of a compiler plugin
-            compilerPlugins = listOf(TestCommonComponentRegistrar(annotationProcessor))
-
-            inheritClassPath = true
-            messageOutputStream = System.out // see diagnostics in real time
-        }.compile()
+        compileKotlin(annotationProcessor)
         Assert.assertEquals("Annotated", actualFoundName)
     }
-
-
 
 
     @Test
@@ -136,25 +116,14 @@ annotation class  AnnotatedAnnotatedClass
 
             override fun process(roundEnvironment: RoundEnvironment) {
                 roundEnvironment.getElementsAnnotatedWith(TestFunction::class.java.name).forEach {
-                    when (it) {
-                        is Element.FunctionElement -> {
-                            actualFound.add(it.func.simpleName())
-                        }
+                    if (it is Element.FunctionElement) {
+                        actualFound.add(it.func.simpleName())
                     }
                 }
             }
         }
 
-        val result = KotlinCompilation().apply {
-            sources = listOf(kotlinSource2)
-
-
-            // pass your own instance of a compiler plugin
-            compilerPlugins = listOf(TestCommonComponentRegistrar(annotationProcessor))
-
-            inheritClassPath = true
-            messageOutputStream = System.out // see diagnostics in real time
-        }.compile()
+        compileKotlin(annotationProcessor)
         Assert.assertEquals(listOf("firstFunction", "highOrder").sorted(), actualFound.sorted())
     }
 
@@ -168,30 +137,16 @@ annotation class  AnnotatedAnnotatedClass
 
             override fun process(roundEnvironment: RoundEnvironment) {
                 roundEnvironment.getElementsAnnotatedWith(TestProperty::class.java.name).forEach {
-                    when (it) {
-                        is Element.PropertyElement -> {
-                            actualFound = it.propertyDescriptor.name.toString()
-                        }
+                    if (it is Element.PropertyElement) {
+                        actualFound = it.propertyDescriptor.name.toString()
                     }
                 }
             }
         }
 
-        val result = KotlinCompilation().apply {
-            sources = listOf(kotlinSource2)
-
-
-            // pass your own instance of a compiler plugin
-            compilerPlugins = listOf(TestCommonComponentRegistrar(annotationProcessor))
-
-            inheritClassPath = true
-            messageOutputStream = System.out // see diagnostics in real time
-        }.compile()
-        Assert.assertEquals("myProperty",actualFound)
+        compileKotlin(annotationProcessor)
+        Assert.assertEquals("myProperty", actualFound)
     }
-
-
-
 
 
     @Test
@@ -204,26 +159,15 @@ annotation class  AnnotatedAnnotatedClass
 
             override fun process(roundEnvironment: RoundEnvironment) {
                 roundEnvironment.getElementsAnnotatedWith(TestValueParameter::class.java.name).forEach {
-                    when (it) {
-                        is Element.ValueParameterElement -> {
-                            actualFound = it.valueParameterDescriptor.name.toString()
-                        }
+                    if (it is Element.ValueParameterElement) {
+                        actualFound = it.valueParameterDescriptor.name.toString()
                     }
                 }
             }
         }
 
-        val result = KotlinCompilation().apply {
-            sources = listOf(kotlinSource2)
-
-
-            // pass your own instance of a compiler plugin
-            compilerPlugins = listOf(TestCommonComponentRegistrar(annotationProcessor))
-
-            inheritClassPath = true
-            messageOutputStream = System.out // see diagnostics in real time
-        }.compile()
-        Assert.assertEquals("param",actualFound)
+        compileKotlin(annotationProcessor)
+        Assert.assertEquals("param", actualFound)
     }
 
 
@@ -237,26 +181,15 @@ annotation class  AnnotatedAnnotatedClass
 
             override fun process(roundEnvironment: RoundEnvironment) {
                 roundEnvironment.getElementsAnnotatedWith(TestTypeParameter::class.java.name).forEach {
-                    when (it) {
-                        is Element.TypeParameterElement -> {
-                            actualFound = it.typeParameterDescriptor.name.toString()
-                        }
+                    if (it is Element.TypeParameterElement) {
+                        actualFound = it.typeParameterDescriptor.name.toString()
                     }
                 }
             }
         }
 
-        val result = KotlinCompilation().apply {
-            sources = listOf(kotlinSource2)
-
-
-            // pass your own instance of a compiler plugin
-            compilerPlugins = listOf(TestCommonComponentRegistrar(annotationProcessor))
-
-            inheritClassPath = true
-            messageOutputStream = System.out // see diagnostics in real time
-        }.compile()
-        Assert.assertEquals("T",actualFound)
+        compileKotlin(annotationProcessor)
+        Assert.assertEquals("T", actualFound)
     }
 
     @Test
@@ -269,26 +202,15 @@ annotation class  AnnotatedAnnotatedClass
 
             override fun process(roundEnvironment: RoundEnvironment) {
                 roundEnvironment.getElementsAnnotatedWith(TestTypeAlias::class.java.name).forEach {
-                    when (it) {
-                        is Element.TypeAliasElement -> {
-                            actualFound = it.descriptor.name.toString()
-                        }
+                    if (it is Element.TypeAliasElement) {
+                        actualFound = it.descriptor.name.toString()
                     }
                 }
             }
         }
 
-        val result = KotlinCompilation().apply {
-            sources = listOf(kotlinSource2)
-
-
-            // pass your own instance of a compiler plugin
-            compilerPlugins = listOf(TestCommonComponentRegistrar(annotationProcessor))
-
-            inheritClassPath = true
-            messageOutputStream = System.out // see diagnostics in real time
-        }.compile()
-        Assert.assertEquals("Word",actualFound)
+        compileKotlin(annotationProcessor)
+        Assert.assertEquals("Word", actualFound)
     }
 
     @Test
@@ -310,17 +232,8 @@ annotation class  AnnotatedAnnotatedClass
             }
         }
 
-        val result = KotlinCompilation().apply {
-            sources = listOf(kotlinSource2)
-
-
-            // pass your own instance of a compiler plugin
-            compilerPlugins = listOf(TestCommonComponentRegistrar(annotationProcessor))
-
-            inheritClassPath = true
-            messageOutputStream = System.out // see diagnostics in real time
-        }.compile()
-        Assert.assertEquals("<get-jens>",actualFound)
+        compileKotlin(annotationProcessor)
+        Assert.assertEquals("<get-jens>", actualFound)
     }
 
     @Test
@@ -333,26 +246,15 @@ annotation class  AnnotatedAnnotatedClass
 
             override fun process(roundEnvironment: RoundEnvironment) {
                 roundEnvironment.getElementsAnnotatedWith(TestPropertySetter::class.java.name).forEach {
-                    when (it) {
-                        is Element.PropertySetterElement -> {
-                            actualFound = it.propertySetterDescriptor.name.toString()
-                        }
+                    if (it is Element.PropertySetterElement) {
+                        actualFound = it.propertySetterDescriptor.name.toString()
                     }
                 }
             }
         }
 
-        val result = KotlinCompilation().apply {
-            sources = listOf(kotlinSource2)
-
-
-            // pass your own instance of a compiler plugin
-            compilerPlugins = listOf(TestCommonComponentRegistrar(annotationProcessor))
-
-            inheritClassPath = true
-            messageOutputStream = System.out // see diagnostics in real time
-        }.compile()
-        Assert.assertEquals("<set-jens>",actualFound)
+        compileKotlin(annotationProcessor)
+        Assert.assertEquals("<set-jens>", actualFound)
     }
 
 //    @Test
@@ -388,17 +290,8 @@ annotation class  AnnotatedAnnotatedClass
             }
         }
 
-        val result = KotlinCompilation().apply {
-            sources = listOf(kotlinSource2)
-
-
-            // pass your own instance of a compiler plugin
-            compilerPlugins = listOf(TestCommonComponentRegistrar(annotationProcessor))
-
-            inheritClassPath = true
-            messageOutputStream = System.out // see diagnostics in real time
-        }.compile()
-        Assert.assertEquals("firstFunction",actualFound)
+        compileKotlin(annotationProcessor)
+        Assert.assertEquals("firstFunction", actualFound)
     }
 
 
@@ -412,24 +305,14 @@ annotation class  AnnotatedAnnotatedClass
 
             override fun process(roundEnvironment: RoundEnvironment) {
                 roundEnvironment.getElementsAnnotatedWith(TestAnnotationClass::class.java.name).forEach {
-                    when (it) {
-                        is Element.AnnotationClassElement -> {
-                            actualFoundName = it.simpleName
-                        }
+                    if (it is Element.AnnotationClassElement) {
+                        actualFoundName = it.simpleName
                     }
                 }
             }
         }
 
-        val result = KotlinCompilation().apply {
-            sources = listOf(kotlinSource2)
-
-            // pass your own instance of a compiler plugin
-            compilerPlugins = listOf(TestCommonComponentRegistrar(annotationProcessor))
-
-            inheritClassPath = true
-            messageOutputStream = System.out // see diagnostics in real time
-        }.compile()
+        compileKotlin(annotationProcessor)
         Assert.assertEquals("AnnotatedAnnotatedClass", actualFoundName)
     }
 
@@ -443,25 +326,14 @@ annotation class  AnnotatedAnnotatedClass
 
             override fun process(roundEnvironment: RoundEnvironment) {
                 roundEnvironment.getElementsAnnotatedWith(TestConstructor::class.java.name).forEach {
-                    when (it) {
-                        is Element.ClassConstructorElement -> {
-                            actualFound = true
-                        }
+                    if (it is Element.ClassConstructorElement) {
+                        actualFound = true
                     }
                 }
             }
         }
 
-        val result = KotlinCompilation().apply {
-            sources = listOf(kotlinSource2)
-
-
-            // pass your own instance of a compiler plugin
-            compilerPlugins = listOf(TestCommonComponentRegistrar(annotationProcessor))
-
-            inheritClassPath = true
-            messageOutputStream = System.out // see diagnostics in real time
-        }.compile()
+        compileKotlin(annotationProcessor)
         Assert.assertTrue(actualFound)
     }
 
@@ -475,25 +347,14 @@ annotation class  AnnotatedAnnotatedClass
 
             override fun process(roundEnvironment: RoundEnvironment) {
                 roundEnvironment.getElementsAnnotatedWith(TestField::class.java.name).forEach {
-                    when (it) {
-                        is Element.FieldElement -> {
-                            actualFound = it.descriptor.correspondingProperty.name.toString()
-                        }
+                    if (it is Element.FieldElement) {
+                        actualFound = it.descriptor.correspondingProperty.name.toString()
                     }
                 }
             }
         }
 
-        val result = KotlinCompilation().apply {
-            sources = listOf(kotlinSource2)
-
-
-            // pass your own instance of a compiler plugin
-            compilerPlugins = listOf(TestCommonComponentRegistrar(annotationProcessor))
-
-            inheritClassPath = true
-            messageOutputStream = System.out // see diagnostics in real time
-        }.compile()
+        compileKotlin(annotationProcessor)
 
         Assert.assertEquals("myProperty", actualFound)
     }
@@ -508,16 +369,20 @@ annotation class  AnnotatedAnnotatedClass
 
             override fun process(roundEnvironment: RoundEnvironment) {
                 roundEnvironment.getElementsAnnotatedWith(TestLocalVariable::class.java.name).forEach {
-                    when (it) {
-                        is Element.LocalVariableElement -> {
-                            actualFound = it.localVariableDescriptor.name.toString()
-                        }
+                    if (it is Element.LocalVariableElement) {
+                        actualFound = it.localVariableDescriptor.name.toString()
                     }
                 }
             }
         }
 
-        val result = KotlinCompilation().apply {
+        compileKotlin(annotationProcessor)
+
+        Assert.assertEquals("localHallo", actualFound)
+    }
+
+    private fun compileKotlin(annotationProcessor: AbstractProcessor) {
+        KotlinCompilation().apply {
             sources = listOf(kotlinSource2)
 
 
@@ -527,8 +392,6 @@ annotation class  AnnotatedAnnotatedClass
             inheritClassPath = true
             messageOutputStream = System.out // see diagnostics in real time
         }.compile()
-
-        Assert.assertEquals("localHallo", actualFound)
     }
 
 }
