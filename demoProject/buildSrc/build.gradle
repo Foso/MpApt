@@ -54,7 +54,7 @@ gradlePlugin {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     compile "org.jetbrains.kotlin:kotlin-gradle-plugin-api:1.4.0-rc"
-    compileOnly "com.google.auto.service:auto-service:1.0-rc6"
+    compileOnly "com.google.auto.service:auto-service:1.0-rc7"
     kapt "com.google.auto.service:auto-service:1.0-rc6"
 }
 
