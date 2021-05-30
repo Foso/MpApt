@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.4.0-rc'
+    ext.kotlin_version = '1.5.10'
 
 
     repositories {
@@ -23,7 +23,7 @@ buildscript {
 
 
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.4.0-rc'
+    id 'org.jetbrains.kotlin.jvm' version '1.5.10'
     id 'com.gradle.plugin-publish' version '0.10.1'
 }
 apply plugin: "java-gradle-plugin"
@@ -53,10 +53,9 @@ gradlePlugin {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    compile "org.jetbrains.kotlin:kotlin-gradle-plugin-api:1.4.0-rc"
-    compileOnly "com.google.auto.service:auto-service:1.0-rc6"
-    kapt "com.google.auto.service:auto-service:1.0-rc6"
+    compile "org.jetbrains.kotlin:kotlin-gradle-plugin-api:1.5.10"
+    compileOnly "com.google.auto.service:auto-service:1.0"
+    kapt "com.google.auto.service:auto-service:1.0"
 }
 
 

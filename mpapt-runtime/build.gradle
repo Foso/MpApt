@@ -9,7 +9,7 @@ buildscript {
 
 
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.4.0-rc'
+    id 'org.jetbrains.kotlin.jvm' version '1.5.10'
     id 'signing'
     id 'maven-publish'
     id 'io.codearte.nexus-staging' version '0.21.0'
@@ -34,7 +34,7 @@ allprojects {
 
 group = "de.jensklingenberg"
 archivesBaseName = "mpapt-runtime"
-version = "0.8.7"
+version = "0.8.8"
 
 install {
     repositories.mavenInstaller {
@@ -51,10 +51,9 @@ compileKotlin {
 
 
 dependencies {
-    compileOnly "org.jetbrains.kotlin:kotlin-stdlib"
-    compileOnly "org.jetbrains.kotlin:kotlin-compiler-embeddable:1.4.0-rc"
-    compileOnly "com.google.auto.service:auto-service:1.0-rc6"
-    kapt "com.google.auto.service:auto-service:1.0-rc6"
+    compileOnly "org.jetbrains.kotlin:kotlin-compiler-embeddable:1.5.10"
+    compileOnly "com.google.auto.service:auto-service:1.0"
+    kapt "com.google.auto.service:auto-service:1.0"
 }
 
 

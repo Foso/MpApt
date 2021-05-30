@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.4.0-rc'
+    ext.kotlin_version = '1.5.10'
 
 
     repositories {
@@ -39,8 +39,8 @@ compileKotlin {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
     compileOnly "org.jetbrains.kotlin:kotlin-compiler"
-    compileOnly "com.google.auto.service:auto-service:1.0-rc6"
-    kapt "com.google.auto.service:auto-service:1.0-rc6"
+    compileOnly "com.google.auto.service:auto-service:1.0"
+    kapt "com.google.auto.service:auto-service:1.0"
     compile project(':kotlin-plugin-shared')
 
 

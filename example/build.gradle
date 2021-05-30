@@ -17,7 +17,7 @@ buildscript {
 }
 
 plugins {
-    id 'org.jetbrains.kotlin.multiplatform' version '1.4.0-rc'
+    id 'org.jetbrains.kotlin.multiplatform' version '1.5.10'
     id 'de.jensklingenberg.mpapt'
 }
 
@@ -94,7 +94,6 @@ kotlin {
 
         jvmMain {
             dependencies {
-                implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
             }
         }
         jvmTest {

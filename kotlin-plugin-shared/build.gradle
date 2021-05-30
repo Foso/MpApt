@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.4.0-rc'
+    ext.kotlin_version = '1.5.10'
 
 
     repositories {
@@ -46,8 +46,8 @@ dependencies {
     compile "de.jensklingenberg.mpapt.testAnnotations:annotations-jvm:0.0.1"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     compileOnly "org.jetbrains.kotlin:kotlin-compiler-embeddable"
-    compileOnly "com.google.auto.service:auto-service:1.0-rc6"
-    kapt "com.google.auto.service:auto-service:1.0-rc6"
+    compileOnly "com.google.auto.service:auto-service:1.0"
+    kapt "com.google.auto.service:auto-service:1.0"
     testImplementation 'com.github.tschuchortdev:kotlin-compile-testing:1.2.5'
 
 
