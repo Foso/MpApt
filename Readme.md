@@ -1,4 +1,5 @@
-⚠️ This project is deprecated, when you are looking for a multiplatform annotation processor, please take a look at [KSP](https://github.com/google/ksp) 
+> **Note**
+> This project is deprecated, when you are looking for a multiplatform annotation processor, please take a look at [KSP](https://github.com/google/ksp) 
 
 
 <h1 align="center">MpApt - Kotlin (Native/JS/JVM) Annotation Processor library</h1>
