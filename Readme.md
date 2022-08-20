@@ -1,20 +1,14 @@
-> **Note**
-> This project is deprecated, when you are looking for a multiplatform annotation processor, please take a look at [KSP](https://github.com/google/ksp) 
 
 
 <h1 align="center">MpApt - Kotlin (Native/JS/JVM) Annotation Processor library</h1>
 
-[![jCenter](https://img.shields.io/badge/Kotlin-1.5.10-green.svg
-)](https://github.com/Foso/MpApt/blob/master/LICENSE)[![jCenter](https://img.shields.io/badge/Apache-2.0-green.svg)](https://github.com/Foso/MpApt/blob/master/LICENSE)
-[![All Contribtors](https://img.shields.io/badge/Maven-Central-download.svg?style=flat-square)](https://mvnrepository.com/artifact/de.jensklingenberg/mpapt-runtime)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-range.svg?style=flat-square)](#contributors)
-  <a href="https://twitter.com/intent/tweet?text=Hey, check out MpApt https://github.com/Foso/MpApt via @jklingenberg_ #Kotlin 
-"><img src="https://img.shields.io/twitter/url/https/github.com/angular-medellin/meetup.svg?style=social" alt="Tweet"></a>
-[![Kotlinlang slack](https://img.shields.io/static/v1?label=kotlinlang&message=MpApt&color=brightgreen&logo=slack&style=flat-square)](https://app.slack.com/client/T09229ZC6/CNDF01UPR)
+
 
 
 ## Introduction 🙋‍♂️ 🙋‍
+> **Note**
+> This project is deprecated, when you are looking for a multiplatform annotation processor, please take a look at [KSP](https://github.com/google/ksp) 
+
 I wrote an annotation processing libary that can detect annotations in Kotlin Native/JS and Jvm projects, because Kapt is only working with KotlinJvm. The library can be used in Kotlin Compiler plugins. Tested with Kotlin 1.4.0,1.5.10
 
 It can detect annotations with following targets: 
